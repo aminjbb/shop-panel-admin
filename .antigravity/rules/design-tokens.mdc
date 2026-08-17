@@ -1,0 +1,55 @@
+---
+description: Design token rules — enforced for all TSX component files
+globs: src/**/*.tsx
+alwaysApply: true
+---
+
+# Design Token Rules
+
+## Source of truth: `src/index.css`
+
+## Colors — NEVER use hardcoded values
+Use only CSS variable tokens:
+- Background: `var(--color-bg-default)`, `var(--color-bg-elevated)`, `var(--color-bg-subtle)`, `var(--color-bg-muted)`, `var(--color-bg-overlay)`
+- Text: `var(--color-text-default)`, `var(--color-text-subtle)`, `var(--color-text-disabled)`, `var(--color-text-inverse)`, `var(--color-text-link)`
+- Interactive: `var(--color-interactive-default)`, `var(--color-interactive-hover)`, `var(--color-interactive-active)`, `var(--color-interactive-focus)`
+- Border: `var(--color-border-default)`, `var(--color-border-strong)`, `var(--color-border-focus)`, `var(--color-border-subtle)`
+- Status: `var(--color-status-success)`, `var(--color-status-danger)`, `var(--color-status-warning)`, `var(--color-status-info)` (and their `-bg` variants)
+
+Forbidden: `#xxxxxx`, `rgb(...)`, `rgba(...)`, `text-gray-*`, `bg-blue-*`, `text-white`, `bg-white`
+
+## Typography — ONE class per text element
+- 32px/600 → `text-display-lg-semibold`
+- 28px/600 → `text-display-md-semibold`
+- 24px/600 → `text-display-sm-semibold`
+- 20px/600 → `text-heading-lg-semibold`
+- 18px/600 → `text-heading-md-semibold`
+- 16px/600 → `text-body-lg-semibold`
+- 16px/400 → `text-body-lg-reg`
+- 14px/600 → `text-body-sm-semibold`
+- 14px/400 → `text-body-sm-reg`
+- 12px/600 → `text-label-lg-semibold`
+- 12px/400 → `text-label-lg-reg`
+- 10px/600 → `text-label-sm-semibold`
+
+Forbidden: `text-[...]`, `font-semibold` alone, `font-normal` alone, inline style typography
+
+## Border Radius — token classes only
+- 0px → `rounded-none` | 4px → `rounded-xs` | 12px → `rounded-sm` | 20px → `rounded-md` | 32px → `rounded-lg`
+
+Forbidden: `rounded-[...]` (arbitrary), `rounded-xl`, non-scale values
+
+## Border Width — bridge classes only
+- `border-none` | `border-xs` (1px) | `border-sm` (2px) | `border-md` (4px)
+
+Forbidden: `border-[...]`, numeric border values
+
+## Spacing — Tailwind utilities only, RTL-safe
+- Use: `p-*`, `px-*`, `py-*`, `ps-*`, `pe-*`, `m-*`, `mx-*`, `my-*`, `ms-*`, `me-*`, `gap-*`
+- Prefer logical: `ms-*`/`me-*`/`ps-*`/`pe-*` over `ml-*`/`mr-*`/`pl-*`/`pr-*`
+- Forbidden: inline style margin/padding
+
+## RTL Safety — logical properties always
+- `ms-*` not `ml-*` | `me-*` not `mr-*` | `ps-*` not `pl-*` | `pe-*` not `pr-*`
+- `start-*` not `left-*` | `end-*` not `right-*`
+- `text-start` not `text-left` | `text-end` not `text-right`

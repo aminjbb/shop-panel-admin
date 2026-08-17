@@ -1,0 +1,76 @@
+---
+description: Naming conventions for variables, functions, types, files, and folders across the codebase. Enforces camelCase by default with documented PascalCase/UPPER_SNAKE_CASE exceptions.
+globs:
+  - "src/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Naming Rules
+
+## Default: camelCase everywhere
+Variables, functions, non-exported constants, folders, and non-component files use `camelCase`.
+
+```typescript
+// ✅ Correct
+const userName = "Ali";
+const maxRetries = 3;
+function fetchUserData() {}
+
+// ❌ Forbidden — snake_case / kebab-case
+const user_name = "Ali";
+const max-retries = 3;
+```
+
+## Exceptions (the only allowed deviations)
+```typescript
+// ✅ Exported constants and enum values — UPPER_SNAKE_CASE
+export const MAX_RETRIES = 3;
+export const API_BASE_URL = "/api";
+enum Status { ACTIVE, NOT_FOUND }
+
+// ✅ Types, interfaces, enums, React components — PascalCase
+interface UserProfile {}
+type FilterOptions = {};
+enum UserRole {}
+export const UserCard = () => <div />;
+```
+
+## Boolean and handler prefixes are required
+```typescript
+// ✅ Required
+const isLoading = true;
+const hasError = false;
+const canEdit = true;
+const handleSubmit = () => {};
+const handleClick = () => {};
+
+// ❌ Forbidden — no is/has/can or handle prefix
+const loading = true;
+const onSubmit = () => {}; // use handleSubmit inside the file, expose as onSubmit only via props
+```
+
+## File naming by type
+| File type | Convention | Example |
+|-----------|------------|---------|
+| React component | `PascalCase.tsx` | `UserCard.tsx` |
+| Hook / model | `camelCase` with `use` prefix | `useUserModel.ts` |
+| Store | `camelCase` with `Store` suffix | `userStore.ts` |
+| API | `camelCase` with `Api` suffix | `userApi.ts` |
+| Types file | always `index.ts` | `types/index.ts` |
+| Everything else | `camelCase` | `formatDate.ts` |
+
+## Forbidden
+```typescript
+// ❌ PascalCase folders
+widgets/UserProfile/
+
+// ❌ snake_case anywhere (except UPPER_SNAKE_CASE constants)
+const user_id = 1;
+
+// ❌ kebab-case variables/folders
+const user-id = 1;
+widgets/user-profile/
+
+// ❌ Props interface without Props suffix
+interface UserCard {} // should be UserCardProps
+```

@@ -1,0 +1,38 @@
+---
+description: FSD Architecture rules — enforced for all files inside src/
+globs: src/**/*.{ts,tsx}
+alwaysApply: true
+---
+
+# FSD Architecture Rules
+
+## Layer Import Direction (strictly downward)
+pages → widgets → features → entities → shared-app
+
+## File Placement
+- Pages: `src/pages/<PageName>.tsx`
+- Widget UI: `src/widgets/<pageName>/ui/<PageName>.tsx` — pure presentational, NO logic, NO types
+- Widget Model: `src/widgets/<pageName>/models/use<PageName>Model.ts`
+- Widget Types: `src/widgets/<pageName>/types/index.ts`
+- Feature UI: `src/features/<featureName>/ui/<FeatureName>.tsx`
+- Feature API: `src/features/<featureName>/api/<featureName>Api.ts`
+- Feature Model: `src/features/<featureName>/models/use<FeatureName>.ts`
+- Entity UI: `src/entities/<entityName>/ui/<EntityName>.tsx`
+- Entity API: `src/entities/<entityName>/api/<entityName>Api.ts`
+- Shared: `src/shared-app/<componentName>/`
+
+## Hard Rules
+- UI files: zero logic, zero useState/useEffect, zero type definitions, zero API calls
+- Types: always in `types/index.ts` — never define inline in UI
+- API calls: only in `api/<name>Api.ts` — never in UI or models
+- Cross-layer imports are forbidden (e.g. feature importing from widget)
+- One root composer UI file per slice (`ui/<SliceName>.tsx`) + sub-components in the same `ui/` folder
+- Allowed sub-folders only: `ui/`, `models/`, `types/`, `api/`, `store/`, `logics/`
+
+## Naming
+- Widget/Feature/Entity folders: camelCase
+- UI component files: PascalCase.tsx
+- Model files: `use<Name>Model.ts` or `use<Name>.ts`
+- API files: `<name>Api.ts`
+- Store files: `<name>Store.ts`
+- Types file: always `index.ts`

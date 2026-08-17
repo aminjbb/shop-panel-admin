@@ -1,0 +1,83 @@
+---
+description: TanStack Query v5 rules — enforced for all model/hook files
+globs: src/**/{models,logics}/*.{ts,tsx}
+alwaysApply: true
+---
+
+# TanStack Query v5 Rules
+
+## Always use object signature (v5 pattern)
+
+### useQuery
+```typescript
+import { useQuery } from "@tanstack/react-query";
+import { entityApi } from "../api/entityApi";
+
+export const useEntityList = (filters?: Filters) =>
+  useQuery({
+    queryKey: ["entity", "list", filters],
+    queryFn: () => entityApi.getAll(filters),
+  });
+
+export const useEntityById = (id: string) =>
+  useQuery({
+    queryKey: ["entity", "detail", id],
+    queryFn: () => entityApi.getById(id),
+    enabled: !!id,
+  });
+```
+
+### useMutation
+```typescript
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+export const useCreateEntity = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: entityApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["entity"] });
+    },
+  });
+};
+
+export const useDeleteEntity = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => entityApi.remove(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["entity"] });
+    },
+  });
+};
+```
+
+## queryKey conventions
+- Format: `[slice, operation, ...params]`
+- Examples: `["user", "list"]`, `["user", "detail", id]`, `["user", "list", filters]`
+- For invalidation: use only the slice prefix → `{ queryKey: ["user"] }` invalidates all user queries
+
+## Required data states in UI
+Every data-driven component must handle all 4 states:
+```tsx
+if (isLoading) return <Skeleton />;
+if (error) return <ErrorPanel onRetry={refetch} />;
+if (!data?.length) return <EmptyState />;
+return <ActualContent data={data} />;
+```
+
+## Forbidden (v4 patterns)
+```typescript
+// ❌ Array signature
+useQuery(["users"], fetchUsers);
+useQuery(["users", id], () => fetchUser(id), { enabled: !!id });
+
+// ❌ Separate queryFn argument
+useMutation(entityApi.create, { onSuccess: ... });
+```
+
+## Model file location
+- Widget: `widgets/<pageName>/models/use<PageName>Model.ts`
+- Feature: `features/<featureName>/models/use<FeatureName>.ts`
+- Entity: `entities/<entityName>/models/use<EntityName>.ts`
+- Never call API inside model directly — always import from `../api/<name>Api.ts`

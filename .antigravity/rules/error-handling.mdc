@@ -1,0 +1,89 @@
+---
+description: Error handling rules for model and logic files. Enforces proper error propagation, forbidden console.error in production code, and required UI state coverage.
+globs:
+  - "src/**/{models,logics}/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Error Handling Rules
+
+## Mutation Error Propagation
+
+### NEVER swallow errors inside mutationFn
+```typescript
+// ❌ Forbidden — swallows error, onSuccess fires with undefined
+mutationFn: async (data) => {
+  try {
+    return await entityApi.create(data);
+  } catch (e) {
+    console.error(e); // error eaten here
+  }
+}
+
+// ✅ Required — let errors propagate, handle in onError
+mutationFn: (data) => entityApi.create(data),
+onError: (error) => { /* show toast or set error state */ },
+```
+
+## Required onError Handler for Mutations
+Every `useMutation` that modifies server state MUST have an `onError` handler:
+```typescript
+useMutation({
+  mutationFn: entityApi.create,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["entity"] });
+  },
+  onError: (error) => {
+    // show user feedback: toast, inline message, etc.
+  },
+});
+```
+
+## Forbidden: console.error in Production Code
+```typescript
+// ❌ Forbidden in models/ and logics/ files
+catch (e) {
+  console.error(e);
+}
+
+// ✅ Use error state from TanStack Query — it already captures the error
+const { error } = useQuery({ ... });
+// Pass error to UI via return value
+return { error, isLoading, data };
+```
+
+## Required: All 4 UI States Returned from Models
+Every model hook that uses `useQuery` must expose all 4 states to the UI:
+```typescript
+// ✅ Required pattern
+export const useEntityModel = () => {
+  const { data, isLoading, error, refetch } = useQuery({ ... });
+  return {
+    data,
+    isLoading,
+    error,       // must be exposed
+    onRetry: refetch, // UI needs a retry trigger
+  };
+};
+
+// ❌ Forbidden — hiding error state
+export const useEntityModel = () => {
+  const { data, isLoading } = useQuery({ ... }); // error omitted
+  return { data, isLoading };
+};
+```
+
+## ApiError Handling
+API methods from `@/config/api` throw `ApiError` on non-2xx responses.
+NEVER catch and re-throw as a generic Error:
+```typescript
+// ❌ Loses structured error info
+try {
+  return await entityApi.getAll();
+} catch (e) {
+  throw new Error("Failed"); // ApiError fields lost
+}
+
+// ✅ Let TanStack Query catch it — error state will be ApiError instance
+queryFn: () => entityApi.getAll(),
+```

@@ -1,0 +1,52 @@
+---
+description: API layer rules — enforced for all *Api.ts files
+globs: src/**/*Api.ts
+alwaysApply: true
+---
+
+# API Layer Rules
+
+## Source of truth: `src/config/api.ts`
+
+## Import — always and only from here
+```typescript
+import { get, post, put, patch, del } from "@/config/api";
+```
+Forbidden: `fetch(...)`, `axios.get(...)`, any other HTTP client
+
+## File placement
+- Feature API: `src/features/<featureName>/api/<featureName>Api.ts`
+- Entity API: `src/entities/<entityName>/api/<entityName>Api.ts`
+- One file per slice. Named `<sliceName>Api.ts`. Exports single named object `<sliceName>Api`.
+
+## Where API calls are allowed
+- ONLY in `api/<name>Api.ts` files
+- Forbidden in: `ui/`, `models/`, `store/` files
+
+## Available methods
+- `get<T>(path, options?)` — fetch/read
+- `post<T, B>(path, body?, options?)` — create
+- `put<T, B>(path, body?, options?)` — full update
+- `patch<T, B>(path, body?, options?)` — partial update
+- `del<T>(path, options?)` — delete
+- Options: `query` (URL params), `signal` (AbortController), `withAuth: false` (skip auth)
+
+## Standard API object pattern
+```typescript
+import { get, post, put, del } from "@/config/api";
+import type { Entity, CreateEntityDto, UpdateEntityDto } from "../types";
+
+const BASE = "/endpoint";
+
+export const entityApi = {
+  getAll: (query?: { page?: number; size?: number }) =>
+    get<Entity[]>(BASE, { query }),
+  getById: (id: string) => get<Entity>(`${BASE}/${id}`),
+  create: (body: CreateEntityDto) => post<Entity, CreateEntityDto>(BASE, body),
+  update: (id: string, body: UpdateEntityDto) => put<Entity, UpdateEntityDto>(`${BASE}/${id}`, body),
+  remove: (id: string) => del<void>(`${BASE}/${id}`),
+};
+```
+
+## Types — always in `../types/index.ts`
+Never define request/response types inline in the API file.

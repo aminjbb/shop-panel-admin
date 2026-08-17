@@ -1,0 +1,64 @@
+---
+description: Testing rules for Vitest + React Testing Library. Enforces __tests__ colocation within the same FSD slice, TanStack Query test setup, and forbidden patterns (testing t() in UI, reaching into hook internals).
+globs:
+  - "src/**/__tests__/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# Testing Rules
+
+## Colocation: always inside `__tests__/`
+Test files must live inside a `__tests__/` folder colocated within the same FSD slice/layer directory as the source file. Never place a test file next to the source at the same level.
+
+```text
+widgets/person/
+  models/
+    usePersonModel.ts
+    __tests__/
+      usePersonModel.test.ts
+  ui/
+    PersonCard.tsx
+    __tests__/
+      PersonCard.test.tsx
+```
+
+## What to test per layer
+| Layer | What to test |
+|-------|--------------|
+| `shared-app/**/logics` | Pure functions (pagination, mappers) |
+| `models/` | Hooks via `@testing-library/react` + provider wrappers |
+| `api/` | Thin wrappers — mock `get/post/...` from `@/config/api` |
+| `ui/` | Presentational only — render with props, assert roles/labels |
+
+## TanStack Query v5 in tests
+```typescript
+// ✅ New QueryClient per test, retries disabled
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+});
+
+render(
+  <QueryClientProvider client={queryClient}>
+    <ComponentUnderTest />
+  </QueryClientProvider>
+);
+
+// ✅ Prefer mocking the API module over real network calls
+vi.mock("../api/personApi");
+```
+
+## Forbidden
+```typescript
+// ❌ Testing t() / translation strings inside UI tests — strings come from the model
+expect(screen.getByText("مدیریت کاربران")).toBeInTheDocument();
+
+// ❌ Reaching into hook internals instead of testing via rendered output
+const { result } = renderHook(() => usePersonModel());
+expect(result.current._internalCache).toBeDefined();
+
+// ❌ Test file next to source at the same level
+widgets/person/models/usePersonModel.test.ts // must be in __tests__/
+
+// ❌ Real network calls instead of mocking the API module
+mutationFn: personApi.create // unmocked in a widget model test
+```
