@@ -96,15 +96,15 @@ export const ShippingMethodTable: React.FC<ShippingMethodTableProps> = ({
                     </div>
                   </td>
 
-                  {/* 4. Allowed Cities */}
+                  {/* 4. Covered Cities */}
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-1.5 flex-wrap">
-                      {method.allowedCities.includes("همه") ? (
+                      {method.coveredCities && method.coveredCities.includes("all") ? (
                         <span className="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-300 text-[11px] font-medium border border-indigo-500/20">
                           سراسر کشور
                         </span>
                       ) : (
-                        method.allowedCities.map((city, idx) => (
+                        (method.coveredCities || []).map((city: string, idx: number) => (
                           <span
                             key={idx}
                             className="px-1.5 py-0.5 rounded-md bg-slate-800 text-slate-300 text-[10px] border border-slate-700"

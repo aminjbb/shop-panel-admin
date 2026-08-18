@@ -51,7 +51,7 @@ const AppRoutes: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-slate-950 text-white flex flex-col lg:flex-row selection:bg-indigo-500/30 selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="h-screen w-full bg-slate-950 text-white flex flex-col lg:flex-row selection:bg-indigo-500/30 selection:text-white font-sans antialiased overflow-hidden">
       {/* Global Toast Notifications Container */}
       <ToastContainer />
 
@@ -71,7 +71,7 @@ const AppRoutes: React.FC = () => {
       />
 
       {/* Main App Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 min-h-screen">
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto overflow-x-hidden custom-scrollbar">
         {/* Top Header with Hamburger Button & Breadcrumb */}
         <AppHeader
           currentRoute={currentRoute}

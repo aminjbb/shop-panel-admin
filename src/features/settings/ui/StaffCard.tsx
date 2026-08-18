@@ -77,9 +77,9 @@ export const StaffCard: React.FC<StaffCardProps> = ({
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3 min-w-0">
           <div className="relative shrink-0">
-            {member.avatar ? (
+            {member.avatarUrl ? (
               <img
-                src={member.avatar}
+                src={member.avatarUrl}
                 alt={member.fullName}
                 referrerPolicy="no-referrer"
                 className="w-11 h-11 rounded-xl object-cover border border-slate-700"
@@ -130,7 +130,7 @@ export const StaffCard: React.FC<StaffCardProps> = ({
 
         <div className="flex items-center gap-1 text-[11px] text-slate-400">
           <Clock className="w-3.5 h-3.5 text-slate-500" />
-          <span>{member.lastActive}</span>
+          <span>{member.lastLogin || "اخیراً"}</span>
         </div>
       </div>
 

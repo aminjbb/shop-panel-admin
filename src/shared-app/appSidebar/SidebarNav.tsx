@@ -27,8 +27,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "داشبورد تحلیلی و آمار",
       subLabel: "شاخص‌های فروش، نمودارها و نرخ رشد",
       icon: <TrendingUp className="w-5 h-5 shrink-0" />,
-      badge: "اسپرینت ۴",
-      badgeVariant: "active",
       requiresAuth: true,
     },
     {
@@ -36,8 +34,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "صفحه‌ساز و بنرها",
       subLabel: "چیدمان، هیرو، شگفت‌انگیزها و ردیف‌ها",
       icon: <LayoutTemplate className="w-5 h-5 shrink-0" />,
-      badge: "اسپرینت ۸",
-      badgeVariant: "active",
       requiresAuth: true,
     },
     {
@@ -45,8 +41,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "دسته‌بندی و ویژگی‌ها",
       subLabel: "سلسله‌مراتب درختی و ساختار کالا",
       icon: <FolderTree className="w-5 h-5 shrink-0" />,
-      badge: "اسپرینت ۷",
-      badgeVariant: "active",
       requiresAuth: true,
     },
     {
@@ -54,8 +48,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "کاتالوگ و انبارداری",
       subLabel: "مدیریت کالاها، واریانت‌ها و موجودی",
       icon: <Package className="w-5 h-5 shrink-0" />,
-      badge: "اسپرینت ۲",
-      badgeVariant: "default",
       requiresAuth: true,
     },
     {
@@ -63,8 +55,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "نظرات و بازخورد کالاها",
       subLabel: "بررسی، انتشار و پاسخ‌دهی به نظرات",
       icon: <MessageSquare className="w-5 h-5 shrink-0" />,
-      badge: "اسپرینت ۶",
-      badgeVariant: "active",
       requiresAuth: true,
     },
     {
@@ -72,8 +62,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "میز پشتیبانی و تیکت‌ها",
       subLabel: "گفتگوی آنلاین، اولویت‌بندی و پیگیری",
       icon: <Headphones className="w-5 h-5 shrink-0" />,
-      badge: "آنلاین",
-      badgeVariant: "info",
       requiresAuth: true,
     },
     {
@@ -81,8 +69,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "باشگاه مشتریان (CRM)",
       subLabel: "مدیریت اعضا، سطوح وفاداری و رفتار خرید",
       icon: <Users className="w-5 h-5 shrink-0" />,
-      badge: "VIP",
-      badgeVariant: "warning",
       requiresAuth: true,
     },
     {
@@ -90,8 +76,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "کدهای تخفیف و پروموشن",
       subLabel: "جشنواره‌ها، کدهای درصدی و ریالی",
       icon: <Tag className="w-5 h-5 shrink-0" />,
-      badge: "جدید",
-      badgeVariant: "default",
       requiresAuth: true,
     },
     {
@@ -99,8 +83,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "مرسولات و سفارش‌ها",
       subLabel: "رهگیری پستی، فاکتور و وضعیت ارسال",
       icon: <Truck className="w-5 h-5 shrink-0" />,
-      badge: "اسپرینت ۳",
-      badgeVariant: "info",
       requiresAuth: true,
     },
     {
@@ -108,8 +90,6 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
       label: "تنظیمات، لجستیک و دسترسی‌ها",
       subLabel: "مالیات، روش‌های ارسال و پرسنل (RBAC)",
       icon: <Settings className="w-5 h-5 shrink-0" />,
-      badge: "اسپرینت ۵",
-      badgeVariant: "active",
       requiresAuth: true,
     },
   ];
@@ -188,26 +168,13 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
               </div>
             </div>
 
-            <div className="flex items-center gap-1.5 shrink-0 whitespace-nowrap">
-              {item.badge && (
-                <span
-                  className={`text-[10px] px-2 py-0.5 rounded-full font-medium whitespace-nowrap shrink-0 ${
-                    isActive
-                      ? "bg-white/20 text-white"
-                      : "bg-indigo-500/10 text-indigo-300 border border-indigo-500/20"
-                  }`}
-                >
-                  {item.badge}
-                </span>
-              )}
-              <ChevronLeft
-                className={`w-4 h-4 shrink-0 transition-transform ${
-                  isActive
-                    ? "text-white translate-x-0.5"
-                    : "text-slate-600 group-hover:text-slate-400"
-                }`}
-              />
-            </div>
+            <ChevronLeft
+              className={`w-4 h-4 shrink-0 transition-transform ${
+                isActive
+                  ? "text-white translate-x-0.5"
+                  : "text-slate-600 group-hover:text-slate-400"
+              }`}
+            />
           </button>
         );
       })}

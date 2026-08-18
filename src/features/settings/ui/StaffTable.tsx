@@ -58,9 +58,9 @@ export const StaffTable: React.FC<StaffTableProps> = ({
                   <td className="py-3.5 px-4">
                     <div className="flex items-center gap-3">
                       <div className="relative shrink-0">
-                        {member.avatar ? (
+                        {member.avatarUrl || member.avatar ? (
                           <img
-                            src={member.avatar}
+                            src={member.avatarUrl || member.avatar}
                             alt={member.fullName}
                             referrerPolicy="no-referrer"
                             className="w-10 h-10 rounded-xl object-cover border border-slate-700"
@@ -119,7 +119,7 @@ export const StaffTable: React.FC<StaffTableProps> = ({
                   <td className="py-3.5 px-4 whitespace-nowrap">
                     <div className="flex items-center gap-1.5 text-slate-400 text-[11px]">
                       <Clock className="w-3.5 h-3.5" />
-                      <span>{member.lastActive}</span>
+                      <span>{member.lastLogin || "اخیراً"}</span>
                     </div>
                   </td>
 

@@ -1,6 +1,6 @@
 {
   "name": "admin-authentication-system",
-  "description": "Admin Authentication, Product Catalog, Orders Pipeline, Analytics Dashboard & CRM, Discounts, Store Settings & RBAC, Customer Feedback, Support Ticketing, Categories & Taxonomy, and Sprint 8 Visual Homepage Layout Builder & Section Management (EPIC-08).",
+  "description": "Admin Authentication, Product Catalog & SEO/Metadata Optimizer (PBI-2.5), Orders Pipeline, Analytics Dashboard & CRM, Discounts, Store Settings & RBAC, Customer Feedback, Support Ticketing, Categories & Taxonomy, and Visual Homepage Layout Builder (EPIC-08).",
   "requestFramePermissions": [],
   "majorCapabilities": [
     "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"

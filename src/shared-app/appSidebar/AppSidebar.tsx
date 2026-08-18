@@ -7,11 +7,8 @@ import {
   ChevronRight,
   ChevronLeft,
   X,
-  Sparkles,
   Database,
-  Radio,
 } from "lucide-react";
-import ActivationBage from "@/shared-app/activationbage";
 
 export const AppSidebar: React.FC<AppSidebarProps> = ({
   currentRoute,
@@ -46,7 +43,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       {/* ========================================================================= */}
       <aside
         id="desktop-app-sidebar"
-        className={`hidden lg:flex flex-col justify-between shrink-0 h-screen sticky top-0 z-30 bg-slate-950/95 border-l border-slate-800/90 transition-all duration-300 backdrop-blur-md overflow-y-auto custom-scrollbar ${
+        className={`hidden lg:flex flex-col justify-between shrink-0 h-screen sticky top-0 self-start z-30 bg-slate-950/95 border-l border-slate-800/90 transition-all duration-300 backdrop-blur-md overflow-y-auto custom-scrollbar ${
           isCollapsed ? "w-20 p-3" : "w-64 xl:w-72 p-4"
         } ${className}`}
       >
@@ -103,17 +100,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               </button>
             )}
           </div>
-
-          {/* System Status Pill (only when expanded) */}
-          {!isCollapsed && (
-            <div className="px-3 py-2 rounded-xl bg-slate-900/60 border border-slate-800/80 flex items-center justify-between">
-              <div className="flex items-center gap-2 text-[11px] text-slate-400">
-                <Radio className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                <span>محیط ماک فعال</span>
-              </div>
-              <ActivationBage label="آنلاین" status="active" className="text-[10px] px-2 py-0.2" />
-            </div>
-          )}
 
           {/* Navigation Links */}
           <div className="flex flex-col gap-1">
@@ -201,15 +187,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 >
                   <X className="w-5 h-5" />
                 </button>
-              </div>
-
-              {/* Status Banner */}
-              <div className="px-3 py-2 rounded-xl bg-slate-900 border border-slate-800 flex items-center justify-between">
-                <div className="flex items-center gap-1.5 text-xs text-slate-300">
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-                  <span>اسپرینت ۲: انبارداری</span>
-                </div>
-                <ActivationBage label="آماده به کار" status="active" className="text-[10px] px-2 py-0.5" />
               </div>
 
               {/* Navigation Items */}
