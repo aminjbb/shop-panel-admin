@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { AdminUser } from "@/types/auth";
+import type { AdminRole, AdminUser } from "@/entities/auth";
 
 export type AppRoute =
   | "login"
@@ -54,4 +54,5 @@ export interface SidebarNavProps {
   isAuthenticated?: boolean;
   isCollapsed?: boolean;
   onItemClick?: () => void;
+  role?: AdminRole;
 }

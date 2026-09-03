@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import ActivationBage from "@/shared-app/activationbage";
 import EButton from "@/shared-app/designSystem/button";
+import { AdminAvatar } from "@/entities/auth";
 
 export const MobileMenu: React.FC<MobileDrawerProps> = ({
   isOpen,
@@ -76,14 +77,10 @@ export const MobileMenu: React.FC<MobileDrawerProps> = ({
         {isAuthenticated && user && (
           <div className="p-3 rounded-xl bg-slate-950 border border-slate-800">
             <div className="flex items-center gap-3">
-              <img
-                src={user.avatar}
-                alt={user.name}
-                className="w-10 h-10 rounded-xl object-cover border border-slate-700"
-              />
+              <AdminAvatar user={user} className="w-10 h-10 rounded-xl border border-slate-700" />
               <div className="min-w-0 flex-1">
                 <div className="text-sm font-semibold text-white truncate">
-                  {user.name}
+                  {user.fullName}
                 </div>
                 <div className="text-xs text-slate-400 truncate">
                   {user.email}

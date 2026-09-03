@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AnalyticsContainer from "@/features/analytics/ui/AnalyticsContainer";
 import DashboardWidget from "@/widgets/dashboard/ui/DashboardWidget";
 import ProtectedRoute from "@/features/auth/ui/ProtectedRoute";
 import { TrendingUp, ShieldCheck } from "lucide-react";
+import { useAuth } from "@/features/auth/context/AuthContext";
 
 export interface DashboardPageProps {
   onLogout?: () => void;
@@ -15,7 +16,14 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
   onRedirectToLogin,
   onNavigate,
 }) => {
-  const [activeTab, setActiveTab] = useState<"analytics" | "security">("analytics");
+  const { user } = useAuth();
+  const [activeTab, setActiveTab] = useState<"analytics" | "security">(
+    user?.role === "support_agent" ? "security" : "analytics",
+  );
+
+  useEffect(() => {
+    if (user?.role === "support_agent") setActiveTab("security");
+  }, [user?.role]);
 
   return (
     <ProtectedRoute onRedirectToLogin={onRedirectToLogin}>
@@ -23,7 +31,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
         {/* Top switcher if user wants to inspect security/session token vs analytics */}
         <div className="flex items-center justify-between pb-1 border-b border-slate-800/80">
           <div className="inline-flex rounded-xl bg-slate-900 border border-slate-800 p-1 text-xs">
-            <button
+            {user?.role !== "support_agent" && <button
               type="button"
               onClick={() => setActiveTab("analytics")}
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-all cursor-pointer ${
@@ -34,7 +42,7 @@ export const DashboardPage: React.FC<DashboardPageProps> = ({
             >
               <TrendingUp className="w-3.5 h-3.5" />
               <span>داشبورد تحلیلی و آمار فروشگاه</span>
-            </button>
+            </button>}
 
             <button
               type="button"

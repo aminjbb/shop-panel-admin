@@ -6,7 +6,6 @@ import { ShieldCheck, Key, Database, Zap } from "lucide-react";
 export const DashboardStats: React.FC<DashboardStatsProps> = ({
   user,
   rememberMe,
-  token,
 }) => {
   const getPermissionCount = () => {
     switch (user.role) {
@@ -54,12 +53,12 @@ export const DashboardStats: React.FC<DashboardStatsProps> = ({
       />
 
       <StatCard
-        label="پاسخ‌دهی سرویس ماک"
-        value="~۵۰۰ میلی‌ثانیه"
+        label="وضعیت سرویس API"
+        value="آماده"
         icon={<Zap className="w-5 h-5" />}
         iconBgClassName="bg-purple-500/20 text-purple-400 border-purple-500/30"
-        trend={{ value: "شبیه‌سازی شبکه", isPositive: true }}
-        description="با تاخیر مصنوعی جهت تست UX لودینگ"
+        trend={{ value: "Readiness تأیید شد", isPositive: true }}
+        description="اتصال API و پایگاه داده در زمان راه‌اندازی بررسی شده است."
       />
     </div>
   );

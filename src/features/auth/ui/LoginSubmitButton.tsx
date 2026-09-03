@@ -6,23 +6,26 @@ import { LogIn } from "lucide-react";
 export const LoginSubmitButton: React.FC<LoginSubmitButtonProps> = ({
   isLoading,
   disabled = false,
-}) => {
-  return (
-    <div className="pt-2">
-      <EButton
-        id="login-submit-button"
-        type="submit"
-        variant="primary"
-        size="lg"
-        isLoading={isLoading}
-        disabled={disabled}
-        className="w-full text-base font-semibold"
-        icon={<LogIn className="w-5 h-5" />}
-      >
-        {isLoading ? "در حال احراز هویت و برقراری ارتباط..." : "ورود به سامانه"}
-      </EButton>
-    </div>
-  );
-};
+  retryAfterSeconds = 0,
+}) => (
+  <div className="pt-2">
+    <EButton
+      id="login-submit-button"
+      type="submit"
+      variant="primary"
+      size="lg"
+      isLoading={isLoading}
+      disabled={disabled}
+      className="w-full text-base font-semibold"
+      icon={<LogIn className="w-5 h-5" />}
+    >
+      {retryAfterSeconds > 0
+        ? `تلاش مجدد تا ${retryAfterSeconds} ثانیه دیگر`
+        : isLoading
+          ? "در حال احراز هویت..."
+          : "ورود به سامانه"}
+    </EButton>
+  </div>
+);
 
 export default LoginSubmitButton;

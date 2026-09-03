@@ -26,15 +26,15 @@ export const DashboardWidget: React.FC<DashboardWidgetProps> = ({ onLogout }) =>
         <DashboardStats
           user={model.user}
           rememberMe={model.rememberMe}
-          token={model.token}
         />
 
         <DashboardRoleMatrix user={model.user} />
 
         <DashboardSessionInspector
           user={model.user}
-          token={model.token}
           rememberMe={model.rememberMe}
+          accessTokenExpiresAt={model.accessTokenExpiresAt}
+          refreshTokenExpiresAt={model.refreshTokenExpiresAt}
         />
       </div>
     </div>

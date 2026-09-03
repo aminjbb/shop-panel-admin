@@ -3,6 +3,7 @@ import type { HeaderUserMenuProps } from "./types";
 import ActivationBage from "@/shared-app/activationbage";
 import EButton from "@/shared-app/designSystem/button";
 import { LogOut } from "lucide-react";
+import { AdminAvatar } from "@/entities/auth";
 
 export const HeaderUserMenu: React.FC<HeaderUserMenuProps> = ({
   user,
@@ -40,17 +41,13 @@ export const HeaderUserMenu: React.FC<HeaderUserMenuProps> = ({
       {/* User Avatar and Info */}
       <div className="flex items-center gap-2.5 px-2.5 py-1 rounded-xl bg-slate-900 border border-slate-800">
         <div className="relative">
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-7 h-7 rounded-lg object-cover border border-slate-700"
-          />
+          <AdminAvatar user={user} className="w-7 h-7 rounded-lg border border-slate-700" iconClassName="w-4 h-4" />
           <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 rounded-full bg-emerald-500 border border-slate-900" />
         </div>
 
         <div className="hidden md:flex flex-col text-start">
           <span className="text-xs font-semibold text-white leading-none">
-            {user.name}
+            {user.fullName}
           </span>
           <span className="text-[10px] text-slate-400 mt-0.5">
             {user.email}

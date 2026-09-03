@@ -4,7 +4,6 @@ import { useLoginFormModel } from "../models/useLoginFormModel";
 import LoginHeader from "./LoginHeader";
 import LoginInputs from "./LoginInputs";
 import LoginSubmitButton from "./LoginSubmitButton";
-import LoginQuickFillBar from "./LoginQuickFillBar";
 import AllertMassage from "@/shared-app/allertMassage";
 
 export const LoginForm: React.FC<LoginFormProps> = ({
@@ -12,27 +11,25 @@ export const LoginForm: React.FC<LoginFormProps> = ({
   className = "",
 }) => {
   const model = useLoginFormModel(onSuccess);
+  const errorMessage = model.errors.general
+    ? `${model.errors.general}${model.errors.requestId ? ` (کد پیگیری: ${model.errors.requestId})` : ""}`
+    : null;
 
   return (
-    <div
-      className={`glass-card p-6 sm:p-8 w-full max-w-md mx-auto relative z-10 transition-all duration-300 ${className}`}
-    >
-      {/* Header */}
+    <div className={`glass-card p-6 sm:p-8 w-full max-w-md mx-auto relative z-10 transition-all duration-300 ${className}`}>
       <LoginHeader />
 
-      {/* General Alert Error Banner */}
-      {model.errors.general && (
+      {errorMessage && (
         <div className="mb-5">
           <AllertMassage
             variant="danger"
             title="خطا در اعتبارسنجی ورود"
-            message={model.errors.general}
+            message={errorMessage}
             onClose={model.clearGeneralError}
           />
         </div>
       )}
 
-      {/* Form Area */}
       <form onSubmit={model.handleSubmit} noValidate className="space-y-5">
         <LoginInputs
           email={model.email}
@@ -47,21 +44,15 @@ export const LoginForm: React.FC<LoginFormProps> = ({
           onToggleShowPassword={model.toggleShowPassword}
           rememberMe={model.rememberMe}
           onRememberMeChange={model.setRememberMe}
-          disabled={model.isLoading}
+          disabled={model.isSubmitDisabled}
         />
 
         <LoginSubmitButton
           isLoading={model.isLoading}
-          disabled={model.isLoading}
+          disabled={model.isSubmitDisabled}
+          retryAfterSeconds={model.retryAfterSeconds}
         />
       </form>
-
-      {/* Quick Fill Dev Bar */}
-      <LoginQuickFillBar
-        onSelectPreset={model.handleSelectPreset}
-        onSimulateError={model.handleSimulateError}
-        disabled={model.isLoading}
-      />
     </div>
   );
 };

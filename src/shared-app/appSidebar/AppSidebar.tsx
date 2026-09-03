@@ -113,20 +113,21 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               onNavigate={onNavigate}
               isAuthenticated={isAuthenticated}
               isCollapsed={isCollapsed}
+              role={user?.role}
             />
           </div>
         </div>
 
-        {/* Bottom Section: Mock Engine Info + User Profile */}
+        {/* Bottom Section: API status + User Profile */}
         <div className="flex flex-col gap-3 pt-3 border-t border-slate-800/80">
           {!isCollapsed && (
             <div className="p-3 rounded-xl bg-indigo-950/20 border border-indigo-500/20 text-xs">
               <div className="flex items-center gap-1.5 text-indigo-300 font-semibold mb-1">
                 <Database className="w-3.5 h-3.5" />
-                <span>پایگاه داده لوکال</span>
+                <span>اتصال به API</span>
               </div>
               <p className="text-[11px] text-slate-400 leading-relaxed">
-                تغییرات محصولات و موجودی مستقیماً در حافظه مرورگر ذخیره و همگام‌سازی می‌شوند.
+                نشست کاربر و داده‌های پنل از سرویس backend دریافت و همگام‌سازی می‌شوند.
               </p>
             </div>
           )}
@@ -199,6 +200,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                   onNavigate={onNavigate}
                   isAuthenticated={isAuthenticated}
                   isCollapsed={false}
+                  role={user?.role}
                   onItemClick={onMobileClose}
                 />
               </div>

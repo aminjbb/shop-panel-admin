@@ -14,6 +14,7 @@ import AppHeader from "@/shared-app/appHeader";
 import AppSidebar from "@/shared-app/appSidebar";
 import ToastContainer from "@/shared-app/designSystem/toast/ToastContainer";
 import type { AppRoute } from "@/shared-app/appSidebar/types";
+import { canAccessAdminRoute } from "@/entities/auth";
 
 const AppRoutes: React.FC = () => {
   const { user, isAuthenticated, isLoading, logout, rememberMe } = useAuth();
@@ -33,12 +34,19 @@ const AppRoutes: React.FC = () => {
         setCurrentRoute("login");
       }
     }
-  }, [isAuthenticated, isLoading]);
+  }, [currentRoute, isAuthenticated, isLoading]);
 
   const navigateTo = (route: AppRoute) => {
+    if (user && !canAccessAdminRoute(user.role, route)) return;
     setCurrentRoute(route);
     setIsMobileSidebarOpen(false);
   };
+
+  useEffect(() => {
+    if (user && !canAccessAdminRoute(user.role, currentRoute)) {
+      setCurrentRoute("dashboard");
+    }
+  }, [currentRoute, user]);
 
   const handleLogout = async () => {
     setIsLoggingOut(true);
@@ -88,7 +96,9 @@ const AppRoutes: React.FC = () => {
 
         {/* Main Routed View */}
         <main className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
-          {currentRoute === "dashboard" ? (
+          {!isAuthenticated || currentRoute === "login" ? (
+            <LoginPage />
+          ) : currentRoute === "dashboard" ? (
             <DashboardPage
               onLogout={handleLogout}
               onRedirectToLogin={() => navigateTo("login")}
@@ -118,9 +128,7 @@ const AppRoutes: React.FC = () => {
             <ProductsPage />
           ) : currentRoute === "settings" || currentRoute === "staff" ? (
             <SettingsPage />
-          ) : (
-            <LoginPage onLoginSuccess={() => navigateTo("dashboard")} />
-          )}
+          ) : null}
         </main>
 
         {/* Footer info */}

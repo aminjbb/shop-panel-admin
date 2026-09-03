@@ -1,4 +1,4 @@
-import React, { type ReactNode } from "react";
+import React, { useEffect, type ReactNode } from "react";
 import { useAuth } from "../context/AuthContext";
 import { ShieldCheck, Loader2 } from "lucide-react";
 
@@ -14,6 +14,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   onRedirectToLogin,
 }) => {
   const { isAuthenticated, isLoading } = useAuth();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) onRedirectToLogin?.();
+  }, [isAuthenticated, isLoading, onRedirectToLogin]);
 
   if (isLoading) {
     return (
@@ -31,9 +35,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   }
 
   if (!isAuthenticated) {
-    if (onRedirectToLogin) {
-      onRedirectToLogin();
-    }
     return <>{fallback || null}</>;
   }
 

@@ -14,12 +14,15 @@ import {
   FolderTree,
   LayoutTemplate,
 } from "lucide-react";
+import { canAccessAdminRoute } from "@/entities/auth";
 
 export const SidebarNav: React.FC<SidebarNavProps> = ({
   currentRoute,
   onNavigate,
+  isAuthenticated = false,
   isCollapsed = false,
   onItemClick,
+  role,
 }) => {
   const navItems: NavItemConfig[] = [
     {
@@ -103,7 +106,12 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
 
   return (
     <nav className="flex flex-col gap-1.5 w-full">
-      {navItems.map((item) => {
+      {navItems
+        .filter((item) => {
+          if (item.requiresAuth && !isAuthenticated) return false;
+          return !role || canAccessAdminRoute(role, item.id);
+        })
+        .map((item) => {
         const isActive = currentRoute === item.id;
 
         if (isCollapsed) {
@@ -177,7 +185,7 @@ export const SidebarNav: React.FC<SidebarNavProps> = ({
             />
           </button>
         );
-      })}
+        })}
     </nav>
   );
 };

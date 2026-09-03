@@ -2,6 +2,7 @@ import React from "react";
 import type { SidebarUserProfileProps } from "./types";
 import { LogOut, HardDrive, Shield } from "lucide-react";
 import ActivationBage from "@/shared-app/activationbage";
+import { AdminAvatar } from "@/entities/auth";
 
 export const SidebarUserProfile: React.FC<SidebarUserProfileProps> = ({
   user,
@@ -27,11 +28,7 @@ export const SidebarUserProfile: React.FC<SidebarUserProfileProps> = ({
     return (
       <div className="flex flex-col items-center gap-2 p-2 rounded-xl bg-slate-900/80 border border-slate-800">
         <div className="relative group">
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-9 h-9 rounded-lg object-cover border border-indigo-500/30"
-          />
+          <AdminAvatar user={user} className="w-9 h-9 rounded-lg border border-indigo-500/30" />
           <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-950" />
         </div>
 
@@ -55,11 +52,7 @@ export const SidebarUserProfile: React.FC<SidebarUserProfileProps> = ({
     <div className="p-3 rounded-xl bg-slate-900/90 border border-slate-800/90 flex flex-col gap-2.5 shadow-sm">
       <div className="flex items-center gap-2.5">
         <div className="relative shrink-0">
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-10 h-10 rounded-xl object-cover border border-indigo-500/30 ring-1 ring-slate-800"
-          />
+          <AdminAvatar user={user} className="w-10 h-10 rounded-xl border border-indigo-500/30 ring-1 ring-slate-800" />
           <span
             className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-emerald-500 ring-2 ring-slate-950"
             title="آنلاین"
@@ -68,7 +61,7 @@ export const SidebarUserProfile: React.FC<SidebarUserProfileProps> = ({
 
         <div className="min-w-0 flex-1">
           <div className="text-xs font-semibold text-white truncate flex items-center gap-1">
-            <span>{user.name}</span>
+            <span>{user.fullName}</span>
           </div>
           <div className="text-[11px] text-slate-400 truncate dir-ltr text-right">
             {user.email}

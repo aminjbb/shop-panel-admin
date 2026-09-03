@@ -2,7 +2,14 @@ import { useState, useCallback } from "react";
 import { useAuth } from "@/features/auth/context/AuthContext";
 
 export const useDashboardModel = (onLogoutCallback?: () => void) => {
-  const { user, token, rememberMe, logout, isLoading } = useAuth();
+  const {
+    user,
+    rememberMe,
+    logout,
+    isLoading,
+    accessTokenExpiresAt,
+    refreshTokenExpiresAt,
+  } = useAuth();
   const [isLoggingOut, setIsLoggingOut] = useState<boolean>(false);
 
   const handleLogout = useCallback(async () => {
@@ -19,8 +26,9 @@ export const useDashboardModel = (onLogoutCallback?: () => void) => {
 
   return {
     user,
-    token: token || "",
     rememberMe,
+    accessTokenExpiresAt,
+    refreshTokenExpiresAt,
     isLoggingOut: isLoggingOut || isLoading,
     handleLogout,
   };

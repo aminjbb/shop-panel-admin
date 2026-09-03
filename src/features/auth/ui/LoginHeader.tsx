@@ -16,7 +16,7 @@ export const LoginHeader: React.FC<LoginHeaderProps> = ({
 
       <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-indigo-300 text-xs font-medium mb-2.5">
         <Sparkles className="w-3.5 h-3.5" />
-        <span>احراز هویت ایزوله فرانت‌اند (Mock Auth)</span>
+        <span>احراز هویت امن پنل مدیریت</span>
       </div>
 
       <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">

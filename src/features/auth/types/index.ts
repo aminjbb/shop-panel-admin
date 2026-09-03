@@ -1,19 +1,26 @@
 import type { ReactNode } from "react";
-import type { AdminRole } from "@/types/auth";
+import type { AdminUser, LoginRequest } from "@/entities/auth";
+
+export interface AuthContextType {
+  user: AdminUser | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  rememberMe: boolean;
+  accessTokenExpiresAt: string | null;
+  refreshTokenExpiresAt: string | null;
+  login: (credentials: LoginRequest) => Promise<AdminUser>;
+  logout: () => Promise<void>;
+}
+
+export interface AuthProviderProps {
+  children: ReactNode;
+}
 
 export interface FormErrors {
   email?: string;
   password?: string;
   general?: string;
-}
-
-export interface QuickFillOption {
-  role: AdminRole;
-  title: string;
-  email: string;
-  password: string;
-  description: string;
-  color: string;
+  requestId?: string;
 }
 
 export interface LoginFormProps {
@@ -42,13 +49,8 @@ export interface LoginInputsProps {
   disabled?: boolean;
 }
 
-export interface LoginQuickFillBarProps {
-  onSelectPreset: (email: string, password: string) => void;
-  onSimulateError: () => void;
-  disabled?: boolean;
-}
-
 export interface LoginSubmitButtonProps {
   isLoading: boolean;
   disabled?: boolean;
+  retryAfterSeconds?: number;
 }

@@ -4,6 +4,7 @@ import HeaderPages from "@/shared-app/headerPages";
 import ActivationBage from "@/shared-app/activationbage";
 import EButton from "@/shared-app/designSystem/button";
 import { LogOut, Shield, HardDrive } from "lucide-react";
+import { AdminAvatar } from "@/entities/auth";
 
 export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   user,
@@ -27,8 +28,8 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
   return (
     <div className="glass-card p-6 border-white/10 mb-6">
       <HeaderPages
-        title={`خوش آمدید، ${user.name}`}
-        subtitle={`سامانه مدیریت یکپارچه دینووا • واحد: ${user.department || "بخش اداری"}`}
+        title={`خوش آمدید، ${user.fullName}`}
+        subtitle="سامانه مدیریت یکپارچه دینووا"
       >
         <div className="flex items-center gap-3 flex-wrap">
           {getRoleBadge()}
@@ -53,14 +54,10 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
       {/* User profile quick info bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mt-6 pt-4 border-t border-white/10">
         <div className="flex items-center gap-3.5">
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-12 h-12 rounded-2xl object-cover border-2 border-indigo-500/40"
-          />
+          <AdminAvatar user={user} className="w-12 h-12 rounded-2xl border-2 border-indigo-500/40" iconClassName="w-6 h-6" />
           <div>
             <div className="text-sm font-bold text-white flex items-center gap-2">
-              <span>{user.name}</span>
+              <span>{user.fullName}</span>
               <Shield className="w-3.5 h-3.5 text-indigo-400" />
             </div>
             <div className="text-xs text-white/50">{user.email}</div>
@@ -69,7 +66,7 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
 
         <div className="text-xs text-white/50 text-start sm:text-end">
           <div>شناسه کاربری: <span className="font-mono text-white/80">{user.id}</span></div>
-          <div className="mt-0.5">آخرین ورود ثبت‌شده: <span className="text-white/80">{user.lastLogin || "امروز"}</span></div>
+          <div className="mt-0.5">آخرین ورود ثبت‌شده: <span className="text-white/80">{user.lastLoginAt ? new Date(user.lastLoginAt).toLocaleString("fa-IR") : "ثبت نشده"}</span></div>
         </div>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { AdminUser } from "@/types/auth";
+import type { AdminUser } from "@/entities/auth";
 
 export type AppRoute =
   | "login"

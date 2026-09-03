@@ -1,153 +1,120 @@
-import { useState, useCallback, type FormEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
+import { ApiError } from "@/config/api";
 import { useAuth } from "../context/AuthContext";
 import type { FormErrors } from "../types";
-import { MOCK_USERS } from "../api/authMockApi";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 export const useLoginFormModel = (onSuccess?: () => void) => {
   const { login, isLoading } = useAuth();
-
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [rememberMe, setRememberMe] = useState<boolean>(true);
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<{ email?: boolean; password?: boolean }>({});
+  const [rateLimitDeadline, setRateLimitDeadline] = useState<number | null>(null);
+  const [retryAfterSeconds, setRetryAfterSeconds] = useState(0);
+  const submitGuard = useRef(false);
 
-  const validateEmail = useCallback((value: string): string | undefined => {
+  useEffect(() => {
+    if (!rateLimitDeadline) {
+      setRetryAfterSeconds(0);
+      return;
+    }
+    const update = () => {
+      const remaining = Math.max(0, Math.ceil((rateLimitDeadline - Date.now()) / 1000));
+      setRetryAfterSeconds(remaining);
+      if (remaining === 0) setRateLimitDeadline(null);
+    };
+    update();
+    const interval = window.setInterval(update, 250);
+    return () => window.clearInterval(interval);
+  }, [rateLimitDeadline]);
+
+  const validateEmail = useCallback((value: string) => {
     const trimmed = value.trim();
-    if (!trimmed) {
-      return "وارد کردن آدرس ایمیل الزامی است.";
-    }
-    if (!EMAIL_REGEX.test(trimmed)) {
-      return "فرمت آدرس ایمیل وارد شده نامعتبر است (مثال: admin@dynova.io).";
-    }
+    if (!trimmed) return "وارد کردن آدرس ایمیل الزامی است.";
+    if (!EMAIL_REGEX.test(trimmed)) return "فرمت آدرس ایمیل معتبر نیست.";
     return undefined;
   }, []);
 
-  const validatePassword = useCallback((value: string): string | undefined => {
-    if (!value) {
-      return "وارد کردن کلمه عبور الزامی است.";
-    }
-    if (value.length < 6) {
-      return "کلمه عبور باید حداقل شامل ۶ کاراکتر باشد.";
-    }
+  const validatePassword = useCallback((value: string) => {
+    if (!value) return "وارد کردن کلمه عبور الزامی است.";
+    if (value.length > 128) return "کلمه عبور حداکثر می‌تواند ۱۲۸ کاراکتر باشد.";
     return undefined;
   }, []);
 
   const handleEmailChange = useCallback((value: string) => {
     setEmail(value);
-    setErrors((prev) => ({
-      ...prev,
-      email: touched.email ? validateEmail(value) : undefined,
-      general: undefined,
-    }));
+    setErrors((current) => ({ ...current, email: touched.email ? validateEmail(value) : undefined, general: undefined, requestId: undefined }));
   }, [touched.email, validateEmail]);
 
   const handlePasswordChange = useCallback((value: string) => {
     setPassword(value);
-    setErrors((prev) => ({
-      ...prev,
-      password: touched.password ? validatePassword(value) : undefined,
-      general: undefined,
-    }));
+    setErrors((current) => ({ ...current, password: touched.password ? validatePassword(value) : undefined, general: undefined, requestId: undefined }));
   }, [touched.password, validatePassword]);
 
-  const handleEmailBlur = useCallback(() => {
-    setTouched((prev) => ({ ...prev, email: true }));
-    const error = validateEmail(email);
-    setErrors((prev) => ({ ...prev, email: error }));
-  }, [email, validateEmail]);
-
-  const handlePasswordBlur = useCallback(() => {
-    setTouched((prev) => ({ ...prev, password: true }));
-    const error = validatePassword(password);
-    setErrors((prev) => ({ ...prev, password: error }));
-  }, [password, validatePassword]);
-
-  const toggleShowPassword = useCallback(() => {
-    setShowPassword((prev) => !prev);
-  }, []);
-
-  const handleSelectPreset = useCallback((presetEmail: string, presetPassword: string) => {
-    setEmail(presetEmail);
-    setPassword(presetPassword);
-    setErrors({});
+  const handleSubmit = useCallback(async (event?: FormEvent) => {
+    event?.preventDefault();
+    if (submitGuard.current || isLoading || retryAfterSeconds > 0) return;
     setTouched({ email: true, password: true });
-  }, []);
+    const emailError = validateEmail(email);
+    const passwordError = validatePassword(password);
+    if (emailError || passwordError) {
+      setErrors({ email: emailError, password: passwordError });
+      return;
+    }
 
-  const handleSimulateError = useCallback(() => {
-    setEmail("error500@store.com");
-    setPassword("AnyPassword123");
+    submitGuard.current = true;
     setErrors({});
-    setTouched({ email: true, password: true });
-  }, []);
-
-  const handleSubmit = useCallback(
-    async (e?: FormEvent) => {
-      if (e) {
-        e.preventDefault();
-      }
-
-      setTouched({ email: true, password: true });
-
-      const emailErr = validateEmail(email);
-      const passwordErr = validatePassword(password);
-
-      if (emailErr || passwordErr) {
-        setErrors({
-          email: emailErr,
-          password: passwordErr,
-          general: "لطفاً خطاهای فرم را برطرف نمایید.",
-        });
-        return;
-      }
-
-      setErrors({});
-
-      try {
-        await login({
-          email,
-          password,
-          rememberMe,
-        });
-
-        if (onSuccess) {
-          onSuccess();
+    try {
+      await login({ email, password, rememberMe });
+      onSuccess?.();
+    } catch (error) {
+      if (error instanceof ApiError) {
+        if (error.code === "validation_error") {
+          const next: FormErrors = {};
+          for (const field of error.details.fields ?? []) {
+            if (field.field === "body.email") next.email = "آدرس ایمیل معتبر نیست.";
+            else if (field.field === "body.password") next.password = "کلمه عبور معتبر نیست.";
+          }
+          next.general = next.email || next.password ? undefined : "اطلاعات فرم معتبر نیست.";
+          next.requestId = error.requestId ?? undefined;
+          setErrors(next);
+        } else if (error.code === "invalid_credentials") {
+          setErrors({ general: "ایمیل یا کلمه عبور صحیح نیست." });
+        } else if (error.code === "rate_limited") {
+          const seconds = Math.max(1, error.retryAfterSeconds ?? 60);
+          setRateLimitDeadline(Date.now() + seconds * 1000);
+          setErrors({ general: "تعداد تلاش‌ها بیش از حد مجاز است. کمی بعد دوباره تلاش کنید." });
+        } else {
+          setErrors({ general: "ورود به سامانه انجام نشد. دوباره تلاش کنید.", requestId: error.requestId ?? undefined });
         }
-      } catch (err: unknown) {
-        const message =
-          err instanceof Error
-            ? err.message
-            : "خطای ناشناخته در ورود به سامانه رخ داد.";
-        setErrors({ general: message });
+      } else {
+        setErrors({ general: "ارتباط با سرور برقرار نشد. اتصال شبکه را بررسی کنید." });
       }
-    },
-    [email, password, rememberMe, validateEmail, validatePassword, login, onSuccess]
-  );
-
-  const clearGeneralError = useCallback(() => {
-    setErrors((prev) => ({ ...prev, general: undefined }));
-  }, []);
+    } finally {
+      submitGuard.current = false;
+    }
+  }, [email, isLoading, login, onSuccess, password, rememberMe, retryAfterSeconds, validateEmail, validatePassword]);
 
   return {
-    email,
-    password,
-    rememberMe,
-    showPassword,
-    errors,
-    isLoading,
+    email, password, rememberMe, showPassword, errors, isLoading, retryAfterSeconds,
+    isSubmitDisabled: isLoading || retryAfterSeconds > 0,
     handleEmailChange,
     handlePasswordChange,
-    handleEmailBlur,
-    handlePasswordBlur,
-    toggleShowPassword,
+    handleEmailBlur: () => {
+      setTouched((current) => ({ ...current, email: true }));
+      setErrors((current) => ({ ...current, email: validateEmail(email) }));
+    },
+    handlePasswordBlur: () => {
+      setTouched((current) => ({ ...current, password: true }));
+      setErrors((current) => ({ ...current, password: validatePassword(password) }));
+    },
+    toggleShowPassword: () => setShowPassword((current) => !current),
     setRememberMe,
-    handleSelectPreset,
-    handleSimulateError,
     handleSubmit,
-    clearGeneralError,
-    mockUsers: MOCK_USERS,
+    clearGeneralError: () => setErrors((current) => ({ ...current, general: undefined, requestId: undefined })),
   };
 };

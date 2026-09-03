@@ -12,8 +12,8 @@ export interface HeaderBrandProps {
 export const HeaderBrand: React.FC<HeaderBrandProps> = ({
   logo,
   brandName = "سامانه مدیریت دینووا (Dynova)",
-  badgeLabel = "EPIC-01: Mock Auth",
-  subtitle = "Sprint 1 • Access Management",
+  badgeLabel = "API Connected",
+  subtitle = "Sprint 1 • Secure Access",
   onClick,
 }) => {
   return (

@@ -1,4 +1,4 @@
-import type { AdminUser } from "@/types/auth";
+import type { AdminUser } from "@/entities/auth";
 
 export interface DashboardWidgetProps {
   onLogout?: () => void;
@@ -14,7 +14,6 @@ export interface DashboardHeaderProps {
 export interface DashboardStatsProps {
   user: AdminUser;
   rememberMe: boolean;
-  token: string;
 }
 
 export interface DashboardRoleMatrixProps {
@@ -23,6 +22,7 @@ export interface DashboardRoleMatrixProps {
 
 export interface DashboardSessionInspectorProps {
   user: AdminUser;
-  token: string;
   rememberMe: boolean;
+  accessTokenExpiresAt: string | null;
+  refreshTokenExpiresAt: string | null;
 }
