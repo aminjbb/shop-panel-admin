@@ -180,6 +180,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [clearSession]);
 
+  const updateAvatar = useCallback(
+    async (avatarUrl: string): Promise<void> => {
+      if (!recordRef.current) return;
+      const current = recordRef.current;
+      const updatedUser: AdminUser = {
+        ...current.session.user,
+        avatarUrl,
+      };
+      const nextSession: AuthSession = {
+        ...current.session,
+        user: updatedUser,
+      };
+      commitSession(nextSession, current.rememberMe);
+      try {
+        localStorage.setItem("dynova_mock_admin_user", JSON.stringify(updatedUser));
+      } catch {
+        // ignore
+      }
+    },
+    [commitSession],
+  );
+
   const value = useMemo<AuthContextType>(
     () => ({
       user: record?.session.user ?? null,
@@ -190,8 +212,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       refreshTokenExpiresAt: record?.session.refreshTokenExpiresAt ?? null,
       login,
       logout,
+      updateAvatar,
     }),
-    [isLoading, login, logout, record],
+    [isLoading, login, logout, record, updateAvatar],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

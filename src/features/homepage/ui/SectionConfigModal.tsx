@@ -13,6 +13,7 @@ import ProductPickerModal from "./ProductPickerModal";
 import BottomSheet from "@/shared-app/bottomSheet";
 import ETextField from "@/shared-app/designSystem/textField";
 import EButton from "@/shared-app/designSystem/button";
+import ImageUploader from "@/shared-app/designSystem/imageUploader";
 import { ESwitch } from "@/shared-app/designSystem/switch";
 import {
   Save,
@@ -400,27 +401,17 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
                       </button>
                     </div>
 
-                    {/* Image Preview & URL */}
-                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                      <img
-                        src={slide.imageUrl}
-                        alt={slide.title || "Hero Banner"}
-                        className="w-full sm:w-32 h-20 rounded-xl object-cover border border-slate-800 bg-slate-900 shrink-0"
-                        referrerPolicy="no-referrer"
-                      />
-                      <div className="flex-1 space-y-1">
-                        <label className="block text-[11px] text-slate-400">
-                          آدرس تصویر بنر (Image URL):
-                        </label>
-                        <ETextField
-                          value={slide.imageUrl}
-                          onChange={(e) =>
-                            handleUpdateBannerItem(idx, "imageUrl", e.target.value)
-                          }
-                          placeholder="https://..."
-                        />
-                      </div>
-                    </div>
+                    {/* Image Uploader */}
+                    <ImageUploader
+                      label="تصویر اسلاید بنر"
+                      value={slide.imageUrl}
+                      onChange={(val) =>
+                        handleUpdateBannerItem(idx, "imageUrl", val)
+                      }
+                      presets={SAMPLE_BANNER_PRESETS.map((p) => ({ label: p.name, url: p.url }))}
+                      variant="compact"
+                      helperText="آپلود فایل بنر از سیستم یا انتخاب از نمونه‌ها."
+                    />
 
                     {/* Title, Subtitle, CTA */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -506,26 +497,16 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
                     </span>
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                    <img
-                      src={banner.imageUrl}
-                      alt={banner.title || `Banner ${idx + 1}`}
-                      className="w-full sm:w-32 h-20 rounded-xl object-cover border border-slate-800 bg-slate-900 shrink-0"
-                      referrerPolicy="no-referrer"
-                    />
-                    <div className="flex-1 space-y-1">
-                      <label className="block text-[11px] text-slate-400">
-                        آدرس تصویر بنر:
-                      </label>
-                      <ETextField
-                        value={banner.imageUrl}
-                        onChange={(e) =>
-                          handleUpdateBannerItem(idx, "imageUrl", e.target.value)
-                        }
-                        placeholder="https://..."
-                      />
-                    </div>
-                  </div>
+                  <ImageUploader
+                    label="تصویر بنر تبلیغاتی"
+                    value={banner.imageUrl}
+                    onChange={(val) =>
+                      handleUpdateBannerItem(idx, "imageUrl", val)
+                    }
+                    presets={SAMPLE_BANNER_PRESETS.map((p) => ({ label: p.name, url: p.url }))}
+                    variant="compact"
+                    helperText="آپلود فایل بنر از سیستم یا انتخاب از نمونه‌ها."
+                  />
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <div>

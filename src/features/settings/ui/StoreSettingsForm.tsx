@@ -4,6 +4,7 @@ import { EButton } from "@/shared-app/designSystem/button";
 import { ETextField } from "@/shared-app/designSystem/textField";
 import { ESelect } from "@/shared-app/designSystem/select";
 import { ESwitch } from "@/shared-app/designSystem/switch";
+import ImageUploader from "@/shared-app/designSystem/imageUploader";
 import {
   Store,
   Receipt,
@@ -118,6 +119,16 @@ export const StoreSettingsForm: React.FC<StoreSettingsFormProps> = ({
             placeholder="support@dynova.store"
             leftIcon={<Mail className="w-4 h-4" />}
           />
+
+          <div className="sm:col-span-2">
+            <ImageUploader
+              label="لوگو و نشان تجاری فروشگاه"
+              value={formData.logoUrl || ""}
+              onChange={(val) => setFormData((p) => ({ ...p, logoUrl: val }))}
+              variant="compact"
+              helperText="آپلود نشان تجاری فروشگاه از کامپیوتر برای درج در هدر، فاکتور و فاوآیکون"
+            />
+          </div>
 
           <div className="sm:col-span-2">
             <ETextField

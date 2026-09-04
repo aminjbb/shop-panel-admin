@@ -5,6 +5,7 @@ import {
   calculateSeoScore,
 } from "../utils/seoUtils";
 import ETextField from "@/shared-app/designSystem/textField";
+import ImageUploader from "@/shared-app/designSystem/imageUploader";
 import { ESwitch } from "@/shared-app/designSystem/switch";
 import {
   Globe,
@@ -631,7 +632,7 @@ export const ProductSeoOptimizer: React.FC<ProductSeoOptimizerProps> = ({
               />
             </div>
 
-            {/* OpenGraph Image URL */}
+            {/* OpenGraph Image URL / Uploader */}
             <div className="space-y-1.5">
               <div className="flex items-center justify-between">
                 <label className="text-xs font-medium text-slate-300">
@@ -653,29 +654,17 @@ export const ProductSeoOptimizer: React.FC<ProductSeoOptimizerProps> = ({
                 )}
               </div>
 
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
-                {(seo.ogImage || productImage) && (
-                  <img
-                    src={seo.ogImage || productImage}
-                    alt="OpenGraph"
-                    className="w-16 h-12 rounded-xl object-cover border border-slate-800 bg-slate-900 shrink-0"
-                    referrerPolicy="no-referrer"
-                  />
-                )}
-                <div className="flex-1">
-                  <ETextField
-                    value={seo.ogImage || ""}
-                    onChange={(e) =>
-                      onChange({
-                        ...seo,
-                        ogImage: e.target.value,
-                      })
-                    }
-                    placeholder="https://..."
-                    leftIcon={<ImageIcon className="w-4 h-4 text-slate-500" />}
-                  />
-                </div>
-              </div>
+              <ImageUploader
+                value={seo.ogImage || ""}
+                onChange={(val) =>
+                  onChange({
+                    ...seo,
+                    ogImage: val,
+                  })
+                }
+                variant="compact"
+                helperText="تصویر ۱۲۰۰×۶۳۰ برای نمایش بهینه در اشتراک‌گذاری تلگرام، واتساپ و لینکدین"
+              />
             </div>
 
             {/* NoIndex Toggle */}

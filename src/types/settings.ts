@@ -62,4 +62,5 @@ export interface CreateStaffPayload {
   phone?: string;
   role: AdminRole;
   status: AdminStaffStatus;
+  avatarUrl?: string;
 }

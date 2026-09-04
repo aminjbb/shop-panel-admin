@@ -10,6 +10,7 @@ import ETextField from "@/shared-app/designSystem/textField";
 import ESelect from "@/shared-app/designSystem/select";
 import { ESwitch } from "@/shared-app/designSystem/switch";
 import EButton from "@/shared-app/designSystem/button";
+import ImageUploader from "@/shared-app/designSystem/imageUploader";
 import { CATEGORY_ICON_OPTIONS, renderCategoryIcon } from "./CategoryIconHelper";
 import { mockCategoryService } from "../api/mockCategoryService";
 import {
@@ -433,31 +434,15 @@ export const CategoryFormModal: React.FC<CategoryFormModalProps> = ({
             </div>
           </div>
 
-          {/* Thumbnail Selector */}
-          <div>
-            <ETextField
-              label="آدرس تصویر بنر / تامبنیل (URL)"
-              value={thumbnail}
-              onValueChange={(val) => setThumbnail(val)}
-              placeholder="https://..."
-              dir="ltr"
-            />
-
-            {/* Quick Presets */}
-            <div className="flex items-center gap-2 overflow-x-auto pt-2 pb-1">
-              <span className="text-xs text-slate-400 shrink-0">تصاویر پیشنهادی:</span>
-              {PRESET_THUMBNAILS.slice(0, 5).map((preset, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setThumbnail(preset.url)}
-                  className="px-2 py-1 rounded-lg bg-slate-900 hover:bg-slate-800 text-[11px] text-indigo-300 border border-slate-800 shrink-0 cursor-pointer"
-                >
-                  {preset.label}
-                </button>
-              ))}
-            </div>
-          </div>
+          {/* Thumbnail Uploader */}
+          <ImageUploader
+            label="تصویر بنر و تامبنیل دسته‌بندی"
+            value={thumbnail}
+            onChange={(val) => setThumbnail(val)}
+            presets={PRESET_THUMBNAILS}
+            variant="compact"
+            helperText="آپلود تصویر اختصاصی از کامپیوتر یا انتخاب سریع از نمونه‌های آماده."
+          />
         </div>
 
         {/* Section 3: Dynamic Attribute Builder (PBI-7.3 Requirement) */}

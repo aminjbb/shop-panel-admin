@@ -279,7 +279,7 @@ export const mockSettingsService = {
     const newStaff: AdminStaff = {
       ...payload,
       id: `staff-${Date.now()}`,
-      avatarUrl: `https://images.unsplash.com/photo-${1534528741775 + allStaff.length}?w=150&auto=format&fit=crop&q=80`,
+      avatarUrl: payload.avatarUrl || `https://images.unsplash.com/photo-${1534528741775 + allStaff.length}?w=150&auto=format&fit=crop&q=80`,
       lastLogin: "هنوز وارد نشده",
       createdAt: new Intl.DateTimeFormat("fa-IR").format(new Date()),
     };

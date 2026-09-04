@@ -5,6 +5,7 @@ import { EButton } from "@/shared-app/designSystem/button";
 import { ETextField } from "@/shared-app/designSystem/textField";
 import { ESelect } from "@/shared-app/designSystem/select";
 import { ESwitch } from "@/shared-app/designSystem/switch";
+import ImageUploader from "@/shared-app/designSystem/imageUploader";
 import { UserPlus, Shield, ShieldCheck, Headphones, Mail, User, Phone } from "lucide-react";
 
 export interface StaffModalProps {
@@ -23,6 +24,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
   const [role, setRole] = useState<AdminRole>("support_agent");
   const [isActive, setIsActive] = useState(true);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -31,6 +33,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
     setFullName("");
     setEmail("");
     setPhone("");
+    setAvatarUrl("");
     setRole("support_agent");
     setIsActive(true);
     setErrors({});
@@ -56,6 +59,7 @@ export const StaffModal: React.FC<StaffModalProps> = ({
       fullName: fullName.trim(),
       email: email.trim().toLowerCase(),
       phone: phone.trim() || undefined,
+      avatarUrl: avatarUrl.trim() || undefined,
       role,
       status: isActive ? "active" : "inactive",
     };
@@ -84,6 +88,17 @@ export const StaffModal: React.FC<StaffModalProps> = ({
       size="md"
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-4 sm:p-5">
+        {/* Avatar Uploader */}
+        <div className="flex flex-col items-center justify-center p-3 rounded-xl bg-slate-900/60 border border-slate-800">
+          <ImageUploader
+            label="تصویر پرسنلی / آواتار"
+            value={avatarUrl}
+            onChange={(val) => setAvatarUrl(val)}
+            variant="avatar"
+            helperText="تصویر پروفایل کاربر در پنل ادمین"
+          />
+        </div>
+
         {/* Full Name */}
         <div className="flex flex-col gap-1.5">
           <label className="text-xs font-semibold text-slate-300">

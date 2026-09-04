@@ -13,6 +13,7 @@ import BottomSheet from "@/shared-app/bottomSheet";
 import ETextField from "@/shared-app/designSystem/textField";
 import ESelect from "@/shared-app/designSystem/select";
 import EButton from "@/shared-app/designSystem/button";
+import ImageUploader from "@/shared-app/designSystem/imageUploader";
 import ProductVariantManager from "./ProductVariantManager";
 import ProductSeoOptimizer from "./ProductSeoOptimizer";
 import { generateDefaultSeo, slugify, calculateSeoScore } from "../utils/seoUtils";
@@ -394,61 +395,18 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
             </div>
 
             {/* Section 2: Image & Description */}
-            <div className="space-y-3 pt-2 border-t border-slate-800">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
-                {/* Image Preview & URL */}
-                <div className="sm:col-span-2 space-y-2">
-                  <ETextField
-                    label="آدرس اینترنتی تصویر محصول (Image URL)"
-                    required
-                    placeholder="https://..."
-                    value={formData.image}
-                    onValueChange={(val) =>
-                      setFormData((p) => ({ ...p, image: val }))
-                    }
-                    error={Boolean(errors.image)}
-                    helperText={errors.image}
-                    leftIcon={<ImageIcon className="w-4 h-4" />}
-                  />
-
-                  {/* Quick Image Presets */}
-                  <div className="flex items-center gap-1.5 flex-wrap">
-                    <span className="text-[11px] text-slate-400 flex items-center gap-1">
-                      <Sparkles className="w-3 h-3 text-indigo-400" />
-                      <span>انتخاب تصاویر آماده:</span>
-                    </span>
-                    {DEFAULT_IMAGE_OPTIONS.map((opt) => (
-                      <button
-                        key={opt.label}
-                        type="button"
-                        onClick={() => setFormData((p) => ({ ...p, image: opt.url }))}
-                        className="text-[10px] px-2 py-0.5 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 transition-colors cursor-pointer border border-slate-700"
-                      >
-                        {opt.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Live Thumbnail */}
-                <div className="sm:col-span-1 flex flex-col items-center">
-                  <span className="text-xs text-slate-400 mb-1.5 self-start">
-                    پیش‌نمایش تصویر:
-                  </span>
-                  <div className="w-24 h-24 rounded-2xl overflow-hidden bg-slate-800 border border-slate-700">
-                    <img
-                      src={formData.image}
-                      alt="پیش‌نمایش"
-                      className="w-full h-full object-cover"
-                      referrerPolicy="no-referrer"
-                      onError={(e) => {
-                        (e.target as HTMLImageElement).src =
-                          "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&auto=format&fit=crop&q=80";
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
+            <div className="space-y-4 pt-2 border-t border-slate-800">
+              {/* Image Uploader */}
+              <ImageUploader
+                label="تصویر اصلی و شاخص محصول"
+                required
+                value={formData.image}
+                onChange={(val) => setFormData((p) => ({ ...p, image: val }))}
+                error={errors.image}
+                presets={DEFAULT_IMAGE_OPTIONS}
+                variant="default"
+                helperText="امکان انتخاب و آپلود فایل از کامپیوتر یا انتخاب از میان تصاویر نمونه."
+              />
 
               {/* Description */}
               <ETextField
