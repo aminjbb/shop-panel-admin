@@ -1,4 +1,4 @@
-# Sprint 02 - Catalog & Inventory
+﻿# Sprint 02 - Catalog & Inventory
 
 هدف: جایگزینی mockهای محصول و دسته‌بندی با API واقعی و مدل دیتابیس پایدار.
 
@@ -101,3 +101,4 @@
 - تغییر ترتیب atomic باشد.
 
 اولویت: Should
+

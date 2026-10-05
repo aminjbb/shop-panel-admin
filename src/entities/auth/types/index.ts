@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 export type AdminRole =
   | "super_admin"
   | "inventory_manager"
@@ -43,3 +45,20 @@ export interface AdminAvatarProps {
   className?: string;
   iconClassName?: string;
 }
+
+export interface AuthContextType {
+  user: AdminUser | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  rememberMe: boolean;
+  accessTokenExpiresAt: string | null;
+  refreshTokenExpiresAt: string | null;
+  login: (credentials: LoginRequest) => Promise<AdminUser>;
+  logout: () => Promise<void>;
+  updateAvatar: (file: File) => Promise<void>;
+}
+
+export interface AuthProviderProps {
+  children: ReactNode;
+}
+

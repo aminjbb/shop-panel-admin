@@ -13,11 +13,11 @@ import {
   setUnauthorizedHandler,
 } from "@/config/api";
 import {
-  authApi,
   type AdminUser,
   type AuthSession,
   type LoginRequest,
-} from "@/entities/auth";
+} from "../types";
+import { authApi } from "../api/authApi";
 import type { AuthContextType, AuthProviderProps } from "../types";
 import { refreshSessionSingleFlight } from "../models/refreshCoordinator";
 import {

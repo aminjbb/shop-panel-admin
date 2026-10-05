@@ -1,6 +1,6 @@
 import React from "react";
 import { useOrders } from "../hooks/useOrders";
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 import OrderStatCards from "./OrderStatCards";
 import OrderFilterBar from "./OrderFilterBar";
 import OrderTable from "./OrderTable";

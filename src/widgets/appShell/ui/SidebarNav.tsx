@@ -1,5 +1,5 @@
 import React from "react";
-import type { SidebarNavProps, NavItemConfig, AppRoute } from "./types";
+import type { SidebarNavProps, NavItemConfig, AppRoute } from "../types";
 import {
   TrendingUp,
   Users,

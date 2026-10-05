@@ -7,7 +7,11 @@
     "dev": "vite --host 0.0.0.0 --port 3000",
     "build": "tsc && vite build",
     "lint": "tsc --noEmit",
-    "preview": "vite preview --port 3000"
+    "preview": "vite preview --port 3000",
+    "graphify": "node .codex/scripts/graphify.mjs build",
+    "graphify:check": "node .codex/scripts/graphify.mjs check",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
@@ -19,17 +23,24 @@
     "lucide-react": "^1.16.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-is": "^19.0.0",
     "recharts": "^3.10.1",
     "tailwind-merge": "^3.0.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.0.0",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^26.1.0",
     "tailwindcss": "^4.0.0",
     "typescript": "^5.7.2",
-    "vite": "^6.0.0"
+    "vite": "^6.0.0",
+    "vitest": "^4.1.11"
   }
 }

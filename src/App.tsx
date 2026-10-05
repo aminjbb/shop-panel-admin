@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { AuthProvider, useAuth } from "@/features/auth/context/AuthContext";
+import { AuthProvider, useAuth } from "@/entities/auth";
 import LoginPage from "@/pages/LoginPage";
 import DashboardPage from "@/pages/DashboardPage";
 import ProductsPage from "@/pages/ProductsPage";
@@ -10,10 +10,10 @@ import SettingsPage from "@/pages/SettingsPage";
 import FeedbackPage from "@/pages/FeedbackPage";
 import CategoriesPage from "@/pages/CategoriesPage";
 import HomepageBuilderPage from "@/pages/HomepageBuilderPage";
-import AppHeader from "@/shared-app/appHeader";
-import AppSidebar from "@/shared-app/appSidebar";
+import { AppHeader } from "@/widgets/appShell";
+import { AppSidebar } from "@/widgets/appShell";
 import ToastContainer from "@/shared-app/designSystem/toast/ToastContainer";
-import type { AppRoute } from "@/shared-app/appSidebar/types";
+import type { AppRoute } from "@/widgets/appShell";
 import { canAccessAdminRoute } from "@/entities/auth";
 
 const AppRoutes: React.FC = () => {

@@ -1,5 +1,5 @@
 import React from "react";
-import type { HeaderNavProps } from "./types";
+import type { HeaderNavProps } from "../types";
 import { TrendingUp, Users, Tag, Package, Truck } from "lucide-react";
 
 export const HeaderNav: React.FC<HeaderNavProps> = ({

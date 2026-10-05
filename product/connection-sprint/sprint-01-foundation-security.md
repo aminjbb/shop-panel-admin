@@ -1,4 +1,4 @@
-# Sprint 01 — اتصال Foundation و Security
+﻿# Sprint 01 — اتصال Foundation و Security
 
 ## هدف
 
@@ -114,3 +114,4 @@ Avatar در Sprint 06 متصل می‌شود.
 - [x] محدودسازی shell و routeها بر اساس `AdminRole` اعمال شد.
 - [x] TypeScript check و production build با موفقیت اجرا شد.
 - [ ] سناریوهای end-to-end این سند باید پس از در دسترس بودن backend اجرا شوند.
+

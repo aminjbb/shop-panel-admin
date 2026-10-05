@@ -1,4 +1,4 @@
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 
 export const useLoginWidgetModel = (onLoginSuccess?: () => void) => {
   const { isAuthenticated, user } = useAuth();

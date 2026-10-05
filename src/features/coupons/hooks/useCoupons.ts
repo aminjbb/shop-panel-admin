@@ -11,7 +11,7 @@ import type {
   UpdateCouponPayload,
 } from "@/types/crm";
 import useToastStore from "@/shared-app/designSystem/toast/store";
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 import {
   toCouponListParams,
   toCouponViewModel,

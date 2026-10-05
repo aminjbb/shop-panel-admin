@@ -1,9 +1,9 @@
-# Sprint 01 Foundation and Security Frontend API Handoff
+﻿# Sprint 01 Foundation and Security Frontend API Handoff
 
 This is the consumer contract for the endpoints implemented in Sprint 01. It
-is derived from the final FastAPI routes, Pydantic schemas, exception handlers,
+is derived from the final Node.js/TypeScript routes, Zod schemas, exception handlers,
 application use cases, contract tests, and generated OpenAPI. Paths listed in
-`product/backend-fastapi-api-map.md` outside health and authentication are
+`product/backend-node-api-map.md` outside health and authentication are
 future backlog items and are not implemented by this sprint.
 
 ## Document control
@@ -14,7 +14,7 @@ future backlog items and are not implemented by this sprint.
 | API version | `v1`; default versioned prefix `/api/v1` |
 | Document version/date | 1.0 / 2026-08-28 |
 | Backend revision | Current workspace snapshot; this directory is not a Git repository, so no commit SHA is available |
-| OpenAPI source | Runtime-generated `FastAPI.openapi()` schema on 2026-08-28 |
+| OpenAPI source | Runtime-generated OpenAPI schema from the Node.js service on 2026-08-28 |
 | Owner | Backend team |
 
 ## Environment and common protocol
@@ -23,7 +23,7 @@ future backlog items and are not implemented by this sprint.
 
 | Environment | Base URL | Notes |
 |---|---|---|
-| Local development | `http://localhost:8000` | Default Uvicorn address in repository setup |
+| Local development | `http://localhost:4000` | Default Node.js server address in repository setup |
 | Staging | Environment-owned; not declared in this repository | Append the configured API prefix, default `/api/v1` |
 | Production | Environment-owned; not declared in this repository | Append the configured API prefix, default `/api/v1` |
 
@@ -107,7 +107,7 @@ All errors use this exact top-level shape:
 | `error.code` | string | No | Stable lower-snake-case frontend branching key |
 | `error.message` | string | No | Safe English message; do not use it as the branching key |
 | `error.details` | JSON object | No | Empty object or the exact contextual fields documented below |
-| `error.details.fields` | array of `{field: string, reason: string}` | No when code is `validation_error` | Pydantic location joined with dots and stable validation reason |
+| `error.details.fields` | array of `{field: string, reason: string}` | No when code is `validation_error` | Zod location joined with dots and stable validation reason |
 | `error.requestId` | string | No | Same value as response `X-Request-ID`; include in support reports |
 
 The exact shared error variants used by endpoints in this document are:
@@ -745,3 +745,5 @@ production requires shared gateway/edge enforcement. The application keys its
 IP limits from `request.client.host`; deployments behind a proxy may treat that
 value as caller identity only when trusted-proxy forwarding is explicitly and
 safely configured. Otherwise it represents the proxy rather than the browser.
+
+

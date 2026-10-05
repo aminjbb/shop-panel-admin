@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import useNotifications from "@/features/feedback/hooks/useNotifications";
 import type { AdminNotification, NotificationType } from "@/features/feedback/types";
-import type { AppRoute } from "@/shared-app/appSidebar/types";
+import type { AppRoute } from "../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import EButton from "@/shared-app/designSystem/button";
 import AllertMassage from "@/shared-app/allertMassage";

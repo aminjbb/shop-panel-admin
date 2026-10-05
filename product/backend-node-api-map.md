@@ -1,6 +1,6 @@
-# نقشه API مورد نیاز برای اتصال پنل به FastAPI
+﻿# نقشه API مورد نیاز برای اتصال پنل به backend Node.js/TypeScript
 
-این سند endpointهای پیشنهادی را بر اساس typeها، hookها و mock serviceهای فعلی frontend فهرست می‌کند. هدف این است که frontend با کمترین تغییر از `localStorage` و mock service به backend واقعی وصل شود.
+این سند endpointهای پیشنهادی را بر اساس typeها، hookها و mock serviceهای فعلی frontend فهرست می‌کند. هدف این است که frontend با کمترین تغییر از `localStorage` و mock service به backend واقعی Node.js وصل شود.
 
 ## قراردادهای مشترک
 
@@ -229,6 +229,8 @@ response باید با `DashboardMetrics` سازگار باشد.
 
 - برای کاهش تغییرات frontend، response names فعلی مانند `totalCount` در products و `total` در سایر لیست‌ها حفظ شود یا mapper مشترک در client اضافه شود.
 - `pageSize` در محصول و `limit` در سفارش/CRM/کوپن/بازخورد متفاوت است. بهتر است backend هر دو را بپذیرد ولی response هر endpoint با contract فعلی همان ماژول سازگار بماند.
-- enumهای TypeScript فعلی باید عینا در Pydantic schemaها mirror شوند.
+- enumهای TypeScript فعلی باید عینا در Zod schemaها mirror شوند.
 - تاریخ‌ها در API همگی ISO 8601 باشند و تبدیل شمسی در frontend انجام شود.
 - reset داده mock فقط برای development نگه داشته شود و پشت feature flag قرار گیرد.
+
+

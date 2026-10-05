@@ -1,4 +1,4 @@
-# Sprint 06 - Media & Operations
+﻿# Sprint 06 - Media & Operations
 
 هدف: تکمیل رسانه، hardening امنیتی و ابزارهای عملیاتی توسعه.
 
@@ -42,3 +42,4 @@
 - داده seed با موجودیت‌های frontend فعلی سازگار باشد.
 
 اولویت: Could
+

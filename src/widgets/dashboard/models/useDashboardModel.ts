@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 
 export const useDashboardModel = (onLogoutCallback?: () => void) => {
   const {

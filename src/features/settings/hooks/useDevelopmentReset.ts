@@ -2,7 +2,7 @@ import { useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { API_BASE_URL } from "@/config/api";
 import { settingsApi } from "@/entities/settings";
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 import useToastStore from "@/shared-app/designSystem/toast/store";
 
 const host = new URL(API_BASE_URL).hostname;

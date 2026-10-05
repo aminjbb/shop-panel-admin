@@ -1,16 +1,16 @@
-# Sprint 01 - Foundation & Security
+﻿# Sprint 01 - Foundation & Security
 
-هدف: آماده‌سازی پایه FastAPI، دیتابیس، قرارداد response و امنیت دسترسی.
+هدف: آماده‌سازی پایه Node.js/TypeScript، دیتابیس، قرارداد response و امنیت دسترسی.
 
 ## Epic 01 - زیرساخت بک‌اند
 
-### PBI-01-01 - راه‌اندازی اسکلت پروژه FastAPI
+### PBI-01-01 - راه‌اندازی اسکلت پروژه Node.js/TypeScript
 
-به عنوان توسعه‌دهنده، می‌خواهم ساختار استاندارد پروژه FastAPI داشته باشم تا توسعه ماژول‌ها منسجم و قابل نگهداری باشد.
+به عنوان توسعه‌دهنده، می‌خواهم ساختار استاندارد پروژه Node.js/TypeScript داشته باشم تا توسعه ماژول‌ها منسجم و قابل نگهداری باشد.
 
 معیار پذیرش:
 
-- پروژه شامل `app/main.py`، تنظیمات، router root و health check باشد.
+- پروژه شامل `src/server.ts`، تنظیمات، router root و health check باشد.
 - `GET /health` و `GET /api/v1/health` سالم بودن سرویس را برگردانند.
 - CORS برای آدرس dev frontend قابل تنظیم باشد.
 - `.env.example` شامل تنظیمات پایه باشد.
@@ -19,11 +19,11 @@
 
 ### PBI-01-02 - اتصال دیتابیس و migration
 
-به عنوان توسعه‌دهنده، می‌خواهم اتصال PostgreSQL و Alembic آماده باشد تا مدل‌ها نسخه‌بندی شوند.
+به عنوان توسعه‌دهنده، می‌خواهم اتصال PostgreSQL و ORM migration tooling آماده باشد تا مدل‌ها نسخه‌بندی شوند.
 
 معیار پذیرش:
 
-- اتصال async SQLAlchemy از env config خوانده شود.
+- اتصال async Prisma/Drizzle ORM از env config خوانده شود.
 - migration اولیه قابل اجرا و rollback باشد.
 - health check بتواند وضعیت دیتابیس را گزارش کند.
 
@@ -94,3 +94,4 @@
 - داده حساس مثل password و token در log ذخیره نشود.
 
 اولویت: Must
+

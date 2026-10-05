@@ -1,4 +1,4 @@
-# Sprint 04 — Support & CRM Frontend API Handoff
+﻿# Sprint 04 — Support & CRM Frontend API Handoff
 
 ## Document control
 
@@ -13,7 +13,7 @@
 
 ## Environment and common protocol
 
-Use `http://localhost:8000/api/v1` locally. Staging and production hostnames are deployment configuration; append the configured API prefix (default `/api/v1`). All endpoints in this document are **back-office admin endpoints**. There is deliberately no public endpoint in Sprint 04 for creating a review or ticket.
+Use `http://localhost:4000/api/v1` locally. Staging and production hostnames are deployment configuration; append the configured API prefix (default `/api/v1`). All endpoints in this document are **back-office admin endpoints**. There is deliberately no public endpoint in Sprint 04 for creating a review or ticket.
 
 Send `Authorization: Bearer <access-token>` and `Content-Type: application/json` for requests with a body. Access tokens are issued by Sprint 01 login, normally expire after 15 minutes (runtime configurable 1–60 minutes), and are refreshed by `POST /auth/refresh`. `X-Request-ID` is optional: use 1–128 ASCII characters matching `[A-Za-z0-9._:-]`; the server echoes a valid value or generates one on every response. Do not send `Idempotency-Key`: these endpoints do not implement idempotency or optimistic concurrency.
 
@@ -242,3 +242,4 @@ Permission `customer.read`; `id` UUID; no body. Returns `204 No Content` and sof
 - Serialization, filtering, ordering and include limits: `src/shop_backend/infrastructure/database/repositories/crm.py`.
 - Error envelope: `src/shop_backend/presentation/http/errors.py` and `schemas/errors.py`.
 - Regression evidence: `tests/application/test_crm_service.py` (including rejected-review reply preservation and atomic ticket message write).
+

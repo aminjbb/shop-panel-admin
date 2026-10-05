@@ -1,4 +1,4 @@
-# Sprint 06 — Media & Operations Frontend API Handoff
+﻿# Sprint 06 — Media & Operations Frontend API Handoff
 
 ## Document control
 
@@ -9,11 +9,11 @@
 | Document version/date | 1.0 / 2026-08-31 |
 | OpenAPI source | Running application: `/openapi.json` |
 | Migrations | `0010_media_assets_and_catalog_media`, `0011_development_reset_operations` |
-| Verification | `339 passed`; coverage `90.28%`; Ruff, mypy and offline Alembic SQL passed |
+| Verification | `339 passed`; coverage `90.28%`; Ruff, mypy and offline ORM migration tooling SQL passed |
 
 ## Environment and common protocol
 
-Development normally uses `http://localhost:8000/api/v1`. Configure staging and production hostnames outside the client and append `/api/v1`.
+Development normally uses `http://localhost:4000/api/v1`. Configure staging and production hostnames outside the client and append `/api/v1`.
 
 Protected endpoints use `Authorization: Bearer <access-token>`. Access tokens expire according to `SHOP_ACCESS_TOKEN_TTL_MINUTES` (default 15 minutes); refresh tokens are rotated by `POST /auth/refresh`. `super_admin` and `inventory_manager` may use generic media upload. Any authenticated administrator may change only their own avatar. Development reset requires `super_admin`. Missing credentials return `401 authentication_required`; invalid or expired access tokens return `401 invalid_access_token`; both include `WWW-Authenticate: Bearer`.
 
@@ -268,3 +268,4 @@ Run `shop-backend seed-dev-data` only with `SHOP_ENVIRONMENT=local` or `test`. I
 - Error/auth/security middleware: `presentation/http/errors.py`, `dependencies.py`, `middleware/request_id.py`, `middleware/security_headers.py`.
 - Contract tests: `tests/contract/test_media_api.py`, `test_development_api.py`, `test_cors.py`, `test_catalog_api.py`.
 - Application/unit tests: `tests/application/test_media.py`, `tests/unit/test_development.py`, `test_storage.py`, `test_settings.py`, `test_cli.py`.
+

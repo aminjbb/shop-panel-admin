@@ -1,5 +1,5 @@
 import React from "react";
-import type { SidebarUserProfileProps } from "./types";
+import type { SidebarUserProfileProps } from "../types";
 import { LogOut, HardDrive, Shield } from "lucide-react";
 import ActivationBage from "@/shared-app/activationbage";
 import { AdminAvatar } from "@/entities/auth";

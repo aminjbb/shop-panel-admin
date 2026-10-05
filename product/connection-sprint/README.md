@@ -1,4 +1,4 @@
-# برنامه اتصال APIهای پنل به صفحات
+﻿# برنامه اتصال APIهای پنل به صفحات
 
 این پوشه برنامه اجرایی جایگزینی mock serviceهای رابط کاربری با APIهای واقعی
 `src/entities` را مشخص می‌کند. مبنا، قراردادهای `product/api` و وضعیت فعلی صفحات
@@ -105,3 +105,4 @@ rollback موقت است و نباید mapper یا type مشترک با entity �
 
 قرارداد order، store settings، shipping methods و staff از OpenAPI زنده بک‌اند استخراج و در
 `product/api/sprint-03-orders-settings-frontend-handoff.md` ثبت شده است.
+

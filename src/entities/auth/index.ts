@@ -11,3 +11,6 @@ export type {
   LogoutRequest,
   RefreshSessionRequest,
 } from "./types";
+
+export { AuthProvider, useAuth } from "./models/AuthContext";
+export type { AuthContextType, AuthProviderProps } from "./types";

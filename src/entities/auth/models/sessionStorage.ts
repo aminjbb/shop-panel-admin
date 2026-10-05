@@ -1,4 +1,4 @@
-import type { AdminUser, AuthSession } from "@/entities/auth";
+import type { AdminUser, AuthSession } from "../types";
 
 const SESSION_KEY = "dynova_admin_auth_session_v1";
 const LEGACY_SESSION_KEYS = [

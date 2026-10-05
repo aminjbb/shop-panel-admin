@@ -1,4 +1,4 @@
-# Sprint 05 - Commerce, Content & Analytics
+﻿# Sprint 05 - Commerce, Content & Analytics
 
 هدف: تکمیل قابلیت‌های فروش، صفحه اصلی و داشبورد تحلیلی.
 
@@ -110,3 +110,4 @@
 - trendها بر اساس timezone تنظیم‌شده فروشگاه bucket شوند.
 
 اولویت: Could
+

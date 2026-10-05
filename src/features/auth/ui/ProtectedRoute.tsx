@@ -1,5 +1,5 @@
 import React, { useEffect, type ReactNode } from "react";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "@/entities/auth";
 import { ShieldCheck, Loader2 } from "lucide-react";
 
 export interface ProtectedRouteProps {

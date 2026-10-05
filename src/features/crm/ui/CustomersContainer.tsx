@@ -1,6 +1,6 @@
 import React from "react";
 import { useCustomers } from "../hooks/useCustomers";
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 import AllertMassage from "@/shared-app/allertMassage";
 import CustomerFilterBar from "./CustomerFilterBar";
 import CustomerTable from "./CustomerTable";

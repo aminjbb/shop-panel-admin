@@ -3,7 +3,7 @@ import AnalyticsContainer from "@/features/analytics/ui/AnalyticsContainer";
 import DashboardWidget from "@/widgets/dashboard/ui/DashboardWidget";
 import ProtectedRoute from "@/features/auth/ui/ProtectedRoute";
 import { TrendingUp, ShieldCheck } from "lucide-react";
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 
 export interface DashboardPageProps {
   onLogout?: () => void;

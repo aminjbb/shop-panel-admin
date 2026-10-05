@@ -5,7 +5,7 @@ import { homepageApi } from "@/entities/homepage";
 import { productApi, type Product } from "@/entities/product";
 import type { HomepageSection, ProductGridSection, SectionType } from "@/types/homepage";
 import { useToastStore } from "@/shared-app/designSystem/toast/store";
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 import { createHomepageSectionInput, toHomepageSectionInput, toHomepageSectionViewModel } from "../models/homepageMapper";
 
 const homepageKeys = { all: ["homepage"] as const, sections: ["homepage", "sections"] as const, stats: ["homepage", "stats"] as const };

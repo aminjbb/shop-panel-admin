@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState, type FormEvent } from "react";
 import { ApiError } from "@/config/api";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "@/entities/auth";
 import type { FormErrors } from "../types";
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

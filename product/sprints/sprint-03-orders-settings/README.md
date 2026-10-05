@@ -1,4 +1,4 @@
-# Sprint 03 - Orders & Settings
+﻿# Sprint 03 - Orders & Settings
 
 هدف: عملیاتی کردن سفارش‌ها، ارسال، فاکتور و تنظیمات حیاتی پنل.
 
@@ -89,3 +89,4 @@
 - `DELETE /api/v1/admin-staff/{id}` حذف soft انجام دهد.
 
 اولویت: Must
+

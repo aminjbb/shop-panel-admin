@@ -1,5 +1,5 @@
 import React from "react";
-import type { AppHeaderProps } from "./types";
+import type { AppHeaderProps } from "../types";
 import HeaderUserMenu from "./HeaderUserMenu";
 import NotificationCenter from "./NotificationCenter";
 import {

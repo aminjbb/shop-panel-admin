@@ -1,4 +1,4 @@
-# بک‌لاگ توسعه بک‌اند FastAPI
+﻿# بک‌لاگ توسعه بک‌اند Node.js/TypeScript
 
 تاریخ تهیه: 2026-08-28
 
@@ -6,7 +6,7 @@
 
 ## خلاصه پروژه
 
-پنل فعلی یک اپلیکیشن React/Vite برای مدیریت فروشگاه است که داده‌ها را از mock service و `localStorage` می‌خواند. بک‌اند FastAPI باید این دامنه‌ها را پوشش دهد:
+پنل فعلی یک اپلیکیشن React/Vite برای مدیریت فروشگاه است که داده‌ها را از mock service و `localStorage` می‌خواند. بک‌اند Node.js/TypeScript باید این دامنه‌ها را پوشش دهد:
 
 - احراز هویت، نشست و RBAC
 - داشبورد تحلیلی
@@ -30,7 +30,7 @@
 
 ## اسناد مکمل
 
-- [API Map](./backend-fastapi-api-map.md): نقشه endpointهای لازم برای اتصال frontend به FastAPI.
+- [API Map](./backend-node-api-map.md): نقشه endpointهای لازم برای اتصال frontend به Node.js/TypeScript.
 
 ## Definition of Done عمومی
 
@@ -40,3 +40,5 @@
 - pagination، filter و sort مطابق نیاز frontend کار کند.
 - تست واحد service و تست integration برای endpointهای اصلی وجود داشته باشد.
 - OpenAPI بدون خطا تولید شود.
+
+

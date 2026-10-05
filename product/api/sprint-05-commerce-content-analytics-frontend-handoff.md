@@ -1,4 +1,4 @@
-# Sprint 05 — Commerce, Content & Analytics Frontend API Handoff
+﻿# Sprint 05 — Commerce, Content & Analytics Frontend API Handoff
 
 ## Document control
 
@@ -8,12 +8,12 @@
 | API version | `/api/v1` |
 | Document version/date | 1.0 / 2026-08-30 |
 | Migration | `0009_commerce_content_analytics` |
-| Verification | `319 passed`, coverage `90.54%`; Ruff and mypy passed; offline Alembic upgrade/downgrade SQL passed |
+| Verification | `319 passed`, coverage `90.54%`; Ruff and mypy passed; offline ORM migration tooling upgrade/downgrade SQL passed |
 | OpenAPI operations | `list_coupons`, `get_coupon`, `create_coupon`, `update_coupon`, `toggle_coupon_status`, `archive_coupon`, `validate_coupon`, `list_homepage_sections`, `homepage_stats`, `create_homepage_section`, `reorder_homepage_sections`, `update_homepage_section`, `toggle_homepage_section`, `archive_homepage_section`, `publish_homepage`, `get_storefront_homepage`, `analytics_dashboard` |
 
 ## Environment and common protocol
 
-Local base URL is `http://localhost:8000/api/v1`; staging and production hosts are deployment configuration. IDs are UUID strings. Timestamps are ISO-8601 timestamps with an offset. `Decimal` values are JSON strings, for example `"12.00"`. Unknown JSON body fields are rejected. Responses echo a valid `X-Request-ID`, or generate one; callers may provide 1–128 characters matching `[A-Za-z0-9._:-]`.
+Local base URL is `http://localhost:4000/api/v1`; staging and production hosts are deployment configuration. IDs are UUID strings. Timestamps are ISO-8601 timestamps with an offset. `Decimal` values are JSON strings, for example `"12.00"`. Unknown JSON body fields are rejected. Responses echo a valid `X-Request-ID`, or generate one; callers may provide 1–128 characters matching `[A-Za-z0-9._:-]`.
 
 Private endpoints require `Authorization: Bearer <access-token>`. Access tokens come from Sprint 01 login and are normally short-lived; refresh through `POST /auth/refresh`. `super_admin` has all listed permissions. `inventory_manager` has `coupon.read`, `homepage.read`, and `analytics.read`, but no coupon/homepage writes. `support_agent` has none of the Sprint 05 private permissions. The coupon-preview and storefront endpoints are public.
 
@@ -211,3 +211,4 @@ Every KPI has decimal-or-integer `value`, string `formattedValue`, decimal `chan
 - Persistence/order/analytics calculations: `src/shop_backend/infrastructure/database/repositories/commerce.py`.
 - Error contract: `src/shop_backend/presentation/http/errors.py`, `src/shop_backend/presentation/http/schemas/errors.py`.
 - API regression coverage: `tests/contract/test_commerce_content_analytics_api.py`, `tests/application/test_commerce_service.py`, `tests/integration/test_commerce_crm_repositories.py`.
+

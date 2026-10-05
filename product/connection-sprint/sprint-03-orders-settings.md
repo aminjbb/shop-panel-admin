@@ -1,8 +1,8 @@
-# Sprint 03 — Orders & Settings
+﻿# Sprint 03 — Orders & Settings
 
 ## وضعیت: پیاده‌سازی‌شده
 
-قرارداد این Sprint از OpenAPI سرویس درحال اجرا (`http://localhost:8000/openapi.json`) و route/schemaهای بک‌اند در `C:\project\shop-back` استخراج شد؛ هیچ endpoint حدسی استفاده نشده است.
+قرارداد این Sprint از OpenAPI سرویس درحال اجرا (`http://localhost:4000/openapi.json`) و route/schemaهای بک‌اند در `C:\project\shop-back` استخراج شد؛ هیچ endpoint حدسی استفاده نشده است.
 
 ## خروجی
 
@@ -37,3 +37,4 @@
 
 - `npm.cmd run lint` — موفق (`tsc --noEmit`).
 - `npm.cmd run build` — موفق؛ Vite فقط هشدار CSS قدیمی `var(--color-...)` را گزارش کرد.
+

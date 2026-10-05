@@ -1,4 +1,4 @@
-# Sprint 03 — Orders & Settings Frontend API Handoff
+﻿# Sprint 03 — Orders & Settings Frontend API Handoff
 
 ## Document control
 
@@ -59,3 +59,4 @@ Input: `name`, decimal `price >= 0`, integer `estimatedDays 0..365`, nullable `c
 | DELETE | `/admin-staff/{id}` | — | `204` |
 
 Roleها: `super_admin | inventory_manager | support_agent`. رمز موقت ۱۲ تا ۱۲۸ کاراکتر است. DTO فقط `id,email,fullName,role,isActive,createdAt,lastLoginAt` دارد. Conflict reasonها: `invalid_temporary_password`, `email_taken`, `self_change_forbidden`, `last_super_admin`. mutationها فقط برای super-admin مجازند.
+

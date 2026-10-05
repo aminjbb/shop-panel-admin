@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import type { HeaderUserMenuProps } from "./types";
+import type { HeaderUserMenuProps } from "../types";
 import ActivationBage from "@/shared-app/activationbage";
 import EButton from "@/shared-app/designSystem/button";
 import BottomSheet from "@/shared-app/bottomSheet";
 import ImageUploader from "@/shared-app/designSystem/imageUploader";
 import { LogOut, Camera, Check } from "lucide-react";
 import { AdminAvatar } from "@/entities/auth";
-import { useAuth } from "@/features/auth/context/AuthContext";
+import { useAuth } from "@/entities/auth";
 
 export const HeaderUserMenu: React.FC<HeaderUserMenuProps> = ({
   user,

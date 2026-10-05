@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import type { AppSidebarProps } from "./types";
+import type { AppSidebarProps } from "../types";
 import SidebarNav from "./SidebarNav";
 import SidebarUserProfile from "./SidebarUserProfile";
 import {

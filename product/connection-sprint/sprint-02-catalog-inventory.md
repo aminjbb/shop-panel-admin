@@ -1,4 +1,4 @@
-# Sprint 02 — اتصال Catalog و Inventory
+﻿# Sprint 02 — اتصال Catalog و Inventory
 
 ## هدف
 
@@ -143,3 +143,4 @@ ProductsPage و CategoriesPage بدون mock کار کنند و تمام ۱۸ en
 
 > مبنای ورودی تصویر، قرارداد تجمیع‌شده فعلی پروژه است: override اسپرینت ۰۶
 > (`imageMediaId`) بر نمونه قدیمی‌تر `image` در handoff اولیه اسپرینت ۰۲ اولویت دارد.
+

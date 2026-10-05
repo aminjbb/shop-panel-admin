@@ -1,4 +1,4 @@
-# Sprint 05 — اتصال Commerce، Content و Analytics
+﻿# Sprint 05 — اتصال Commerce، Content و Analytics
 
 ## هدف
 
@@ -135,3 +135,4 @@
 
 CouponsPage، HomepageBuilderPage و analytics dashboard بدون mock کار کنند؛ هر ۱۷
 endpoint این sprint متصل و draft/published cache از هم مستقل باشند.
+

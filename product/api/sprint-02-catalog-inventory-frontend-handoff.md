@@ -1,4 +1,4 @@
-# Sprint 02 — Catalog & Inventory Frontend API Handoff
+﻿# Sprint 02 — Catalog & Inventory Frontend API Handoff
 
 ## Document control
 
@@ -12,7 +12,7 @@
 
 ## Common protocol
 
-Development base URL is `http://localhost:8000`; configure staging and production from the environment, then append `/api/v1`.
+Development base URL is `http://localhost:4000`; configure staging and production from the environment, then append `/api/v1`.
 
 Every endpoint here needs `Authorization: Bearer <access-token>`. `super_admin` and `inventory_manager` have all catalog permissions used here; `support_agent` receives `403 forbidden`. Missing credentials return `401 authentication_required`; an invalid or expired access token returns `401 invalid_access_token` (both include `WWW-Authenticate: Bearer`). Token login/refresh behavior is unchanged from the Sprint 01 handoff.
 
@@ -152,4 +152,5 @@ Permission: `category.read`. Query `slug` is required (1–160); `excludeId` is 
 
 ## Verification evidence and known limits
 
-The final route/schema/error contract is covered by `tests/contract/test_catalog_api.py`; application behaviors by `tests/application/test_catalog_application.py`; persistence and migration behavior by `tests/integration/test_catalog_repository.py` and `tests/integration/test_migrations.py`. Recorded verification: focused Sprint 02 tests 36 passed, base suite 199 passed, contract+integration 57 passed, Ruff format/check passed, and `mypy src` passed. `.venv\\Scripts\\python.exe -m pytest --cov=shop_backend --cov-report=term-missing` passed with 259 tests, 15 warnings, and 91.55% total coverage (minimum: 90%). Alembic 0004 offline upgrade/downgrade SQL passed; no live PostgreSQL migration run is recorded.
+The final route/schema/error contract is covered by `tests/contract/test_catalog_api.py`; application behaviors by `tests/application/test_catalog_application.py`; persistence and migration behavior by `tests/integration/test_catalog_repository.py` and `tests/integration/test_migrations.py`. Recorded verification: focused Sprint 02 tests 36 passed, base suite 199 passed, contract+integration 57 passed, Ruff format/check passed, and `mypy src` passed. `.venv\\Scripts\\python.exe -m pytest --cov=shop_backend --cov-report=term-missing` passed with 259 tests, 15 warnings, and 91.55% total coverage (minimum: 90%). ORM migration tooling 0004 offline upgrade/downgrade SQL passed; no live PostgreSQL migration run is recorded.
+

@@ -1,4 +1,4 @@
-# Sprint 06 — اتصال Media و Operations
+﻿# Sprint 06 — اتصال Media و Operations
 
 ## هدف
 
@@ -104,3 +104,4 @@ Rate limit روی login/refresh endpoint جدیدی نیست و در Sprint 01 �
 - هر سه endpoint عملیات/رسانه متصل باشند.
 - هیچ reset mock در runtime production باقی نماند.
 - فرم محصول مطابق قرارداد نهایی Sprint 06 فقط `imageMediaId` ارسال کند.
+

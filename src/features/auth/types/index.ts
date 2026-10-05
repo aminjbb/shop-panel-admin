@@ -1,22 +1,3 @@
-import type { ReactNode } from "react";
-import type { AdminUser, LoginRequest } from "@/entities/auth";
-
-export interface AuthContextType {
-  user: AdminUser | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  rememberMe: boolean;
-  accessTokenExpiresAt: string | null;
-  refreshTokenExpiresAt: string | null;
-  login: (credentials: LoginRequest) => Promise<AdminUser>;
-  logout: () => Promise<void>;
-  updateAvatar: (file: File) => Promise<void>;
-}
-
-export interface AuthProviderProps {
-  children: ReactNode;
-}
-
 export interface FormErrors {
   email?: string;
   password?: string;

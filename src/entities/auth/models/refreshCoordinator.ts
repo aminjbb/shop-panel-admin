@@ -1,4 +1,5 @@
-import { authApi, type AuthSession } from "@/entities/auth";
+import { authApi } from "../api/authApi";
+import type { AuthSession } from "../types";
 import {
   isRefreshExpired,
   loadStoredAuthSession,

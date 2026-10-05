@@ -1,5 +1,5 @@
 import React from "react";
-import type { MobileDrawerProps, AppRoute } from "./types";
+import type { MobileDrawerProps, AppRoute } from "../types";
 import {
   TrendingUp,
   Users,
