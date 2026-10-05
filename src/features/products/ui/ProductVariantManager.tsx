@@ -1,5 +1,5 @@
 import React from "react";
-import type { ProductVariant } from "@/types/product";
+import type { ProductVariant } from "../types";
 import ETextField from "@/shared-app/designSystem/textField";
 import EButton from "@/shared-app/designSystem/button";
 import { Plus, Trash2, Layers } from "lucide-react";

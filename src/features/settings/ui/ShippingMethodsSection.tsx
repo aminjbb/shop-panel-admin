@@ -45,25 +45,21 @@ export const ShippingMethodsSection: React.FC<ShippingMethodsSectionProps> = ({
 
   // Form State
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
   const [cost, setCost] = useState<number>(45000);
-  const [estimatedDays, setEstimatedDays] = useState("۲ الی ۳ روز کاری");
+  const [estimatedDays, setEstimatedDays] = useState("2");
   const [iconName, setIconName] = useState<ShippingMethod["iconName"]>("truck");
   const [isActive, setIsActive] = useState(true);
   const [coveredCitiesText, setCoveredCitiesText] = useState("all");
-  const [isFreeOverThreshold, setIsFreeOverThreshold] = useState(true);
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   const handleOpenCreate = () => {
     setEditingMethod(null);
     setTitle("");
-    setDescription("");
     setCost(45000);
-    setEstimatedDays("۲ الی ۳ روز کاری");
+    setEstimatedDays("2");
     setIconName("truck");
     setIsActive(true);
     setCoveredCitiesText("all");
-    setIsFreeOverThreshold(true);
     setErrors({});
     setIsModalOpen(true);
   };
@@ -71,7 +67,6 @@ export const ShippingMethodsSection: React.FC<ShippingMethodsSectionProps> = ({
   const handleOpenEdit = (method: ShippingMethod) => {
     setEditingMethod(method);
     setTitle(method.title);
-    setDescription(method.description);
     setCost(method.cost);
     setEstimatedDays(method.estimatedDays);
     setIconName(method.iconName);
@@ -79,7 +74,6 @@ export const ShippingMethodsSection: React.FC<ShippingMethodsSectionProps> = ({
     setCoveredCitiesText(
       method.coveredCities.includes("all") ? "all" : method.coveredCities.join("، ")
     );
-    setIsFreeOverThreshold(method.isFreeOverThreshold);
     setErrors({});
     setIsModalOpen(true);
   };
@@ -92,7 +86,7 @@ export const ShippingMethodsSection: React.FC<ShippingMethodsSectionProps> = ({
   const validate = () => {
     const errs: Record<string, string> = {};
     if (!title.trim()) errs.title = "عنوان روش ارسال الزامی است.";
-    if (!estimatedDays.trim()) errs.estimatedDays = "مدت زمان تقریبی الزامی است.";
+    if (!estimatedDays.trim() || Number(estimatedDays) < 0 || Number(estimatedDays) > 365) errs.estimatedDays = "تعداد روز باید بین صفر تا ۳۶۵ باشد.";
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -111,13 +105,11 @@ export const ShippingMethodsSection: React.FC<ShippingMethodsSectionProps> = ({
 
     const payload: CreateShippingMethodPayload = {
       title: title.trim(),
-      description: description.trim(),
       cost: Number(cost) || 0,
       estimatedDays: estimatedDays.trim(),
       iconName,
       isActive,
       coveredCities: cities.length > 0 ? cities : ["all"],
-      isFreeOverThreshold,
     };
 
     if (editingMethod) {
@@ -238,10 +230,9 @@ export const ShippingMethodsSection: React.FC<ShippingMethodsSectionProps> = ({
               onValueChange={(val) => setIconName(val as ShippingMethod["iconName"])}
               options={[
                 { value: "truck", label: "کامیون / پست (Truck)" },
-                { value: "zap", label: "اکسپرس / رعد (Zap)" },
                 { value: "motorcycle", label: "پیک موتوری (Motorcycle)" },
-                { value: "box", label: "جعبه / تیپاکس (Box)" },
-                { value: "plane", label: "هوایی / پرواز (Plane)" },
+                { value: "store", label: "تحویل از فروشگاه (Store)" },
+                { value: "package", label: "بسته / تیپاکس (Package)" },
               ]}
             />
 
@@ -259,9 +250,11 @@ export const ShippingMethodsSection: React.FC<ShippingMethodsSectionProps> = ({
             <ETextField
               label="مدت زمان تقریبی تحویل"
               required
+              type="number"
+              inputMode="numeric"
               value={estimatedDays}
               onValueChange={setEstimatedDays}
-              placeholder="مثال: ۲۴ الی ۴۸ ساعت"
+              placeholder="تعداد روز، مثال: 2"
               error={Boolean(errors.estimatedDays)}
               helperText={errors.estimatedDays}
               leftIcon={<Clock className="w-4 h-4" />}
@@ -278,29 +271,9 @@ export const ShippingMethodsSection: React.FC<ShippingMethodsSectionProps> = ({
               />
             </div>
 
-            <div className="sm:col-span-2">
-              <ETextField
-                label="توضیحات تکمیلی برای مشتری"
-                multiline
-                rows={2}
-                value={description}
-                onValueChange={setDescription}
-                placeholder="شرایط تحویل، نحوه هماهنگی پیک یا بیمه مرسوله..."
-              />
-            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-3 border-t border-slate-800">
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800">
-              <div className="space-y-0.5">
-                <span className="text-xs font-bold text-white block">مشمول ارسال رایگان</span>
-                <span className="text-[11px] text-slate-400 block">
-                  در خریدهای بالای سقف معاف از هزینه شود
-                </span>
-              </div>
-              <ESwitch checked={isFreeOverThreshold} onCheckedChange={setIsFreeOverThreshold} />
-            </div>
-
+          <div className="grid grid-cols-1 gap-3 pt-3 border-t border-slate-800">
             <div className="flex items-center justify-between p-3 rounded-xl bg-slate-950/60 border border-slate-800">
               <div className="space-y-0.5">
                 <span className="text-xs font-bold text-white block">وضعیت فعال در فروشگاه</span>

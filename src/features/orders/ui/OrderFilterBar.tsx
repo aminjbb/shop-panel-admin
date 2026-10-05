@@ -2,8 +2,7 @@ import React from "react";
 import type { FulfillmentStatus, PaymentStatus, OrderCounts } from "@/types/order";
 import { SearchBox } from "@/shared-app/designSystem/searchBox";
 import { ESelect, type SelectOption } from "@/shared-app/designSystem/select";
-import { EButton } from "@/shared-app/designSystem/button";
-import { RotateCcw, Filter, Clock, PackageCheck, Truck, CheckCircle2, XCircle, Layers } from "lucide-react";
+import { Clock, PackageCheck, Truck, CheckCircle2, XCircle, Layers } from "lucide-react";
 
 export interface OrderFilterBarProps {
   currentStatus: FulfillmentStatus | "all";
@@ -13,8 +12,6 @@ export interface OrderFilterBarProps {
   searchTerm: string;
   onSearchChange: (query: string) => void;
   counts: OrderCounts;
-  onResetMockData: () => void;
-  isResetting?: boolean;
   className?: string;
 }
 
@@ -26,8 +23,6 @@ export const OrderFilterBar: React.FC<OrderFilterBarProps> = ({
   searchTerm,
   onSearchChange,
   counts,
-  onResetMockData,
-  isResetting = false,
   className = "",
 }) => {
   const tabs: Array<{
@@ -145,17 +140,6 @@ export const OrderFilterBar: React.FC<OrderFilterBarProps> = ({
             />
           </div>
 
-          <EButton
-            variant="secondary"
-            size="md"
-            onClick={onResetMockData}
-            isLoading={isResetting}
-            title="بازنشانی داده‌های ماک سفارش‌ها به حالت اولیه"
-            icon={<RotateCcw className="w-3.5 h-3.5" />}
-            className="shrink-0 text-xs text-slate-300 hover:text-white"
-          >
-            <span className="hidden md:inline">ریست دیتای ماک</span>
-          </EButton>
         </div>
       </div>
     </div>

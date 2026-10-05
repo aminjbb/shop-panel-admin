@@ -1,5 +1,5 @@
 import React from "react";
-import type { SupportTicket } from "@/types/feedback";
+import type { SupportTicket } from "../../types";
 import TicketStatusBadge from "./TicketStatusBadge";
 import TicketPriorityBadge from "./TicketPriorityBadge";
 import EButton from "@/shared-app/designSystem/button";

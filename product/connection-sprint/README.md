@@ -6,7 +6,7 @@
 
 ## هدف و محدوده
 
-- پوشش کامل ۶۳ endpoint موجود، بدون اختراع قرارداد برای APIهای مستندنشده.
+- پوشش کامل ۸۰ endpoint موجود، بدون اختراع قرارداد برای APIهای مستندنشده.
 - حفظ مرز FSD: قرارداد و transport در `entities`، orchestration و state در
   `features`/`widgets` و composition در `pages`.
 - حذف تدریجی وابستگی صفحات به `features/*/api/mock*Service.ts`.
@@ -22,10 +22,10 @@
 | 1 | [Sprint 01](./sprint-01-foundation-security.md) | Login، session، shell و health | 8 |
 | 2 | [Sprint 06-A](./sprint-06-media-operations.md) | زیرساخت upload موردنیاز فرم محصول | 1 از 3 |
 | 3 | [Sprint 02](./sprint-02-catalog-inventory.md) | Products و Categories | 18 |
-| 4 | [Sprint 04](./sprint-04-support-crm.md) | Customers، Feedback، Support و Notifications | 17 |
-| 5 | [Sprint 05](./sprint-05-commerce-content-analytics.md) | Coupons، Homepage Builder و Dashboard | 17 |
-| 6 | [Sprint 06-B](./sprint-06-media-operations.md) | avatar، reset و hardening | 2 از 3 |
-| مسدود | [Sprint 03](./sprint-03-orders-settings.md) | Orders و بخش‌های Settings | 0 |
+| 4 | [Sprint 03](./sprint-03-orders-settings.md) | Orders و بخش‌های Settings | 17 |
+| 5 | [Sprint 04](./sprint-04-support-crm.md) | Customers، Feedback، Support و Notifications | 17 |
+| 6 | [Sprint 05](./sprint-05-commerce-content-analytics.md) | Coupons، Homepage Builder و Dashboard | 17 |
+| 7 | [Sprint 06-B](./sprint-06-media-operations.md) | avatar، reset و hardening | 2 از 3 |
 
 Sprint 06 به دو بخش اجرایی تقسیم شده چون `POST /products` در قرارداد نهایی به
 `imageMediaId` نیاز دارد؛ بنابراین uploader باید قبل از اتصال mutationهای محصول
@@ -49,7 +49,11 @@ Sprint 06 به دو بخش اجرایی تقسیم شده چون `POST /products
 | Analytics | 1 |
 | Media | 1 |
 | Settings operation | 1 |
-| **جمع** | **63** |
+| Orders | 5 |
+| Store settings | 2 |
+| Shipping methods | 5 |
+| Admin staff | 5 |
+| **جمع** | **80** |
 
 ## تصمیم‌های معماری مشترک
 
@@ -60,8 +64,7 @@ Sprint 06 به دو بخش اجرایی تقسیم شده چون `POST /products
    `entities/*/api` یا `entities/*/types` ممنوع باشد.
 3. query keyها در model همان feature متمرکز شوند، برای مثال:
    `['products', 'list', filters]` و `['products', 'detail', id]`.
-4. چون TanStack Query در پروژه نصب نیست، اولین task اتصال داده افزودن
-   `@tanstack/react-query` و `QueryClientProvider` است.
+4. `@tanstack/react-query` و `QueryClientProvider` زیرساخت query و mutation صفحات را فراهم می‌کنند.
 5. entity DTO نباید برای سازگارشدن با UI تغییر کند. تبدیل decimal string، نام
    فیلدها یا enumهای نمایشی در mapper feature انجام شود.
 
@@ -100,6 +103,5 @@ rollback موقت است و نباید mapper یا type مشترک با entity �
 
 ## خارج از محدوده فعلی
 
-برای order، store settings، shipping methods و staff هیچ handoff در
-`product/api` وجود ندارد. این صفحه‌ها تا دریافت قرارداد Sprint 03 نباید به API
-حدسی متصل شوند.
+قرارداد order، store settings، shipping methods و staff از OpenAPI زنده بک‌اند استخراج و در
+`product/api/sprint-03-orders-settings-frontend-handoff.md` ثبت شده است.

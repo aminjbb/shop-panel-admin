@@ -1,5 +1,35 @@
 # Sprint 04 — اتصال Support و CRM
 
+## وضعیت: پیاده‌سازی‌شده
+
+قرارداد ۱۷ endpoint از `product/api/sprint-04-support-crm-frontend-handoff.md` در entityهای مستقل
+`customer`، `review`، `ticket` و `notification` تعریف و به صفحات production متصل شد.
+
+### خروجی اجرا
+
+- Customers list/detail با includeهای orders و tickets و mutationهای status/tier به TanStack Query منتقل شد.
+- Reviews list/status/reply/archive به entity واقعی متصل شد.
+- Tickets list/detail/message/status/priority با cache جداگانه list/detail متصل شد.
+- Notification Center با polling کنترل‌شده ۳۰ ثانیه‌ای و read/read-all/archive متصل شد.
+- تمام mutationها auto-retry غیرفعال یا کنترل‌شده دارند و queryهای مرتبط invalidate می‌شوند.
+- reset و import سرویس‌های mock از runtime این Sprint حذف شد.
+- کنترل customer status/tier فقط برای `super_admin` نمایش داده می‌شود و Notification Center برای `inventory_manager` اجرا نمی‌شود.
+- sortهای ساختگی Review/Ticket که در قرارداد backend وجود نداشتند از UI حذف شدند.
+- stateهای loading، error، empty و success برای فهرست‌های اصلی پوشش داده شدند.
+- DTOهای API فقط از public API چهار entity مصرف می‌شوند و ViewModelهای CRM/Feedback به `features/*/types` منتقل شدند.
+
+### محدودیت‌های قرارداد
+
+- پاسخ Review/Ticket aggregate count ندارد؛ countهای status و میانگین rating در ViewModel از صفحه دریافت‌شده محاسبه می‌شوند.
+- Review DTO عنوان و تصویر محصول را برنمی‌گرداند؛ UI به‌جای تولید داده ساختگی شناسه موجود را نمایش می‌دهد.
+- Ticket DTO شماره نمایشی، تلفن مشتری و related order ندارد؛ شناسه UUID به‌عنوان شناسه قابل‌ردیابی نمایش داده می‌شود.
+- Notification مقصد UI ندارد؛ route فقط برای kindهای شناخته‌شده نگاشت می‌شود و kind ناشناخته به dashboard می‌رود.
+
+### Verification
+
+- `npm.cmd run lint` — موفق (`tsc --noEmit`).
+- `npm.cmd run build` — موفق؛ هشدار CSS قدیمی `var(--color-...)` خارج از محدوده این Sprint باقی مانده است.
+
 ## هدف
 
 اتصال صفحات مشتریان، نظرات، تیکت‌ها و اعلان header به ۱۷ endpoint واقعی و حذف

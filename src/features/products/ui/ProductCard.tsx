@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { Product } from "@/types/product";
+import type { Product } from "../types";
 import ProductStatusBadge from "./ProductStatusBadge";
 import ProductQuickStockControl from "./ProductQuickStockControl";
 import EButton from "@/shared-app/designSystem/button";

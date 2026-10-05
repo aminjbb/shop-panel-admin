@@ -181,23 +181,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [clearSession]);
 
   const updateAvatar = useCallback(
-    async (avatarUrl: string): Promise<void> => {
+    async (file: File): Promise<void> => {
       if (!recordRef.current) return;
       const current = recordRef.current;
-      const updatedUser: AdminUser = {
-        ...current.session.user,
-        avatarUrl,
-      };
+      const updatedUser = await authApi.changeAvatar({ file });
       const nextSession: AuthSession = {
         ...current.session,
         user: updatedUser,
       };
       commitSession(nextSession, current.rememberMe);
-      try {
-        localStorage.setItem("dynova_mock_admin_user", JSON.stringify(updatedUser));
-      } catch {
-        // ignore
-      }
     },
     [commitSession],
   );

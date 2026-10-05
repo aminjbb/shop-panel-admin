@@ -18,6 +18,7 @@ export interface OrderCardProps {
   onOpenInvoice: (order: Order) => void;
   onOpenStatusDialog: (order: Order) => void;
   onPrintInvoice?: (order: Order) => void;
+  canUpdateFulfillment?: boolean;
   className?: string;
 }
 
@@ -26,6 +27,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   onOpenInvoice,
   onOpenStatusDialog,
   onPrintInvoice,
+  canUpdateFulfillment = true,
   className = "",
 }) => {
   const formatToman = (amount: number) => {
@@ -156,7 +158,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           فاکتور و آدرس
         </EButton>
 
-        <EButton
+        {canUpdateFulfillment && <EButton
           variant="primary"
           size="md"
           onClick={() => onOpenStatusDialog(order)}
@@ -164,7 +166,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           className="w-full text-xs justify-center font-semibold"
         >
           تغییر وضعیت
-        </EButton>
+        </EButton>}
       </div>
     </div>
   );

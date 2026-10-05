@@ -30,6 +30,7 @@ export const ProductCatalogWidget: React.FC = () => {
     totalPages,
     activeFiltersCount,
     filters,
+    categoryOptions,
     isLoading,
     isMutating,
     error,
@@ -53,7 +54,6 @@ export const ProductCatalogWidget: React.FC = () => {
     onCloseDeleteDialog,
     onConfirmDelete,
     onQuickStockUpdate,
-    onResetToDefaultMock,
   } = useProducts();
 
   // Quick Stats Computations
@@ -117,21 +117,10 @@ export const ProductCatalogWidget: React.FC = () => {
               لیست محصولات و مدیریت موجودی
             </h2>
             <p className="text-xs text-slate-400 mt-0.5">
-              مدیریت تنوع کالاها، قیمت‌گذاری و کنترل بلادرنگ موجودی انبار (بر بستر
-              LocalStorage)
+              مدیریت تنوع کالاها، قیمت‌گذاری و کنترل موجودی از طریق API امن
             </p>
           </div>
 
-          <button
-            type="button"
-            onClick={onResetToDefaultMock}
-            disabled={isLoading || isMutating}
-            className="self-start sm:self-auto inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-white py-1.5 px-2.5 rounded-lg bg-slate-800/80 hover:bg-slate-800 border border-slate-700 transition-colors cursor-pointer disabled:opacity-50"
-            title="بازنشانی پایگاه داده ماک به داده‌های اولیه"
-          >
-            <RotateCcw className="w-3.5 h-3.5" />
-            <span>بازنشانی دیتای ماک</span>
-          </button>
         </div>
 
         {/* Filter Toolbar */}
@@ -148,6 +137,7 @@ export const ProductCatalogWidget: React.FC = () => {
           activeFiltersCount={activeFiltersCount}
           onOpenCreateModal={onOpenCreateModal}
           onOpenMobileFilters={() => setIsFilterDrawerOpen(true)}
+          categoryOptions={categoryOptions}
         />
 
         {/* Error Alert */}
@@ -239,6 +229,7 @@ export const ProductCatalogWidget: React.FC = () => {
         onSortChange={onSortChange}
         onResetFilters={onResetFilters}
         activeFiltersCount={activeFiltersCount}
+        categoryOptions={categoryOptions}
       />
 
       {/* Product Add / Edit Modal / BottomSheet */}
@@ -248,6 +239,7 @@ export const ProductCatalogWidget: React.FC = () => {
         product={editingProduct}
         onSave={onSaveProduct}
         isLoading={isMutating}
+        categoryOptions={categoryOptions}
       />
 
       {/* Product Delete Confirmation Dialog */}

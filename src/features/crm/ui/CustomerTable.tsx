@@ -1,5 +1,5 @@
 import React from "react";
-import type { Customer } from "@/types/crm";
+import type { Customer } from "../types";
 import { EButton } from "@/shared-app/designSystem/button";
 import ActivationBage from "@/shared-app/activationbage";
 import {
@@ -16,12 +16,14 @@ interface CustomerTableProps {
   customers: Customer[];
   onOpenDetail: (customer: Customer) => void;
   onToggleStatus: (customerId: string) => void;
+  canManageCustomer?: boolean;
 }
 
 export const CustomerTable: React.FC<CustomerTableProps> = ({
   customers,
   onOpenDetail,
   onToggleStatus,
+  canManageCustomer = false,
 }) => {
   const getTierBadge = (tier: string) => {
     switch (tier) {
@@ -151,7 +153,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
                       </span>
                       <span className="text-[10px] text-slate-400">
                         آخرین خرید:{" "}
-                        {new Date(cust.lastOrderDate).toLocaleDateString("fa-IR")}
+                        {cust.lastOrderDate ? new Date(cust.lastOrderDate).toLocaleDateString("fa-IR") : "ثبت نشده"}
                       </span>
                     </div>
                   </td>
@@ -178,7 +180,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
                         پروفایل
                       </EButton>
 
-                      <button
+                      {canManageCustomer && <button
                         type="button"
                         onClick={() => onToggleStatus(cust.id)}
                         className={`p-1.5 rounded-lg border transition-colors cursor-pointer ${
@@ -193,7 +195,7 @@ export const CustomerTable: React.FC<CustomerTableProps> = ({
                         ) : (
                           <ShieldAlert className="w-4 h-4" />
                         )}
-                      </button>
+                      </button>}
                     </div>
                   </td>
                 </tr>

@@ -60,6 +60,8 @@ export const OrderPaymentBadge: React.FC<OrderPaymentBadgeProps> = ({
         return "پرداخت در محل";
       case "card_to_card":
         return "کارت به کارت";
+      case "unknown":
+        return "روش ثبت‌نشده";
       default:
         return "";
     }

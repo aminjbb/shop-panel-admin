@@ -4,7 +4,7 @@ import ESelect from "@/shared-app/designSystem/select";
 import EButton from "@/shared-app/designSystem/button";
 import {
   Plus,
-  RotateCcw,
+  Send,
   Eye,
   SlidersHorizontal,
   LayoutTemplate,
@@ -19,8 +19,9 @@ interface HomepageActionBarProps {
   onStatusFilterChange: (status: "all" | "active" | "inactive") => void;
   onOpenAddModal: () => void;
   onOpenPreview: () => void;
-  onResetDefaults: () => void;
+  onPublish: () => void;
   isUpdating?: boolean;
+  canManage?: boolean;
 }
 
 const TYPE_OPTIONS = [
@@ -47,8 +48,9 @@ export const HomepageActionBar: React.FC<HomepageActionBarProps> = ({
   onStatusFilterChange,
   onOpenAddModal,
   onOpenPreview,
-  onResetDefaults,
+  onPublish,
   isUpdating = false,
+  canManage = true,
 }) => {
   return (
     <div className="bg-slate-900/80 backdrop-blur-md border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-xl shadow-black/20 space-y-4">
@@ -86,16 +88,16 @@ export const HomepageActionBar: React.FC<HomepageActionBarProps> = ({
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-800">
-          <EButton
+          {canManage && <EButton
             variant="outlined"
             size="sm"
-            onClick={onResetDefaults}
+            onClick={onPublish}
             isLoading={isUpdating}
-            icon={<RotateCcw className="w-3.5 h-3.5 text-slate-400" />}
-            title="بازنشانی به چیدمان پیش‌فرض فروشگاه"
+            icon={<Send className="w-3.5 h-3.5 text-slate-400" />}
+            title="انتشار چیدمان فعلی فروشگاه"
           >
-            بازنشانی چیدمان
-          </EButton>
+            انتشار چیدمان
+          </EButton>}
 
           <EButton
             variant="secondary"
@@ -107,7 +109,7 @@ export const HomepageActionBar: React.FC<HomepageActionBarProps> = ({
             پیش‌نمایش زنده فروشگاه
           </EButton>
 
-          <EButton
+          {canManage && <EButton
             variant="primary"
             size="sm"
             onClick={onOpenAddModal}
@@ -115,7 +117,7 @@ export const HomepageActionBar: React.FC<HomepageActionBarProps> = ({
             className="shadow-lg shadow-indigo-600/30"
           >
             افزودن سکشن جدید
-          </EButton>
+          </EButton>}
         </div>
       </div>
     </div>

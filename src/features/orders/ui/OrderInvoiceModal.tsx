@@ -29,6 +29,7 @@ export interface OrderInvoiceModalProps {
   onClose: () => void;
   onOpenStatusDialog: (order: Order) => void;
   onPrintInvoice: (order: Order) => void;
+  canUpdateFulfillment?: boolean;
 }
 
 export const OrderInvoiceModal: React.FC<OrderInvoiceModalProps> = ({
@@ -37,6 +38,7 @@ export const OrderInvoiceModal: React.FC<OrderInvoiceModalProps> = ({
   onClose,
   onOpenStatusDialog,
   onPrintInvoice,
+  canUpdateFulfillment = true,
 }) => {
   if (!order) return null;
 
@@ -107,7 +109,7 @@ export const OrderInvoiceModal: React.FC<OrderInvoiceModalProps> = ({
               چاپ فاکتور
             </EButton>
 
-            <EButton
+            {canUpdateFulfillment && <EButton
               variant="primary"
               size="md"
               onClick={() => {
@@ -118,7 +120,7 @@ export const OrderInvoiceModal: React.FC<OrderInvoiceModalProps> = ({
               className="flex-1 sm:flex-initial text-xs"
             >
               تغییر وضعیت مرسوله
-            </EButton>
+            </EButton>}
           </div>
 
           <EButton

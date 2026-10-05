@@ -2,6 +2,7 @@ export type SectionType =
   | "hero_banner"
   | "flash_deals"
   | "product_grid"
+  | "rich_text"
   | "banner_grid_2"
   | "banner_grid_3";
 
@@ -49,11 +50,17 @@ export interface BannerGridSection extends SectionBase {
   banners: BannerItem[]; // exactly 2 or 3 banners matching the type
 }
 
+export interface RichTextSection extends SectionBase {
+  type: "rich_text";
+  config: Record<string, unknown>;
+}
+
 export type HomepageSection =
   | HeroBannerSection
   | FlashDealsSection
   | ProductGridSection
-  | BannerGridSection;
+  | BannerGridSection
+  | RichTextSection;
 
 export interface HomepageConfig {
   version: number;

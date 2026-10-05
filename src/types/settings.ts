@@ -19,13 +19,13 @@ export interface StoreSettings {
 export interface ShippingMethod {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   cost: number;
   estimatedDays: string; // e.g. "۱ الی ۲ روز کاری"
-  iconName: "truck" | "zap" | "motorcycle" | "plane" | "box";
+  iconName: "truck" | "motorcycle" | "store" | "package";
   isActive: boolean;
   coveredCities: string[]; // e.g. ["تهران", "کرج"] or ["all"]
-  isFreeOverThreshold: boolean;
+  isFreeOverThreshold?: boolean;
 }
 
 export type CreateShippingMethodPayload = Omit<ShippingMethod, "id">;
@@ -59,8 +59,6 @@ export interface StaffFilterParams {
 export interface CreateStaffPayload {
   fullName: string;
   email: string;
-  phone?: string;
+  temporaryPassword: string;
   role: AdminRole;
-  status: AdminStaffStatus;
-  avatarUrl?: string;
 }

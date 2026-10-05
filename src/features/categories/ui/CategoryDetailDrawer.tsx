@@ -1,5 +1,5 @@
 import React from "react";
-import type { Category } from "@/types/category";
+import type { Category } from "../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import EButton from "@/shared-app/designSystem/button";
 import { renderCategoryIcon } from "./CategoryIconHelper";

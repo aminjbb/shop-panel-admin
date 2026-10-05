@@ -7,7 +7,7 @@ export type FulfillmentStatus =
   | "delivered"
   | "canceled";
 
-export type PaymentMethod = "online" | "cash_on_delivery" | "card_to_card";
+export type PaymentMethod = "online" | "cash_on_delivery" | "card_to_card" | "unknown";
 
 export interface OrderItem {
   productId: string;

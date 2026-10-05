@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import type { SupportTicket, TicketStatus, TicketPriority } from "@/types/feedback";
+import type { SupportTicket, TicketStatus, TicketPriority } from "../../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import EButton from "@/shared-app/designSystem/button";
 import ESelect from "@/shared-app/designSystem/select";

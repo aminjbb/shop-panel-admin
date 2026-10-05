@@ -1,5 +1,5 @@
 import React from "react";
-import type { ReviewStatus } from "@/types/feedback";
+import type { ReviewStatus } from "../../types";
 import { Clock, CheckCircle2, XCircle } from "lucide-react";
 
 export interface ReviewStatusBadgeProps {

@@ -72,6 +72,16 @@ export const SECTION_TYPE_META: Record<SectionType, SectionTypeMeta> = {
     badgeText: "text-emerald-300",
     badgeBorder: "border-emerald-500/30",
   },
+  rich_text: {
+    type: "rich_text",
+    label: "محتوای متنی غنی (Rich Text)",
+    shortLabel: "محتوای متنی",
+    description: "بخش محتوایی آزاد برای معرفی، راهنما و پیام‌های فروشگاه",
+    icon: <Sparkles className="w-4 h-4 text-purple-400" />,
+    badgeBg: "bg-purple-500/15",
+    badgeText: "text-purple-300",
+    badgeBorder: "border-purple-500/30",
+  },
 };
 
 export function getSectionMeta(type: SectionType): SectionTypeMeta {

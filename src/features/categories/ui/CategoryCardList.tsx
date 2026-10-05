@@ -1,5 +1,5 @@
 import React from "react";
-import type { Category, CategoryTreeItem } from "@/types/category";
+import type { Category, CategoryTreeItem } from "../types";
 import { renderCategoryIcon } from "./CategoryIconHelper";
 import { ESwitch } from "@/shared-app/designSystem/switch";
 import {

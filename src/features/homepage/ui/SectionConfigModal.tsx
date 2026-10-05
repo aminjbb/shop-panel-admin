@@ -7,7 +7,8 @@ import type {
   BannerGridSection,
   BannerItem,
 } from "@/types/homepage";
-import type { Product } from "@/types/product";
+import type { Product } from "@/entities/product";
+import { mediaApi } from "@/entities/media";
 import { getSectionMeta } from "./SectionTypeHelper";
 import ProductPickerModal from "./ProductPickerModal";
 import BottomSheet from "@/shared-app/bottomSheet";
@@ -77,6 +78,7 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
   const [formData, setFormData] = useState<HomepageSection | null>(null);
   const [isProductPickerOpen, setIsProductPickerOpen] = useState<boolean>(false);
   const [formError, setFormError] = useState<string | null>(null);
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
 
   // Sync state whenever section changes
   useEffect(() => {
@@ -141,6 +143,20 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
       }
       return prev;
     });
+  };
+
+  const handleUploadBanner = async (index: number, file: File | null) => {
+    if (!file) return;
+    setIsUploadingImage(true);
+    setFormError(null);
+    try {
+      const asset = await mediaApi.upload({ kind: "homepage", file });
+      handleUpdateBannerItem(index, "imageUrl", asset.url);
+    } catch {
+      setFormError("آپلود تصویر بنر ناموفق بود؛ دوباره تلاش کنید.");
+    } finally {
+      setIsUploadingImage(false);
+    }
   };
 
   const handleDeleteBannerItem = (index: number) => {
@@ -284,7 +300,7 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
               variant="primary"
               size="sm"
               onClick={handleFormSubmit}
-              isLoading={isUpdating}
+              isLoading={isUpdating || isUploadingImage}
               icon={<Save className="w-4 h-4" />}
               className="shadow-lg shadow-indigo-600/30"
             >
@@ -408,6 +424,7 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
                       onChange={(val) =>
                         handleUpdateBannerItem(idx, "imageUrl", val)
                       }
+                      onFileChange={(file) => void handleUploadBanner(idx, file)}
                       presets={SAMPLE_BANNER_PRESETS.map((p) => ({ label: p.name, url: p.url }))}
                       variant="compact"
                       helperText="آپلود فایل بنر از سیستم یا انتخاب از نمونه‌ها."
@@ -503,6 +520,7 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
                     onChange={(val) =>
                       handleUpdateBannerItem(idx, "imageUrl", val)
                     }
+                    onFileChange={(file) => void handleUploadBanner(idx, file)}
                     presets={SAMPLE_BANNER_PRESETS.map((p) => ({ label: p.name, url: p.url }))}
                     variant="compact"
                     helperText="آپلود فایل بنر از سیستم یا انتخاب از نمونه‌ها."
@@ -647,7 +665,7 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
                             {prod.title}
                           </p>
                           <p className="text-[10px] font-mono text-rose-300">
-                            {prod.price.toLocaleString("fa-IR")} ت
+                            {Number(prod.price).toLocaleString("fa-IR")} ت
                           </p>
                         </div>
                       </div>
@@ -742,7 +760,7 @@ export const SectionConfigModal: React.FC<SectionConfigModalProps> = ({
                             {prod.title}
                           </p>
                           <p className="text-[10px] font-mono text-emerald-300">
-                            {prod.price.toLocaleString("fa-IR")} ت
+                            {Number(prod.price).toLocaleString("fa-IR")} ت
                           </p>
                         </div>
                       </div>

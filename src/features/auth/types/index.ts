@@ -10,7 +10,7 @@ export interface AuthContextType {
   refreshTokenExpiresAt: string | null;
   login: (credentials: LoginRequest) => Promise<AdminUser>;
   logout: () => Promise<void>;
-  updateAvatar?: (avatarUrl: string) => Promise<void>;
+  updateAvatar: (file: File) => Promise<void>;
 }
 
 export interface AuthProviderProps {

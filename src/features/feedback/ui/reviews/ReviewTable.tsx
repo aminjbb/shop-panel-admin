@@ -1,5 +1,5 @@
 import React from "react";
-import type { ProductReview, ReviewStatus } from "@/types/feedback";
+import type { ProductReview, ReviewStatus } from "../../types";
 import ReviewStatusBadge from "./ReviewStatusBadge";
 import ReviewRatingStars from "./ReviewRatingStars";
 import EButton from "@/shared-app/designSystem/button";
@@ -63,12 +63,12 @@ export const ReviewTable: React.FC<ReviewTableProps> = ({
               {/* Product Info */}
               <td className="py-4 px-4 align-top">
                 <div className="flex items-start gap-3 min-w-[200px] max-w-[260px]">
-                  <img
+                  {review.productThumbnail ? <img
                     src={review.productThumbnail}
                     alt={review.productTitle}
                     className="w-12 h-12 rounded-xl object-cover border border-slate-800 bg-slate-950 shrink-0"
                     loading="lazy"
-                  />
+                  /> : <div className="w-12 h-12 rounded-xl border border-slate-800 bg-slate-950 shrink-0 flex items-center justify-center"><MessageSquare className="w-5 h-5 text-slate-500" /></div>}
                   <div className="space-y-1">
                     <span className="font-semibold text-white text-xs line-clamp-2 leading-relaxed">
                       {review.productTitle}

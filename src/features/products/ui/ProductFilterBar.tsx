@@ -1,6 +1,5 @@
 import React from "react";
-import type { ProductSortOption } from "@/types/product";
-import { PRODUCT_CATEGORIES } from "../api/mockProductService";
+import type { CategoryOption, ProductSortOption } from "../types";
 import SearchBox from "@/shared-app/designSystem/searchBox";
 import ESelect from "@/shared-app/designSystem/select";
 import EButton from "@/shared-app/designSystem/button";
@@ -20,6 +19,7 @@ export interface ProductFilterBarProps {
   onOpenCreateModal: () => void;
   onOpenMobileFilters: () => void;
   className?: string;
+  categoryOptions: CategoryOption[];
 }
 
 export const ProductFilterBar: React.FC<ProductFilterBarProps> = ({
@@ -36,10 +36,11 @@ export const ProductFilterBar: React.FC<ProductFilterBarProps> = ({
   onOpenCreateModal,
   onOpenMobileFilters,
   className = "",
+  categoryOptions: availableCategories,
 }) => {
   const categoryOptions = [
     { value: "all", label: "همه دسته‌بندی‌ها" },
-    ...PRODUCT_CATEGORIES.map((c) => ({ value: c.id, label: c.label })),
+    ...availableCategories.map((category) => ({ value: category.id, label: category.label })),
   ];
 
   const stockStatusOptions = [

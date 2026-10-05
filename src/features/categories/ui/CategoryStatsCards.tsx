@@ -1,5 +1,5 @@
 import React from "react";
-import type { CategoryStats } from "@/types/category";
+import type { CategoryStats } from "../types";
 import StatCard from "@/shared-app/statCard";
 import { FolderTree, Layers, Package, CheckCircle2 } from "lucide-react";
 

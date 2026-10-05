@@ -1,5 +1,5 @@
 import React from "react";
-import type { Customer } from "@/types/crm";
+import type { Customer } from "../types";
 import { EButton } from "@/shared-app/designSystem/button";
 import ActivationBage from "@/shared-app/activationbage";
 import {
@@ -15,13 +15,11 @@ import {
 interface CustomerCardProps {
   customer: Customer;
   onOpenDetail: (customer: Customer) => void;
-  onToggleStatus: (customerId: string) => void;
 }
 
 export const CustomerCard: React.FC<CustomerCardProps> = ({
   customer,
   onOpenDetail,
-  onToggleStatus,
 }) => {
   const getTierBadge = (tier: string) => {
     switch (tier) {

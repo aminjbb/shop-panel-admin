@@ -4,7 +4,7 @@ import type {
   CategoryAttribute,
   CategoryFormData,
   AttributeType,
-} from "@/types/category";
+} from "../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import ETextField from "@/shared-app/designSystem/textField";
 import ESelect from "@/shared-app/designSystem/select";
@@ -12,7 +12,7 @@ import { ESwitch } from "@/shared-app/designSystem/switch";
 import EButton from "@/shared-app/designSystem/button";
 import ImageUploader from "@/shared-app/designSystem/imageUploader";
 import { CATEGORY_ICON_OPTIONS, renderCategoryIcon } from "./CategoryIconHelper";
-import { mockCategoryService } from "../api/mockCategoryService";
+import { getDescendantIds } from "../models/categoryMapper";
 import {
   Save,
   Plus,
@@ -151,7 +151,7 @@ export const CategoryFormModal: React.FC<CategoryFormModalProps> = ({
 
     if (isEditing && category) {
       invalidIds.add(category.id);
-      const descendants = mockCategoryService.getDescendantIds(category.id, allCategories);
+      const descendants = getDescendantIds(category.id, allCategories);
       descendants.forEach((id) => invalidIds.add(id));
     }
 

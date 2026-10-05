@@ -10,6 +10,7 @@ import CategoryDetailDrawer from "./CategoryDetailDrawer";
 import EmptyState from "@/shared-app/emptyState";
 import { FolderTree, Plus, SearchX } from "lucide-react";
 import EButton from "@/shared-app/designSystem/button";
+import AllertMassage from "@/shared-app/allertMassage";
 
 export const CategoriesContainer: React.FC = () => {
   const {
@@ -18,6 +19,7 @@ export const CategoriesContainer: React.FC = () => {
     stats,
     isLoading,
     isUpdating,
+    error,
     search,
     statusFilter,
     expandedIds,
@@ -50,8 +52,6 @@ export const CategoriesContainer: React.FC = () => {
     categoryDetail,
     openDetailDrawer,
     closeDetailDrawer,
-    // Reset
-    handleResetDefaults,
   } = useCategories();
 
   return (
@@ -68,9 +68,15 @@ export const CategoriesContainer: React.FC = () => {
         onExpandAll={expandAll}
         onCollapseAll={collapseAll}
         onOpenCreateModal={openCreateModal}
-        onResetDefaults={handleResetDefaults}
-        isUpdating={isUpdating}
       />
+
+      {error && (
+        <AllertMassage
+          variant="danger"
+          title="خطا در دریافت دسته‌بندی‌ها"
+          message={error}
+        />
+      )}
 
       {/* 3. Main Content: Skeleton / Empty State / Tree Table & Cards */}
       {isLoading ? (

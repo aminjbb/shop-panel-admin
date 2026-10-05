@@ -19,6 +19,7 @@ interface CouponTableProps {
   onEdit: (coupon: DiscountCoupon) => void;
   onDelete: (couponId: string) => void;
   onToggleStatus: (couponId: string) => void;
+  canManage?: boolean;
 }
 
 export const CouponTable: React.FC<CouponTableProps> = ({
@@ -26,6 +27,7 @@ export const CouponTable: React.FC<CouponTableProps> = ({
   onEdit,
   onDelete,
   onToggleStatus,
+  canManage = true,
 }) => {
   const [copiedId, setCopiedId] = useState<string | null>(null);
 
@@ -70,7 +72,7 @@ export const CouponTable: React.FC<CouponTableProps> = ({
               const statusInfo = getStatusInfo(coupon.status);
               const usagePercent = Math.min(
                 100,
-                Math.round((coupon.usedCount / coupon.usageLimit) * 100)
+                coupon.usageLimit ? Math.round((coupon.usedCount / coupon.usageLimit) * 100) : 0
               );
               const isCopied = copiedId === coupon.id;
               const isPercentage = coupon.type === "percentage";
@@ -158,7 +160,7 @@ export const CouponTable: React.FC<CouponTableProps> = ({
                     <div className="flex flex-col gap-1">
                       <div className="flex items-center justify-between text-[11px] font-mono">
                         <span className="text-slate-400">{coupon.usedCount} مصرف</span>
-                        <span className="text-white font-bold">{coupon.usageLimit} کل</span>
+                        <span className="text-white font-bold">{coupon.usageLimit ?? "نامحدود"} کل</span>
                       </div>
                       <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
                         <div
@@ -191,6 +193,7 @@ export const CouponTable: React.FC<CouponTableProps> = ({
                       <ESwitch
                         checked={coupon.status === "active"}
                         onCheckedChange={() => onToggleStatus(coupon.id)}
+                        disabled={!canManage}
                       />
                       <ActivationBage
                         label={statusInfo.label}
@@ -202,7 +205,7 @@ export const CouponTable: React.FC<CouponTableProps> = ({
 
                   {/* 7. Action Buttons */}
                   <td className="py-3.5 px-4 text-center">
-                    <div className="inline-flex items-center gap-1">
+                    {canManage && <div className="inline-flex items-center gap-1">
                       <button
                         type="button"
                         onClick={() => onEdit(coupon)}
@@ -220,7 +223,7 @@ export const CouponTable: React.FC<CouponTableProps> = ({
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
-                    </div>
+                    </div>}
                   </td>
                 </tr>
               );

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { Category } from "@/types/category";
+import type { Category } from "../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import EButton from "@/shared-app/designSystem/button";
 import { AlertTriangle, Trash2, Layers, Package, ShieldAlert } from "lucide-react";

@@ -4,7 +4,6 @@ import type {
   FulfillmentStatus,
   UpdateFulfillmentPayload,
 } from "@/types/order";
-import { AVAILABLE_COURIERS } from "../api/mockOrderService";
 import BottomSheet from "@/shared-app/bottomSheet";
 import { EButton } from "@/shared-app/designSystem/button";
 import { ETextField } from "@/shared-app/designSystem/textField";
@@ -18,6 +17,13 @@ import {
   AlertCircle,
   Hash,
 } from "lucide-react";
+
+const AVAILABLE_COURIERS = [
+  { id: "post", name: "شرکت ملی پست" },
+  { id: "tipax", name: "تیپاکس" },
+  { id: "chapar", name: "چاپار" },
+  { id: "courier", name: "پیک فروشگاه" },
+];
 
 export interface OrderStatusDialogProps {
   order: Order | null;
@@ -125,7 +131,6 @@ export const OrderStatusDialog: React.FC<OrderStatusDialogProps> = ({
       status: selectedStatus,
       courierName: selectedStatus === "shipped" || selectedStatus === "delivered" ? courierName : undefined,
       trackingCode: selectedStatus === "shipped" || selectedStatus === "delivered" ? trackingCode.trim() : undefined,
-      notes: notes.trim() || undefined,
     });
     onClose();
   };

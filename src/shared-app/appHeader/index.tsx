@@ -151,7 +151,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({
         {/* Left side (RTL): Notification Bell, Quick Nav pills & User profile */}
         <div className="flex items-center gap-2 sm:gap-3">
           {/* Notification Center */}
-          {isAuthenticated && <NotificationCenter onNavigate={onNavigate} />}
+          {isAuthenticated && user?.role !== "inventory_manager" && <NotificationCenter onNavigate={onNavigate} />}
 
           {/* User Menu if Authenticated */}
           {isAuthenticated && user && (

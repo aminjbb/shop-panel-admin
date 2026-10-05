@@ -9,11 +9,12 @@ import SectionConfigDrawer from "./SectionConfigDrawer";
 import LivePreviewDrawer from "./LivePreviewDrawer";
 import SectionDeleteDialog from "./SectionDeleteDialog";
 import EmptyState from "@/shared-app/emptyState";
-import { LayoutTemplate, Plus, RotateCcw } from "lucide-react";
+import { LayoutTemplate, Plus } from "lucide-react";
 import EButton from "@/shared-app/designSystem/button";
 
 export const HomepageContainer: React.FC = () => {
   const {
+    canManage,
     sections,
     filteredSections,
     stats,
@@ -35,7 +36,7 @@ export const HomepageContainer: React.FC = () => {
     handleAddSection,
     handleSaveSection,
     handleDeleteSection,
-    handleResetDefaults,
+    handlePublish,
     // Modal states
     isAddModalOpen,
     setIsAddModalOpen,
@@ -64,8 +65,9 @@ export const HomepageContainer: React.FC = () => {
         onStatusFilterChange={setStatusFilter}
         onOpenAddModal={() => setIsAddModalOpen(true)}
         onOpenPreview={() => setIsPreviewOpen(true)}
-        onResetDefaults={handleResetDefaults}
+        onPublish={handlePublish}
         isUpdating={isUpdating}
+        canManage={canManage}
       />
 
       {/* 3. Sections Content List / Table */}
@@ -83,14 +85,6 @@ export const HomepageContainer: React.FC = () => {
             action={
               <div className="flex items-center gap-2 mt-4">
                 <EButton
-                  variant="outlined"
-                  size="sm"
-                  onClick={handleResetDefaults}
-                  icon={<RotateCcw className="w-3.5 h-3.5" />}
-                >
-                  بازنشانی به پیش‌فرض
-                </EButton>
-                <EButton
                   variant="primary"
                   size="sm"
                   onClick={() => setIsAddModalOpen(true)}
@@ -105,7 +99,7 @@ export const HomepageContainer: React.FC = () => {
       ) : (
         <>
           {/* Desktop Table View (>= 768px) */}
-          <div className="hidden md:block">
+          <div className={`hidden md:block ${canManage ? "" : "[&_button]:pointer-events-none [&_button]:opacity-50"}`}>
             <SectionListDesktop
               sections={filteredSections}
               onMoveUp={handleMoveUp}
@@ -118,7 +112,7 @@ export const HomepageContainer: React.FC = () => {
           </div>
 
           {/* Mobile Cards View (< 768px) */}
-          <div className="block md:hidden">
+          <div className={`block md:hidden ${canManage ? "" : "[&_button]:pointer-events-none [&_button]:opacity-50"}`}>
             <SectionListMobile
               sections={filteredSections}
               onMoveUp={handleMoveUp}

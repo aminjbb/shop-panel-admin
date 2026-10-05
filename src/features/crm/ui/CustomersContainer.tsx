@@ -1,5 +1,7 @@
 import React from "react";
 import { useCustomers } from "../hooks/useCustomers";
+import { useAuth } from "@/features/auth/context/AuthContext";
+import AllertMassage from "@/shared-app/allertMassage";
 import CustomerFilterBar from "./CustomerFilterBar";
 import CustomerTable from "./CustomerTable";
 import CustomerCard from "./CustomerCard";
@@ -17,11 +19,14 @@ import {
 } from "lucide-react";
 
 export const CustomersContainer: React.FC = () => {
+  const { user } = useAuth();
+  const canManageCustomer = user?.role === "super_admin";
   const {
     filters,
     data,
     isLoading,
     isMutating,
+    error,
     selectedCustomer,
     isDetailModalOpen,
     handleTierTabChange,
@@ -32,7 +37,6 @@ export const CustomersContainer: React.FC = () => {
     handleCloseDetailModal,
     handleToggleCustomerStatus,
     handleUpdateTier,
-    handleResetMockData,
   } = useCustomers();
 
   const { customers, total, page, totalPages, counts, stats } = data;
@@ -105,11 +109,12 @@ export const CustomersContainer: React.FC = () => {
         searchTerm={filters.search || ""}
         onSearchChange={handleSearch}
         counts={counts}
-        onResetMockData={handleResetMockData}
       />
 
       {/* 4. Customer Listing */}
-      {isLoading ? (
+      {error ? (
+        <AllertMassage title="خطا در دریافت مشتریان" message={error} variant="danger" />
+      ) : isLoading ? (
         <CustomerSkeletonList />
       ) : customers.length === 0 ? (
         <div className="p-12 rounded-2xl border border-slate-800 bg-slate-900/40 text-center flex flex-col items-center justify-center gap-3">
@@ -128,6 +133,7 @@ export const CustomersContainer: React.FC = () => {
             customers={customers}
             onOpenDetail={handleOpenDetailModal}
             onToggleStatus={handleToggleCustomerStatus}
+            canManageCustomer={canManageCustomer}
           />
 
           {/* Mobile Cards */}
@@ -137,7 +143,6 @@ export const CustomersContainer: React.FC = () => {
                 key={cust.id}
                 customer={cust}
                 onOpenDetail={handleOpenDetailModal}
-                onToggleStatus={handleToggleCustomerStatus}
               />
             ))}
           </div>
@@ -185,6 +190,7 @@ export const CustomersContainer: React.FC = () => {
         onToggleStatus={handleToggleCustomerStatus}
         onUpdateTier={handleUpdateTier}
         isLoading={isMutating}
+        canManageCustomer={canManageCustomer}
       />
     </div>
   );

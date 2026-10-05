@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import type { Product } from "@/types/product";
+import type { Product } from "@/entities/product";
 import SearchBox from "@/shared-app/designSystem/searchBox";
 import BottomSheet from "@/shared-app/bottomSheet";
 import EButton from "@/shared-app/designSystem/button";
@@ -38,9 +38,7 @@ export const ProductPickerModal: React.FC<ProductPickerModalProps> = ({
   const categories = useMemo(() => {
     const map = new Map<string, string>();
     products.forEach((p) => {
-      if (p.category && p.categoryLabel) {
-        map.set(p.category, p.categoryLabel);
-      }
+      if (p.category) map.set(p.category, p.category);
     });
     return Array.from(map.entries()).map(([id, label]) => ({ id, label }));
   }, [products]);
@@ -249,10 +247,10 @@ export const ProductPickerModal: React.FC<ProductPickerModalProps> = ({
                       </span>
                       <div className="flex items-center justify-between mt-1">
                         <span className="text-xs font-mono font-bold text-indigo-300">
-                          {prod.price.toLocaleString("fa-IR")} تومان
+                          {Number(prod.price).toLocaleString("fa-IR")} تومان
                         </span>
                         <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400">
-                          {prod.categoryLabel || prod.category}
+                          {prod.category}
                         </span>
                       </div>
                     </div>

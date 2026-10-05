@@ -6,8 +6,6 @@ import {
   Plus,
   ChevronsDown,
   ChevronsUp,
-  RotateCcw,
-  Sparkles,
 } from "lucide-react";
 
 interface CategoryFilterBarProps {
@@ -18,8 +16,6 @@ interface CategoryFilterBarProps {
   onExpandAll: () => void;
   onCollapseAll: () => void;
   onOpenCreateModal: () => void;
-  onResetDefaults: () => void;
-  isUpdating?: boolean;
 }
 
 const STATUS_OPTIONS = [
@@ -36,8 +32,6 @@ export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
   onExpandAll,
   onCollapseAll,
   onOpenCreateModal,
-  onResetDefaults,
-  isUpdating = false,
 }) => {
   return (
     <div className="bg-slate-900/80 backdrop-blur-md border border-slate-800/90 rounded-2xl p-4 sm:p-5 shadow-xl shadow-black/20 space-y-4">
@@ -84,17 +78,6 @@ export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
             title="بستن تمام شاخه‌ها"
           >
             بستن همه
-          </EButton>
-
-          <EButton
-            variant="outlined"
-            size="sm"
-            onClick={onResetDefaults}
-            isLoading={isUpdating}
-            icon={<RotateCcw className="w-3.5 h-3.5 text-slate-400" />}
-            title="بازنشانی به داده‌های اولیه ماک"
-          >
-            بازنشانی
           </EButton>
 
           <EButton

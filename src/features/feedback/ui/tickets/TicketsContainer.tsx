@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { SupportTicket, TicketStatus, TicketPriority } from "@/types/feedback";
+import type { SupportTicket, TicketStatus, TicketPriority } from "../../types";
 import useTickets from "../../hooks/useTickets";
 import TicketTable from "./TicketTable";
 import TicketCard from "./TicketCard";
@@ -10,6 +10,7 @@ import ESelect from "@/shared-app/designSystem/select";
 import EPagination from "@/shared-app/designSystem/pagination";
 import EmptyState from "@/shared-app/emptyState";
 import EButton from "@/shared-app/designSystem/button";
+import AllertMassage from "@/shared-app/allertMassage";
 import {
   Headphones,
   Clock,
@@ -32,6 +33,7 @@ export const TicketsContainer: React.FC = () => {
     isLoading,
     isUpdating,
     isSendingMessage,
+    error,
     params,
     selectTicket,
     sendMessage,
@@ -41,7 +43,6 @@ export const TicketsContainer: React.FC = () => {
     setStatusFilter,
     setPriorityFilter,
     setSearch,
-    setSortBy,
     refetch,
   } = useTickets();
 
@@ -71,12 +72,6 @@ export const TicketsContainer: React.FC = () => {
     { value: "high", label: "اولویت بالا" },
     { value: "medium", label: "اولویت متوسط" },
     { value: "low", label: "اولویت کم" },
-  ];
-
-  const sortOptions = [
-    { value: "newest", label: "جدیدترین فعالیت‌ها" },
-    { value: "urgent_first", label: "ابتدا تیکت‌های فوری" },
-    { value: "oldest", label: "قدیمی‌ترین تیکت‌ها" },
   ];
 
   return (
@@ -174,15 +169,6 @@ export const TicketsContainer: React.FC = () => {
             />
           </div>
 
-          <div className="sm:col-span-3">
-            <ESelect
-              value={params.sortBy || "newest"}
-              options={sortOptions}
-              onValueChange={(val) => setSortBy(val as any)}
-              placeholder="مرتب‌سازی"
-            />
-          </div>
-
           <div className="sm:col-span-1 flex justify-end">
             <EButton
               variant="secondary"
@@ -197,7 +183,9 @@ export const TicketsContainer: React.FC = () => {
       </div>
 
       {/* 3. Tickets Content Area */}
-      {isLoading ? (
+      {error ? (
+        <AllertMassage title="خطا در دریافت تیکت‌ها" message={error} variant="danger" />
+      ) : isLoading ? (
         <div className="py-16 text-center space-y-3">
           <div className="w-8 h-8 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin mx-auto" />
           <p className="text-xs text-slate-400">در حال دریافت تیکت‌های پشتیبانی...</p>

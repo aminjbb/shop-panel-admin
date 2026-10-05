@@ -1,9 +1,8 @@
 import React from "react";
-import type { CustomerTier, CustomerStatus } from "@/types/crm";
+import type { CustomerTier, CustomerStatus } from "../types";
 import { SearchBox } from "@/shared-app/designSystem/searchBox";
 import { ESelect } from "@/shared-app/designSystem/select";
-import { EButton } from "@/shared-app/designSystem/button";
-import { RotateCcw, Crown, Award, Users } from "lucide-react";
+import { Crown, Award, Users } from "lucide-react";
 
 interface CustomerFilterBarProps {
   currentTier: CustomerTier | "all";
@@ -21,7 +20,6 @@ interface CustomerFilterBarProps {
     active: number;
     blocked: number;
   };
-  onResetMockData: () => void;
 }
 
 export const CustomerFilterBar: React.FC<CustomerFilterBarProps> = ({
@@ -32,7 +30,6 @@ export const CustomerFilterBar: React.FC<CustomerFilterBarProps> = ({
   searchTerm,
   onSearchChange,
   counts,
-  onResetMockData,
 }) => {
   const tierTabs: {
     id: CustomerTier | "all";
@@ -107,18 +104,6 @@ export const CustomerFilterBar: React.FC<CustomerFilterBarProps> = ({
           />
         </div>
 
-        {/* Reset Mock */}
-        <div className="sm:col-span-3 lg:col-span-2 flex justify-end">
-          <EButton
-            variant="secondary"
-            size="md"
-            onClick={onResetMockData}
-            icon={<RotateCcw className="w-3.5 h-3.5" />}
-            className="w-full text-xs justify-center"
-          >
-            ریست دیتای CRM
-          </EButton>
-        </div>
       </div>
     </div>
   );

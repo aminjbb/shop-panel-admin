@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import type {
   HomepageSection,
   HeroBannerSection,
@@ -7,7 +8,10 @@ import type {
   BannerGridSection,
   PreviewDeviceMode,
 } from "@/types/homepage";
-import type { Product } from "@/types/product";
+import type { Product } from "@/entities/product";
+import { storefrontApi } from "@/entities/storefront";
+import { ApiError } from "@/config/api";
+import { toPublishedSectionViewModel } from "../models/homepageMapper";
 import {
   X,
   Monitor,
@@ -41,6 +45,7 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
   catalogProducts,
 }) => {
   const [deviceMode, setDeviceMode] = useState<PreviewDeviceMode>("desktop");
+  const [previewMode, setPreviewMode] = useState<"draft" | "published">("draft");
   const [activeSlideIndex, setActiveSlideIndex] = useState<number>(0);
   const [timeRemaining, setTimeRemaining] = useState<{
     hours: number;
@@ -48,8 +53,18 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
     seconds: number;
   }>({ hours: 14, minutes: 35, seconds: 20 });
 
+  const publishedQuery = useQuery({
+    queryKey: ["storefront", "homepage"],
+    queryFn: ({ signal }) => storefrontApi.getHomepage(signal),
+    enabled: isOpen && previewMode === "published",
+    retry: false,
+  });
+  const previewSections = previewMode === "published"
+    ? (publishedQuery.data?.sections ?? []).map(toPublishedSectionViewModel)
+    : sections;
+
   // Only render active sections in preview!
-  const activeSections = sections
+  const activeSections = previewSections
     .filter((s) => s.isActive)
     .sort((a, b) => a.displayOrder - b.displayOrder);
 
@@ -115,6 +130,10 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
               </span>
             </h3>
           </div>
+          <div className="hidden sm:flex rounded-lg border border-slate-700 p-0.5">
+            <button type="button" onClick={() => setPreviewMode("draft")} className={`px-2 py-1 text-[10px] rounded-md ${previewMode === "draft" ? "bg-indigo-600 text-white" : "text-slate-400"}`}>Draft</button>
+            <button type="button" onClick={() => setPreviewMode("published")} className={`px-2 py-1 text-[10px] rounded-md ${previewMode === "published" ? "bg-indigo-600 text-white" : "text-slate-400"}`}>Published</button>
+          </div>
         </div>
 
         {/* Device Switcher Controls */}
@@ -159,6 +178,12 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
 
       {/* Main Preview Viewport */}
       <div className="flex-1 overflow-y-auto custom-scrollbar p-3 sm:p-6 flex items-start justify-center bg-slate-950">
+        {previewMode === "published" && publishedQuery.isLoading ? (
+          <div className="py-20 text-sm text-slate-400">در حال دریافت نسخه منتشرشده...</div>
+        ) : previewMode === "published" && publishedQuery.error instanceof ApiError && publishedQuery.error.status === 404 ? (
+          <div className="py-20 text-sm text-slate-400">هنوز نسخه‌ای از صفحه اصلی منتشر نشده است.</div>
+        ) : (
+        <>
         {deviceMode === "desktop" ? (
           /* =========================================================================
              DESKTOP PREVIEW CONTAINER
@@ -317,10 +342,10 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
                               </h4>
                               <div className="flex items-center justify-between mt-2">
                                 <span className="text-xs font-mono font-bold text-rose-400">
-                                  {(prod.price * 0.7).toLocaleString("fa-IR")} ت
+                                  {(Number(prod.price) * 0.7).toLocaleString("fa-IR")} ت
                                 </span>
                                 <span className="text-[11px] font-mono line-through text-slate-500">
-                                  {prod.price.toLocaleString("fa-IR")}
+                                  {Number(prod.price).toLocaleString("fa-IR")}
                                 </span>
                               </div>
                             </div>
@@ -428,14 +453,14 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
 
                             <div className="mt-3">
                               <span className="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400">
-                                {prod.categoryLabel || prod.category}
+                                {prod.category}
                               </span>
                               <h4 className="text-xs font-bold text-slate-100 mt-1 truncate">
                                 {prod.title}
                               </h4>
                               <div className="flex items-center justify-between mt-3">
                                 <span className="text-xs font-mono font-bold text-emerald-400">
-                                  {prod.price.toLocaleString("fa-IR")} تومان
+                                  {Number(prod.price).toLocaleString("fa-IR")} تومان
                                 </span>
                                 <button className="p-1.5 rounded-lg bg-indigo-600/20 text-indigo-400 hover:bg-indigo-600 hover:text-white transition-colors">
                                   <ShoppingBag className="w-3.5 h-3.5" />
@@ -549,7 +574,7 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
                                 {prod.title}
                               </p>
                               <p className="text-[10px] font-mono text-rose-300 font-bold">
-                                {(prod.price * 0.7).toLocaleString("fa-IR")} ت
+                                {(Number(prod.price) * 0.7).toLocaleString("fa-IR")} ت
                               </p>
                             </div>
                           ))}
@@ -628,7 +653,7 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
                                 {prod.title}
                               </p>
                               <p className="text-[10px] font-mono text-emerald-400 font-bold mt-1">
-                                {prod.price.toLocaleString("fa-IR")} تومان
+                                {Number(prod.price).toLocaleString("fa-IR")} تومان
                               </p>
                             </div>
                           ))}
@@ -645,6 +670,8 @@ export const LivePreviewDrawer: React.FC<LivePreviewDrawerProps> = ({
               <div className="w-32 h-1 bg-slate-700 rounded-full" />
             </div>
           </div>
+        )}
+        </>
         )}
       </div>
     </div>

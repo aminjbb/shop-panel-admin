@@ -1,4 +1,4 @@
-import type { ProductSeoData } from "@/types/product";
+import type { ProductSeoData } from "../types";
 
 /**
  * Convert any string (Persian/English/Mixed) to a clean, URL-friendly slug

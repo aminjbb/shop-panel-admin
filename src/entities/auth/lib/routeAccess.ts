@@ -5,8 +5,8 @@ const ROUTES_BY_ROLE: Record<AdminRole, ReadonlySet<string>> = {
     "dashboard", "homepage", "products", "categories", "orders", "customers",
     "coupons", "feedback", "support", "settings", "staff",
   ]),
-  inventory_manager: new Set(["dashboard", "homepage", "products", "categories", "coupons"]),
-  support_agent: new Set(["dashboard", "customers", "feedback", "support"]),
+  inventory_manager: new Set(["dashboard", "homepage", "products", "categories", "orders", "coupons"]),
+  support_agent: new Set(["dashboard", "orders", "customers", "feedback", "support"]),
 };
 
 export function canAccessAdminRoute(role: AdminRole, route: string): boolean {

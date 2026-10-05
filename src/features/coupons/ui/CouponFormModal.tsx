@@ -20,6 +20,7 @@ interface CouponFormModalProps {
   onSubmitCreate: (payload: CreateCouponPayload) => Promise<void>;
   onSubmitUpdate: (id: string, payload: UpdateCouponPayload) => Promise<void>;
   isLoading?: boolean;
+  categoryOptions: { value: string; label: string }[];
 }
 
 export const CouponFormModal: React.FC<CouponFormModalProps> = ({
@@ -30,6 +31,7 @@ export const CouponFormModal: React.FC<CouponFormModalProps> = ({
   onSubmitCreate,
   onSubmitUpdate,
   isLoading = false,
+  categoryOptions,
 }) => {
   const [code, setCode] = useState("");
   const [type, setType] = useState<CouponType>("percentage");
@@ -39,7 +41,7 @@ export const CouponFormModal: React.FC<CouponFormModalProps> = ({
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
   const [status, setStatus] = useState<CouponStatus>("active");
-  const [applicableCategory, setApplicableCategory] = useState("همه کالاها");
+  const [applicableCategory, setApplicableCategory] = useState("");
   const [description, setDescription] = useState("");
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
@@ -53,7 +55,7 @@ export const CouponFormModal: React.FC<CouponFormModalProps> = ({
       setStartDate(coupon.startDate ? coupon.startDate.split("T")[0] : "");
       setEndDate(coupon.endDate ? coupon.endDate.split("T")[0] : "");
       setStatus(coupon.status);
-      setApplicableCategory(coupon.applicableCategory || "همه کالاها");
+      setApplicableCategory(coupon.applicableCategory || "");
       setDescription(coupon.description || "");
     } else {
       // Default initial for Create
@@ -69,7 +71,7 @@ export const CouponFormModal: React.FC<CouponFormModalProps> = ({
       setStartDate(today);
       setEndDate(nextMonth);
       setStatus("active");
-      setApplicableCategory("همه کالاها");
+      setApplicableCategory("");
       setDescription("");
     }
     setErrors({});
@@ -138,12 +140,9 @@ export const CouponFormModal: React.FC<CouponFormModalProps> = ({
     }
   };
 
-  const categoryOptions = [
-    { value: "همه کالاها", label: "همه محصولات و دسته‌بندی‌ها" },
-    { value: "صوتی و تصویری", label: "صوتی و هدفون" },
-    { value: "ساعت هوشمند", label: "ساعت و گجت‌های پوشیدنی" },
-    { value: "شارژر و پاوربانک", label: "پاوربانک و کابل" },
-    { value: "لوازم جانبی", label: "لوازم جانبی و پایه‌ها" },
+  const selectableCategories = [
+    { value: "", label: "همه محصولات و دسته‌بندی‌ها" },
+    ...categoryOptions,
   ];
 
   return (
@@ -315,7 +314,7 @@ export const CouponFormModal: React.FC<CouponFormModalProps> = ({
             <ESelect
               value={applicableCategory}
               onValueChange={(val) => setApplicableCategory(val)}
-              options={categoryOptions}
+              options={selectableCategories}
             />
           </div>
 

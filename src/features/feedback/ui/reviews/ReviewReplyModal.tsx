@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import type { ProductReview } from "@/types/feedback";
+import type { ProductReview } from "../../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import EButton from "@/shared-app/designSystem/button";
 import ETextField from "@/shared-app/designSystem/textField";

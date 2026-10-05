@@ -1,5 +1,5 @@
 import React from "react";
-import type { Product } from "@/types/product";
+import type { Product } from "../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import EButton from "@/shared-app/designSystem/button";
 import { AlertTriangle, Trash2 } from "lucide-react";

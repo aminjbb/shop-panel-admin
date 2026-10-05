@@ -19,6 +19,7 @@ interface CouponCardProps {
   onEdit: (coupon: DiscountCoupon) => void;
   onDelete: (couponId: string) => void;
   onToggleStatus: (couponId: string) => void;
+  canManage?: boolean;
 }
 
 export const CouponCard: React.FC<CouponCardProps> = ({
@@ -26,6 +27,7 @@ export const CouponCard: React.FC<CouponCardProps> = ({
   onEdit,
   onDelete,
   onToggleStatus,
+  canManage = true,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -50,7 +52,7 @@ export const CouponCard: React.FC<CouponCardProps> = ({
   const statusInfo = getStatusInfo(coupon.status);
   const usagePercent = Math.min(
     100,
-    Math.round((coupon.usedCount / coupon.usageLimit) * 100)
+    coupon.usageLimit ? Math.round((coupon.usedCount / coupon.usageLimit) * 100) : 0
   );
   const isPercentage = coupon.type === "percentage";
 
@@ -89,6 +91,7 @@ export const CouponCard: React.FC<CouponCardProps> = ({
           <ESwitch
             checked={coupon.status === "active"}
             onCheckedChange={() => onToggleStatus(coupon.id)}
+            disabled={!canManage}
           />
           <ActivationBage
             label={statusInfo.label}
@@ -136,7 +139,7 @@ export const CouponCard: React.FC<CouponCardProps> = ({
       {/* 3. Usage Bar */}
       <div className="p-2.5 rounded-xl bg-slate-950/80 border border-slate-800/80 flex flex-col gap-1.5">
         <div className="flex items-center justify-between text-[11px]">
-          <span className="text-slate-400">مصرف شده: {coupon.usedCount} از {coupon.usageLimit}</span>
+          <span className="text-slate-400">مصرف شده: {coupon.usedCount} از {coupon.usageLimit ?? "نامحدود"}</span>
           <span className="text-indigo-400 font-bold font-mono">%{usagePercent}</span>
         </div>
         <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
@@ -160,7 +163,7 @@ export const CouponCard: React.FC<CouponCardProps> = ({
           <span>اعتبار تا: {new Date(coupon.endDate).toLocaleDateString("fa-IR")}</span>
         </div>
 
-        <div className="flex items-center gap-2">
+        {canManage && <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={() => onEdit(coupon)}
@@ -177,7 +180,7 @@ export const CouponCard: React.FC<CouponCardProps> = ({
           >
             <Trash2 className="w-3.5 h-3.5" />
           </button>
-        </div>
+        </div>}
       </div>
     </div>
   );

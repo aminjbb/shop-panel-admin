@@ -1,49 +1,32 @@
-import { useState, useEffect, useCallback } from "react";
-import type { DashboardMetrics, TimeRangeFilter } from "@/types/analytics";
-import { mockAnalyticsService } from "../api/mockAnalyticsService";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import { analyticsApi } from "@/entities/analytics";
+import type { TimeRangeFilter } from "@/types/analytics";
 import useToastStore from "@/shared-app/designSystem/toast/store";
+import { toAnalyticsViewModel } from "../models/analyticsMapper";
 
 export function useAnalytics() {
   const [timeRange, setTimeRange] = useState<TimeRangeFilter>("30d");
-  const [metrics, setMetrics] = useState<DashboardMetrics | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  const fetchMetrics = useCallback(async (range: TimeRangeFilter) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const data = await mockAnalyticsService.getDashboardSummary(range);
-      setMetrics(data);
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : "خطا در دریافت شاخص‌های تحلیلی";
-      setError(msg);
-      useToastStore.error(msg);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+  const query = useQuery({
+    queryKey: ["analytics", "dashboard", timeRange],
+    queryFn: ({ signal }) => analyticsApi.getDashboard({ timeRange }, signal),
+    select: (dashboard) => toAnalyticsViewModel(dashboard, timeRange),
+  });
 
   useEffect(() => {
-    fetchMetrics(timeRange);
-  }, [fetchMetrics, timeRange]);
-
-  const handleTimeRangeChange = (range: TimeRangeFilter) => {
-    setTimeRange(range);
-  };
-
-  const handleRefresh = () => {
-    fetchMetrics(timeRange);
-    useToastStore.info("شاخص‌های داشبورد به‌روزرسانی شدند.");
-  };
+    if (query.error) useToastStore.error("خطا در دریافت شاخص‌های تحلیلی");
+  }, [query.error]);
 
   return {
     timeRange,
-    metrics,
-    isLoading,
-    error,
-    handleTimeRangeChange,
-    handleRefresh,
+    metrics: query.data ?? null,
+    isLoading: query.isLoading || query.isFetching,
+    error: query.error instanceof Error ? query.error.message : null,
+    handleTimeRangeChange: setTimeRange,
+    handleRefresh: async () => {
+      const result = await query.refetch();
+      if (!result.error) useToastStore.info("شاخص‌های داشبورد به‌روزرسانی شدند.");
+    },
   };
 }
 

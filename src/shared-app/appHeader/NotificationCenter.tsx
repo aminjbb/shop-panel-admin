@@ -12,10 +12,11 @@ import {
   Inbox,
 } from "lucide-react";
 import useNotifications from "@/features/feedback/hooks/useNotifications";
-import type { AdminNotification, NotificationType } from "@/types/feedback";
+import type { AdminNotification, NotificationType } from "@/features/feedback/types";
 import type { AppRoute } from "@/shared-app/appSidebar/types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import EButton from "@/shared-app/designSystem/button";
+import AllertMassage from "@/shared-app/allertMassage";
 
 export interface NotificationCenterProps {
   onNavigate: (route: AppRoute) => void;
@@ -28,6 +29,8 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onNaviga
     markAsRead,
     markAllAsRead,
     deleteNotification,
+    isLoading,
+    error,
   } = useNotifications();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -127,6 +130,8 @@ export const NotificationCenter: React.FC<NotificationCenterProps> = ({ onNaviga
   );
 
   const renderNotificationList = () => {
+    if (error) return <AllertMassage title="خطا در دریافت اعلان‌ها" message={error} variant="danger" className="m-3" />;
+    if (isLoading) return <div className="py-10 text-center text-xs text-slate-400">در حال دریافت اعلان‌ها...</div>;
     if (filteredNotifications.length === 0) {
       return (
         <div className="py-12 px-4 text-center space-y-2">

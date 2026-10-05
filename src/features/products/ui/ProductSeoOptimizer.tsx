@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import type { ProductSeoData } from "@/types/product";
+import type { ProductSeoData } from "../types";
 import {
   slugify,
   calculateSeoScore,

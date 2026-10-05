@@ -20,6 +20,7 @@ export interface OrderTableProps {
   onOpenStatusDialog: (order: Order) => void;
   onPrintInvoice: (order: Order) => void;
   onCopyTracking?: (code: string) => void;
+  canUpdateFulfillment?: boolean;
   className?: string;
 }
 
@@ -29,6 +30,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
   onOpenStatusDialog,
   onPrintInvoice,
   onCopyTracking,
+  canUpdateFulfillment = true,
   className = "",
 }) => {
   const formatToman = (amount: number) => {
@@ -194,7 +196,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                       فاکتور
                     </EButton>
 
-                    <EButton
+                    {canUpdateFulfillment && <EButton
                       variant="outlined"
                       size="sm"
                       onClick={() => onOpenStatusDialog(order)}
@@ -203,7 +205,7 @@ export const OrderTable: React.FC<OrderTableProps> = ({
                       className="px-2.5 py-1 text-xs"
                     >
                       وضعیت
-                    </EButton>
+                    </EButton>}
 
                     <button
                       type="button"

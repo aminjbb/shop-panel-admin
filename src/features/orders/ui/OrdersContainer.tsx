@@ -1,5 +1,6 @@
 import React from "react";
 import { useOrders } from "../hooks/useOrders";
+import { useAuth } from "@/features/auth/context/AuthContext";
 import OrderStatCards from "./OrderStatCards";
 import OrderFilterBar from "./OrderFilterBar";
 import OrderTable from "./OrderTable";
@@ -10,6 +11,7 @@ import OrderPrintModal from "./OrderPrintModal";
 import OrderSkeletonList from "./OrderSkeletonList";
 import HeaderPages from "@/shared-app/headerPages";
 import EmptyState from "@/shared-app/emptyState";
+import AllertMassage from "@/shared-app/allertMassage";
 import { EPagination } from "@/shared-app/designSystem/pagination";
 import { EButton } from "@/shared-app/designSystem/button";
 import {
@@ -22,12 +24,14 @@ import {
 } from "lucide-react";
 
 export const OrdersContainer: React.FC = () => {
+  const { user } = useAuth();
+  const canUpdateFulfillment = user?.role !== "support_agent";
   const {
     filters,
     data,
     isLoading,
     isMutating,
-    isResetting,
+    error,
     selectedOrderForInvoice,
     isInvoiceModalOpen,
     selectedOrderForStatus,
@@ -45,7 +49,6 @@ export const OrdersContainer: React.FC = () => {
     handleOpenPrintModal,
     handleClosePrintModal,
     handleUpdateFulfillment,
-    handleResetMockData,
     fetchOrders,
   } = useOrders();
 
@@ -65,7 +68,7 @@ export const OrdersContainer: React.FC = () => {
           <EButton
             variant="secondary"
             size="md"
-            onClick={fetchOrders}
+            onClick={() => { void fetchOrders(); }}
             isLoading={isLoading}
             icon={<RefreshCw className="w-4 h-4" />}
             className="text-xs"
@@ -90,12 +93,12 @@ export const OrdersContainer: React.FC = () => {
         searchTerm={filters.search || ""}
         onSearchChange={handleSearch}
         counts={data.counts}
-        onResetMockData={handleResetMockData}
-        isResetting={isResetting}
       />
 
       {/* 4. Main Content Area */}
-      {isLoading ? (
+      {error ? (
+        <AllertMassage title="خطا در دریافت سفارش‌ها" message={error} variant="danger" />
+      ) : isLoading ? (
         <OrderSkeletonList />
       ) : data.orders.length === 0 ? (
         /* Empty State */
@@ -105,7 +108,7 @@ export const OrdersContainer: React.FC = () => {
             description={
               isFiltered
                 ? "لطفاً عبارت جستجو را تغییر دهید یا فیلتر وضعیت را به «همه سفارش‌ها» تغییر دهید."
-                : "برای ایجاد سفارش‌های آزمایشی، می‌توانید از دکمه ریست دیتای ماک استفاده کنید."
+                : "پس از ثبت سفارش در فروشگاه، اطلاعات آن در این بخش نمایش داده می‌شود."
             }
             icon={isFiltered ? <FilterX className="w-10 h-10 text-slate-500" /> : <Inbox className="w-10 h-10 text-indigo-400" />}
             action={
@@ -123,17 +126,7 @@ export const OrdersContainer: React.FC = () => {
                 >
                   پاکسازی فیلترها
                 </EButton>
-              ) : (
-                <EButton
-                  variant="primary"
-                  size="md"
-                  onClick={handleResetMockData}
-                  icon={<RotateCcw className="w-4 h-4" />}
-                  className="text-xs mt-2"
-                >
-                  بارگذاری مجدد سفارش‌های نمونه
-                </EButton>
-              )
+              ) : undefined
             }
           />
         </div>
@@ -146,6 +139,7 @@ export const OrdersContainer: React.FC = () => {
             onOpenInvoice={handleOpenInvoice}
             onOpenStatusDialog={handleOpenStatusDialog}
             onPrintInvoice={handleOpenPrintModal}
+            canUpdateFulfillment={canUpdateFulfillment}
           />
 
           {/* Mobile Cards List */}
@@ -157,6 +151,7 @@ export const OrdersContainer: React.FC = () => {
                 onOpenInvoice={handleOpenInvoice}
                 onOpenStatusDialog={handleOpenStatusDialog}
                 onPrintInvoice={handleOpenPrintModal}
+                canUpdateFulfillment={canUpdateFulfillment}
               />
             ))}
           </div>
@@ -189,6 +184,7 @@ export const OrdersContainer: React.FC = () => {
         onClose={handleCloseInvoice}
         onOpenStatusDialog={handleOpenStatusDialog}
         onPrintInvoice={handleOpenPrintModal}
+        canUpdateFulfillment={canUpdateFulfillment}
       />
 
       {/* Fulfillment Status Change Dialog */}

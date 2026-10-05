@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import type { ProductReview, ReviewStatus } from "@/types/feedback";
+import type { ProductReview, ReviewStatus } from "../../types";
 import useReviews from "../../hooks/useReviews";
 import ReviewTable from "./ReviewTable";
 import ReviewCard from "./ReviewCard";
@@ -10,6 +10,7 @@ import ESelect from "@/shared-app/designSystem/select";
 import EPagination from "@/shared-app/designSystem/pagination";
 import EmptyState from "@/shared-app/emptyState";
 import EButton from "@/shared-app/designSystem/button";
+import AllertMassage from "@/shared-app/allertMassage";
 import {
   MessageSquare,
   Clock,
@@ -29,6 +30,7 @@ export const ReviewsContainer: React.FC = () => {
     counts,
     isLoading,
     isUpdating,
+    error,
     params,
     updateStatus,
     replyToReview,
@@ -37,7 +39,6 @@ export const ReviewsContainer: React.FC = () => {
     setStatusFilter,
     setRatingFilter,
     setSearch,
-    setSortBy,
     refetch,
   } = useReviews();
 
@@ -68,13 +69,6 @@ export const ReviewsContainer: React.FC = () => {
     { value: "3", label: "⭐️⭐️⭐️ ۳ ستاره (متوسط)" },
     { value: "2", label: "⭐️⭐️ ۲ ستاره (ضعیف)" },
     { value: "1", label: "⭐️ ۱ ستاره (خیلی ضعیف)" },
-  ];
-
-  const sortOptions = [
-    { value: "newest", label: "جدیدترین نظرات" },
-    { value: "oldest", label: "قدیمی‌ترین نظرات" },
-    { value: "highest_rating", label: "بالاترین امتیاز" },
-    { value: "lowest_rating", label: "پایین‌ترین امتیاز" },
   ];
 
   return (
@@ -173,15 +167,6 @@ export const ReviewsContainer: React.FC = () => {
             />
           </div>
 
-          <div className="sm:col-span-3">
-            <ESelect
-              value={params.sortBy || "newest"}
-              options={sortOptions}
-              onValueChange={(val) => setSortBy(val as any)}
-              placeholder="مرتب‌سازی"
-            />
-          </div>
-
           <div className="sm:col-span-1 flex justify-end">
             <EButton
               variant="secondary"
@@ -196,7 +181,9 @@ export const ReviewsContainer: React.FC = () => {
       </div>
 
       {/* 3. Review Content Area (Responsive Desktop Table / Mobile Cards) */}
-      {isLoading ? (
+      {error ? (
+        <AllertMassage title="خطا در دریافت نظرات" message={error} variant="danger" />
+      ) : isLoading ? (
         <div className="py-16 text-center space-y-3">
           <div className="w-8 h-8 rounded-full border-2 border-indigo-500 border-t-transparent animate-spin mx-auto" />
           <p className="text-xs text-slate-400">در حال دریافت نظرات و بازخوردها...</p>

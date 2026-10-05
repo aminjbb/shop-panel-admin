@@ -16,6 +16,7 @@ export const HeaderUserMenu: React.FC<HeaderUserMenuProps> = ({
   const { updateAvatar } = useAuth();
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const [tempAvatar, setTempAvatar] = useState(user.avatarUrl || "");
+  const [avatarFile, setAvatarFile] = useState<File | null>(null);
   const [isSavingAvatar, setIsSavingAvatar] = useState(false);
 
   const getRoleLabel = () => {
@@ -46,20 +47,19 @@ export const HeaderUserMenu: React.FC<HeaderUserMenuProps> = ({
 
   const handleOpenAvatarModal = () => {
     setTempAvatar(user.avatarUrl || "");
+    setAvatarFile(null);
     setIsAvatarModalOpen(true);
   };
 
   const handleSaveAvatar = async () => {
-    if (updateAvatar) {
+    if (avatarFile) {
       setIsSavingAvatar(true);
       try {
-        await updateAvatar(tempAvatar);
+        await updateAvatar(avatarFile);
         setIsAvatarModalOpen(false);
       } finally {
         setIsSavingAvatar(false);
       }
-    } else {
-      setIsAvatarModalOpen(false);
     }
   };
 
@@ -125,7 +125,9 @@ export const HeaderUserMenu: React.FC<HeaderUserMenuProps> = ({
             label="تصویر پرسنلی شما"
             value={tempAvatar}
             onChange={(val) => setTempAvatar(val)}
+            onFileChange={setAvatarFile}
             variant="avatar"
+            allowUrlFallback={false}
             helperText="فرمت‌های مجاز: JPG, PNG, WEBP. حداکثر حجم: ۵ مگابایت"
           />
 
@@ -141,6 +143,7 @@ export const HeaderUserMenu: React.FC<HeaderUserMenuProps> = ({
               variant="primary"
               size="sm"
               onClick={handleSaveAvatar}
+              disabled={!avatarFile}
               isLoading={isSavingAvatar}
               icon={<Check className="w-4 h-4" />}
             >

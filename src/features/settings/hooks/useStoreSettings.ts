@@ -1,53 +1,34 @@
-import { useState, useEffect, useCallback } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { storeSettingsApi } from "@/entities/store-settings";
 import type { StoreSettings } from "@/types/settings";
-import mockSettingsService from "../api/mockSettingsService";
 import useToastStore from "@/shared-app/designSystem/toast/store";
+import { mapStoreSettings, toStoreSettingsInput } from "../models/settingsMappers";
 
 export function useStoreSettings() {
-  const [settings, setSettings] = useState<StoreSettings | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSaving, setIsSaving] = useState(false);
-
-  const fetchSettings = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const data = await mockSettingsService.getStoreSettings();
-      setSettings(data);
-    } catch (err: unknown) {
-      const errMsg = err instanceof Error ? err.message : "خطا در دریافت تنظیمات فروشگاه";
-      useToastStore.error(errMsg);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchSettings();
-  }, [fetchSettings]);
-
-  const saveSettings = async (newSettings: StoreSettings) => {
-    setIsSaving(true);
-    try {
-      const updated = await mockSettingsService.updateStoreSettings(newSettings);
-      setSettings(updated);
-      useToastStore.success("تنظیمات و اطلاعات فروشگاه با موفقیت ذخیره شد.");
-      return { success: true };
-    } catch (err: unknown) {
-      const errMsg = err instanceof Error ? err.message : "خطا در ذخیره‌سازی تنظیمات";
-      useToastStore.error(errMsg);
-      return { success: false, error: errMsg };
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
+  const queryClient = useQueryClient();
+  const query = useQuery({
+    queryKey: ["store-settings", "detail"],
+    queryFn: ({ signal }) => storeSettingsApi.get(signal),
+    select: mapStoreSettings,
+  });
+  const mutation = useMutation({
+    mutationFn: (settings: StoreSettings) => storeSettingsApi.update(toStoreSettingsInput(settings)),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["store-settings"] });
+      useToastStore.success("تنظیمات فروشگاه با موفقیت ذخیره شد.");
+    },
+    onError: (error) => useToastStore.error(error instanceof Error ? error.message : "خطا در ذخیره تنظیمات"),
+  });
   return {
-    settings,
-    isLoading,
-    isSaving,
-    saveSettings,
-    refetch: fetchSettings,
+    settings: query.data ?? null,
+    isLoading: query.isLoading,
+    isSaving: mutation.isPending,
+    error: query.error instanceof Error ? query.error.message : null,
+    saveSettings: async (settings: StoreSettings) => {
+      try { await mutation.mutateAsync(settings); return { success: true }; }
+      catch (error) { return { success: false, error: error instanceof Error ? error.message : "خطا در ذخیره تنظیمات" }; }
+    },
+    refetch: query.refetch,
   };
 }
-
 export default useStoreSettings;

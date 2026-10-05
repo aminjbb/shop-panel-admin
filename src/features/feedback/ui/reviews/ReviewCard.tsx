@@ -1,5 +1,5 @@
 import React from "react";
-import type { ProductReview, ReviewStatus } from "@/types/feedback";
+import type { ProductReview, ReviewStatus } from "../../types";
 import ReviewStatusBadge from "./ReviewStatusBadge";
 import ReviewRatingStars from "./ReviewRatingStars";
 import EButton from "@/shared-app/designSystem/button";
@@ -45,12 +45,12 @@ export const ReviewCard: React.FC<ReviewCardProps> = ({
     <div className="p-4 rounded-2xl bg-slate-900/60 border border-slate-800 space-y-3.5 hover:border-slate-700/80 transition-all">
       {/* 1. Header: Product thumb + title + date */}
       <div className="flex items-start gap-3">
-        <img
+        {review.productThumbnail ? <img
           src={review.productThumbnail}
           alt={review.productTitle}
           className="w-14 h-14 rounded-xl object-cover border border-slate-800 bg-slate-950 shrink-0"
           loading="lazy"
-        />
+        /> : <div className="w-14 h-14 rounded-xl border border-slate-800 bg-slate-950 shrink-0 flex items-center justify-center"><MessageSquare className="w-5 h-5 text-slate-500" /></div>}
         <div className="space-y-1 flex-1 min-w-0">
           <h4 className="font-semibold text-white text-xs leading-snug line-clamp-2">
             {review.productTitle}

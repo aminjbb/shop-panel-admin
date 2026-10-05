@@ -125,3 +125,21 @@ filter count محلی حدس زده نشود.
 
 ProductsPage و CategoriesPage بدون mock کار کنند و تمام ۱۸ endpoint این sprint
 از public API entityها مصرف شوند.
+
+## وضعیت پیاده‌سازی frontend
+
+- [x] هر ۷ endpoint محصول در `entities/product` با request/response type مستقل تعریف شد.
+- [x] هر ۱۱ endpoint دسته‌بندی در `entities/category` با typeهای مستقل تعریف شد.
+- [x] typeهای wire از ViewModelهای Product و Category جدا و mapperهای دوطرفه اضافه شدند.
+- [x] ProductsPage به list/detail/create/update/archive/stock/slug-check واقعی متصل شد.
+- [x] CategoriesPage به list/detail/tree/stats/create/update/archive/toggle/reorder/slug-check واقعی متصل شد.
+- [x] category options از API دریافت می‌شود و constantهای hardcoded حذف شدند.
+- [x] جستجو debounce، لغو request قبلی، mapping فیلتر `all` و sort wire پیاده‌سازی شد.
+- [x] upload تصویر و تبدیل `MediaAsset.id` به `imageMediaId` پیش از ذخیره محصول اضافه شد.
+- [x] stock mutation با `Idempotency-Key`، صف مستقل هر variant، rollback و refetch تعارض‌ها پیاده‌سازی شد.
+- [x] mock serviceها و resetهای Product/Category از runtime و repository حذف شدند.
+- [x] TypeScript check و production build با موفقیت اجرا شد.
+- [ ] تست end-to-end سناریوهای این سند به backend در حال اجرا نیاز دارد.
+
+> مبنای ورودی تصویر، قرارداد تجمیع‌شده فعلی پروژه است: override اسپرینت ۰۶
+> (`imageMediaId`) بر نمونه قدیمی‌تر `image` در handoff اولیه اسپرینت ۰۲ اولویت دارد.

@@ -1,5 +1,5 @@
 import React from "react";
-import type { StockStatus } from "@/types/product";
+import type { StockStatus } from "../types";
 import ActivationBage from "@/shared-app/activationbage";
 
 export interface ProductStatusBadgeProps {

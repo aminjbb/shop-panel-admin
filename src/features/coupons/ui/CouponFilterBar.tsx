@@ -3,7 +3,7 @@ import type { CouponStatus, CouponType } from "@/types/crm";
 import { SearchBox } from "@/shared-app/designSystem/searchBox";
 import { ESelect } from "@/shared-app/designSystem/select";
 import { EButton } from "@/shared-app/designSystem/button";
-import { Plus, RotateCcw, Tag, CheckCircle2, Clock, Ban } from "lucide-react";
+import { Plus, Tag, CheckCircle2, Clock, Ban } from "lucide-react";
 
 interface CouponFilterBarProps {
   currentStatus: CouponStatus | "all";
@@ -19,7 +19,7 @@ interface CouponFilterBarProps {
     disabled: number;
   };
   onOpenCreate: () => void;
-  onResetMockData: () => void;
+  canManage?: boolean;
 }
 
 export const CouponFilterBar: React.FC<CouponFilterBarProps> = ({
@@ -31,7 +31,7 @@ export const CouponFilterBar: React.FC<CouponFilterBarProps> = ({
   onSearchChange,
   counts,
   onOpenCreate,
-  onResetMockData,
+  canManage = true,
 }) => {
   const statusTabs: {
     id: CouponStatus | "all";
@@ -86,7 +86,7 @@ export const CouponFilterBar: React.FC<CouponFilterBarProps> = ({
         </div>
 
         {/* Create Coupon Button */}
-        <EButton
+        {canManage && <EButton
           variant="primary"
           size="md"
           onClick={onOpenCreate}
@@ -94,10 +94,10 @@ export const CouponFilterBar: React.FC<CouponFilterBarProps> = ({
           className="text-xs shrink-0 justify-center shadow-md shadow-indigo-600/20"
         >
           ایجاد کد تخفیف جدید
-        </EButton>
+        </EButton>}
       </div>
 
-      {/* Bottom Row: Search Box, Type Selector, Reset Mock */}
+      {/* Bottom Row: Search Box and Type Selector */}
       <div className="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
         {/* Search */}
         <div className="sm:col-span-6 lg:col-span-7">
@@ -119,18 +119,6 @@ export const CouponFilterBar: React.FC<CouponFilterBarProps> = ({
           />
         </div>
 
-        {/* Reset Mock */}
-        <div className="sm:col-span-3 lg:col-span-2 flex justify-end">
-          <EButton
-            variant="secondary"
-            size="md"
-            onClick={onResetMockData}
-            icon={<RotateCcw className="w-3.5 h-3.5" />}
-            className="w-full text-xs justify-center"
-          >
-            ریست داده‌ها
-          </EButton>
-        </div>
       </div>
     </div>
   );

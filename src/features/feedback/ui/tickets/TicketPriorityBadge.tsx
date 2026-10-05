@@ -1,5 +1,5 @@
 import React from "react";
-import type { TicketPriority } from "@/types/feedback";
+import type { TicketPriority } from "../../types";
 import { AlertCircle, Flame, ArrowUpRight, ArrowDownRight } from "lucide-react";
 
 export interface TicketPriorityBadgeProps {

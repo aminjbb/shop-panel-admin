@@ -6,9 +6,8 @@ import type {
   ProductFormErrors,
   ProductVariant,
   ProductSeoData,
-} from "@/types/product";
-import { PRODUCT_CATEGORIES } from "../api/mockProductService";
-import { mockCategoryService } from "@/features/categories/api/mockCategoryService";
+  CategoryOption,
+} from "../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import ETextField from "@/shared-app/designSystem/textField";
 import ESelect from "@/shared-app/designSystem/select";
@@ -25,6 +24,7 @@ export interface ProductFormModalProps {
   product?: Product | null;
   onSave: (formData: ProductFormData, editId?: string) => Promise<void>;
   isLoading?: boolean;
+  categoryOptions: CategoryOption[];
 }
 
 const DEFAULT_IMAGE_OPTIONS = [
@@ -42,6 +42,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
   product,
   onSave,
   isLoading = false,
+  categoryOptions,
 }) => {
   const isEditing = Boolean(product);
   const [activeTab, setActiveTab] = useState<"general" | "seo">("general");
@@ -49,10 +50,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
   const [formData, setFormData] = useState<ProductFormData>({
     title: "",
     sku: "",
-    category: "electronics",
+    category: "",
     price: 0,
     costPrice: 0,
     image: DEFAULT_IMAGE_OPTIONS[0].url,
+    imageMediaId: null,
+    imageFile: null,
     description: "",
     variants: [],
     seo: generateDefaultSeo("", "", DEFAULT_IMAGE_OPTIONS[0].url),
@@ -72,6 +75,8 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
         price: product.price,
         costPrice: product.costPrice || 0,
         image: product.image,
+        imageMediaId: product.imageMediaId,
+        imageFile: null,
         description: product.description || "",
         variants: product.variants ? [...product.variants] : [],
         seo: productSeo,
@@ -83,10 +88,12 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
       setFormData({
         title: "",
         sku: initSku,
-        category: "electronics",
+        category: categoryOptions[0]?.id ?? "",
         price: 1500000,
         costPrice: 1000000,
-        image: DEFAULT_IMAGE_OPTIONS[0].url,
+        image: "",
+        imageMediaId: null,
+        imageFile: null,
         description: "",
         variants: [
           {
@@ -103,7 +110,7 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
     }
     setActiveTab("general");
     setErrors({});
-  }, [product, isOpen]);
+  }, [product, isOpen, categoryOptions]);
 
   // Real-time SEO audit score for Tab badge
   const currentSeoAudit = useMemo(() => {
@@ -167,6 +174,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
       errs.price = "قیمت پایه محصول باید بزرگتر از صفر باشد.";
     }
 
+    if (!formData.category) {
+      errs.category = "انتخاب دسته‌بندی فعال الزامی است.";
+    }
+
     if (!formData.image.trim()) {
       errs.image = "آدرس تصویر محصول را وارد کنید.";
     }
@@ -200,29 +211,10 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
     }
   };
 
-  const [categoryOptions, setCategoryOptions] = useState<Array<{ value: string; label: string }>>(
-    PRODUCT_CATEGORIES.map((c) => ({ value: c.id, label: c.label }))
-  );
-
-  useEffect(() => {
-    if (isOpen) {
-      mockCategoryService
-        .getCategories({ status: "active" })
-        .then((cats) => {
-          if (cats && cats.length > 0) {
-            setCategoryOptions(
-              cats.map((c) => ({
-                value: c.slug || c.id,
-                label: `${c.parentId ? "↳ " : ""}${c.name}`,
-              }))
-            );
-          }
-        })
-        .catch(() => {
-          // fallback to PRODUCT_CATEGORIES
-        });
-    }
-  }, [isOpen]);
+  const selectCategoryOptions = categoryOptions.map((category) => ({
+    value: category.id,
+    label: category.label,
+  }));
 
   return (
     <BottomSheet
@@ -360,7 +352,9 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                   onValueChange={(val) =>
                     setFormData((p) => ({ ...p, category: val as ProductCategory }))
                   }
-                  options={categoryOptions}
+                  options={selectCategoryOptions}
+                  error={Boolean(errors.category)}
+                  helperText={errors.category}
                 />
 
                 {/* Base Price */}
@@ -402,9 +396,13 @@ export const ProductFormModal: React.FC<ProductFormModalProps> = ({
                 required
                 value={formData.image}
                 onChange={(val) => setFormData((p) => ({ ...p, image: val }))}
+                onFileChange={(file) =>
+                  setFormData((current) => ({ ...current, imageFile: file }))
+                }
                 error={errors.image}
-                presets={DEFAULT_IMAGE_OPTIONS}
+                presets={[]}
                 variant="default"
+                allowUrlFallback={false}
                 helperText="امکان انتخاب و آپلود فایل از کامپیوتر یا انتخاب از میان تصاویر نمونه."
               />
 

@@ -51,7 +51,14 @@ export type ApiConflictReason =
   | "invalid_banner_count"
   | "banner_url_must_be_https"
   | "product_not_active"
-  | "ordered_ids_must_match_active_sections";
+  | "ordered_ids_must_match_active_sections"
+  | "invalid_temporary_password"
+  | "email_taken"
+  | "self_change_forbidden"
+  | "last_super_admin"
+  | "invalid_fulfillment_transition"
+  | "shipping_details_required"
+  | "invalid_value";
 
 export interface ApiErrorDetails {
   fields?: ApiErrorField[];

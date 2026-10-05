@@ -17,6 +17,7 @@ import {
 
 export const CouponsContainer: React.FC = () => {
   const {
+    canManage,
     filters,
     data,
     isLoading,
@@ -35,7 +36,7 @@ export const CouponsContainer: React.FC = () => {
     handleUpdateCoupon,
     handleToggleCouponStatus,
     handleDeleteCoupon,
-    handleResetMockData,
+    categoryOptions,
   } = useCoupons();
 
   const { coupons, total, page, totalPages, counts } = data;
@@ -109,7 +110,7 @@ export const CouponsContainer: React.FC = () => {
         onSearchChange={handleSearch}
         counts={counts}
         onOpenCreate={handleOpenCreateModal}
-        onResetMockData={handleResetMockData}
+        canManage={canManage}
       />
 
       {/* 4. Coupons Listing */}
@@ -133,6 +134,7 @@ export const CouponsContainer: React.FC = () => {
             onEdit={handleOpenEditModal}
             onDelete={handleDeleteCoupon}
             onToggleStatus={handleToggleCouponStatus}
+            canManage={canManage}
           />
 
           {/* Mobile Cards */}
@@ -144,6 +146,7 @@ export const CouponsContainer: React.FC = () => {
                 onEdit={handleOpenEditModal}
                 onDelete={handleDeleteCoupon}
                 onToggleStatus={handleToggleCouponStatus}
+                canManage={canManage}
               />
             ))}
           </div>
@@ -192,6 +195,7 @@ export const CouponsContainer: React.FC = () => {
         onSubmitCreate={handleCreateCoupon}
         onSubmitUpdate={handleUpdateCoupon}
         isLoading={isMutating}
+        categoryOptions={categoryOptions}
       />
     </div>
   );

@@ -1,6 +1,5 @@
 import React from "react";
-import type { ProductSortOption } from "@/types/product";
-import { PRODUCT_CATEGORIES } from "../api/mockProductService";
+import type { CategoryOption, ProductSortOption } from "../types";
 import BottomSheet from "@/shared-app/bottomSheet";
 import ESelect from "@/shared-app/designSystem/select";
 import EButton from "@/shared-app/designSystem/button";
@@ -17,6 +16,7 @@ export interface ProductFilterDrawerProps {
   onSortChange: (sort: ProductSortOption) => void;
   onResetFilters: () => void;
   activeFiltersCount: number;
+  categoryOptions: CategoryOption[];
 }
 
 export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
@@ -30,10 +30,11 @@ export const ProductFilterDrawer: React.FC<ProductFilterDrawerProps> = ({
   onSortChange,
   onResetFilters,
   activeFiltersCount,
+  categoryOptions: availableCategories,
 }) => {
   const categoryOptions = [
     { value: "all", label: "همه دسته‌بندی‌ها" },
-    ...PRODUCT_CATEGORIES.map((c) => ({ value: c.id, label: c.label })),
+    ...availableCategories.map((category) => ({ value: category.id, label: category.label })),
   ];
 
   const stockStatusOptions = [

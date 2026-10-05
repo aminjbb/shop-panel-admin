@@ -20,6 +20,7 @@ export interface ImagePreset {
 export interface ImageUploaderProps {
   value?: string;
   onChange: (value: string) => void;
+  onFileChange?: (file: File | null) => void;
   label?: string;
   helperText?: string;
   error?: string;
@@ -44,11 +45,6 @@ async function processAndCompressImage(file: File, maxDimension = 1600): Promise
       const result = e.target?.result as string;
       if (!result) {
         return reject(new Error("محتوای تصویر خالی است"));
-      }
-
-      // If svg, keep vector data as-is
-      if (file.type === "image/svg+xml") {
-        return resolve(result);
       }
 
       const img = new Image();
@@ -94,6 +90,7 @@ async function processAndCompressImage(file: File, maxDimension = 1600): Promise
 export const ImageUploader: React.FC<ImageUploaderProps> = ({
   value = "",
   onChange,
+  onFileChange,
   label,
   helperText,
   error,
@@ -122,9 +119,14 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const handleFile = async (file: File) => {
     setLocalError(null);
 
+    if (file.size === 0) {
+      setLocalError("فایل تصویر خالی است.");
+      return;
+    }
+
     // Validate type
-    if (!file.type.startsWith("image/")) {
-      setLocalError("لطفاً فقط فایل تصویری (PNG, JPG, WEBP, SVG) انتخاب فرمایید.");
+    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
+      setLocalError("لطفاً فقط فایل تصویری PNG، JPG یا WEBP انتخاب فرمایید.");
       return;
     }
 
@@ -144,6 +146,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     try {
       const dataUrl = await processAndCompressImage(file);
       onChange(dataUrl);
+      onFileChange?.(file);
     } catch {
       setLocalError("خطایی در بارگذاری تصویر رخ داد. لطفاً مجدداً امتحان کنید.");
     } finally {
@@ -188,6 +191,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const handleRemove = (e: React.MouseEvent) => {
     e.stopPropagation();
     onChange("");
+    onFileChange?.(null);
     setFileName(null);
     setFileSizeStr(null);
     setLocalError(null);
@@ -197,6 +201,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
   const handleApplyUrl = () => {
     if (manualUrl.trim()) {
       onChange(manualUrl.trim());
+      onFileChange?.(null);
       setFileName("تصویر اینترنتی");
       setFileSizeStr(null);
       setLocalError(null);
@@ -205,6 +210,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
 
   const handlePresetSelect = (presetUrl: string, presetLabel: string) => {
     onChange(presetUrl);
+    onFileChange?.(null);
     setFileName(presetLabel);
     setFileSizeStr(null);
     setLocalError(null);
@@ -234,7 +240,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           ref={fileInputRef}
           type="file"
           id={uploaderId}
-          accept="image/png,image/jpeg,image/webp,image/svg+xml"
+          accept="image/png,image/jpeg,image/webp"
           onChange={handleFileInputChange}
           className="hidden"
         />
@@ -328,7 +334,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
           ref={fileInputRef}
           type="file"
           id={uploaderId}
-          accept="image/png,image/jpeg,image/webp,image/svg+xml"
+          accept="image/png,image/jpeg,image/webp"
           onChange={handleFileInputChange}
           className="hidden"
         />
@@ -499,7 +505,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         ref={fileInputRef}
         type="file"
         id={uploaderId}
-        accept="image/png,image/jpeg,image/webp,image/svg+xml"
+        accept="image/png,image/jpeg,image/webp"
         onChange={handleFileInputChange}
         className="hidden"
       />
@@ -576,7 +582,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
                   فایل تصویر را اینجا بکشید یا برای انتخاب کلیک کنید
                 </p>
                 <p className="text-xs text-slate-400">
-                  فرمت‌های مجاز: PNG, JPG, WEBP, SVG (حداکثر {maxSizeMB} مگابایت)
+                  فرمت‌های مجاز: PNG، JPG، WEBP (حداکثر {maxSizeMB} مگابایت)
                 </p>
               </div>
 

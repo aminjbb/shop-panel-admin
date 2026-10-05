@@ -1,4 +1,9 @@
 export type StockStatus = "out_of_stock" | "low_stock" | "in_stock";
+export type ProductId = string;
+export type ProductVariantId = string;
+export type ProductCategoryId = string;
+export type DecimalString = string;
+export type IsoDateTime = string;
 
 export type ProductSort =
   | "created_at_desc"
@@ -9,20 +14,31 @@ export type ProductSort =
   | "price_desc"
   | "stock_asc"
   | "stock_desc";
+export type ProductSortBy = ProductSort;
+
+export type ProductConflictReason =
+  | "inactive_or_missing"
+  | "sku_taken"
+  | "variant_sku_taken"
+  | "slug_taken"
+  | "variant_has_inventory_history"
+  | "negative_stock"
+  | "idempotency_key_reused"
+  | "missing_or_inactive";
 
 export interface ProductVariant {
-  id: string;
+  id: ProductVariantId;
   sku: string;
   name: string;
   stock: number;
 }
 
 export interface Product {
-  id: string;
+  id: ProductId;
   title: string;
   sku: string;
-  category: string;
-  price: string;
+  category: ProductCategoryId;
+  price: DecimalString;
   image: string;
   imageMediaId: string | null;
   description: string | null;
@@ -34,12 +50,12 @@ export interface Product {
   variants: ProductVariant[];
   totalStock: number;
   stockStatus: StockStatus;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: IsoDateTime;
+  updatedAt: IsoDateTime;
 }
 
 export interface ProductVariantInput {
-  id?: string;
+  id?: ProductVariantId;
   sku: string;
   name: string;
   stock: number;
@@ -48,8 +64,8 @@ export interface ProductVariantInput {
 export interface CreateProductInput {
   title: string;
   sku: string;
-  category: string;
-  price: string;
+  category: ProductCategoryId;
+  price: DecimalString;
   imageMediaId: string;
   description?: string | null;
   slug?: string | null;
@@ -60,29 +76,35 @@ export interface CreateProductInput {
   variants?: ProductVariantInput[];
 }
 
-export interface UpdateProductInput {
-  title?: string;
-  sku?: string;
-  category?: string;
-  price?: string;
-  imageMediaId?: string;
-  description?: string | null;
-  slug?: string | null;
-  metaTitle?: string | null;
-  metaDescription?: string | null;
-  noIndex?: boolean;
-  focusKeywords?: string[];
-  variants?: ProductVariantInput[];
+export interface UpdateProductFields {
+  title: string;
+  sku: string;
+  category: ProductCategoryId;
+  price: DecimalString;
+  imageMediaId: string;
+  description: string | null;
+  slug: string | null;
+  metaTitle: string | null;
+  metaDescription: string | null;
+  noIndex: boolean;
+  focusKeywords: string[];
+  variants: ProductVariantInput[];
 }
+
+export type UpdateProductInput = {
+  [Key in keyof UpdateProductFields]: Pick<UpdateProductFields, Key> &
+    Partial<Omit<UpdateProductFields, Key>>;
+}[keyof UpdateProductFields];
 
 export interface ProductListParams {
   search?: string;
-  category?: string;
+  category?: ProductCategoryId;
   stockStatus?: StockStatus;
   sortBy?: ProductSort;
   page?: number;
   pageSize?: number;
 }
+export type ProductListQuery = ProductListParams;
 
 export interface ProductListResponse {
   products: Product[];
@@ -94,21 +116,23 @@ export interface ProductListResponse {
 }
 
 export interface AdjustProductStockInput {
-  variantId: string;
+  variantId: ProductVariantId;
   delta: number;
 }
 
 export interface AdjustProductStockRequest {
-  productId: string;
+  productId: ProductId;
   idempotencyKey: string;
   input: AdjustProductStockInput;
 }
 
 export interface ProductSlugCheckParams {
   slug: string;
-  excludeId?: string;
+  excludeId?: ProductId;
 }
+export type ProductSlugCheckQuery = ProductSlugCheckParams;
 
 export interface SlugAvailability {
   available: boolean;
 }
+export type SlugAvailabilityResponse = SlugAvailability;

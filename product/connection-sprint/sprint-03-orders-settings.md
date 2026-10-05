@@ -1,49 +1,39 @@
-# Sprint 03 — Orders و Settings
+# Sprint 03 — Orders & Settings
 
-## وضعیت: مسدود به‌دلیل نبود قرارداد frontend handoff
+## وضعیت: پیاده‌سازی‌شده
 
-صفحات زیر در UI وجود دارند، اما هیچ قرارداد واقعی متناظر در `product/api` و هیچ
-entity API برای آن‌ها ارائه نشده است:
+قرارداد این Sprint از OpenAPI سرویس درحال اجرا (`http://localhost:8000/openapi.json`) و route/schemaهای بک‌اند در `C:\project\shop-back` استخراج شد؛ هیچ endpoint حدسی استفاده نشده است.
 
-- `src/pages/OrdersPage.tsx`
-- `src/features/orders/*`
-- `src/pages/SettingsPage.tsx`
-- `src/features/settings/hooks/useStoreSettings.ts`
-- `src/features/settings/hooks/useShippingMethods.ts`
-- `src/features/settings/hooks/useAdminStaff.ts`
+## خروجی
 
-`settingsApi.resetDevelopmentData` فقط یک عملیات local/test است و جایگزین API
-تنظیمات فروشگاه، روش ارسال یا مدیریت پرسنل نیست.
+- entity مستقل `order`: فهرست، جزئیات، تغییر fulfillment، تغییر payment و invoice.
+- entity مستقل `store-settings`: دریافت و جایگزینی کامل تنظیمات فروشگاه.
+- entity مستقل `shipping-method`: فهرست، ایجاد، ویرایش کامل، تغییر وضعیت و حذف.
+- entity مستقل `admin-staff`: فهرست، ایجاد، تغییر نقش، تغییر وضعیت و حذف.
+- DTOهای wire در `entities/*/types` و تبدیل DTO به ViewModel در mapperهای feature نگهداری می‌شوند.
+- hookهای Orders و سه بخش Settings به TanStack Query متصل شده‌اند و پس از mutation، query مرتبط invalidate می‌شود.
+- resetهای mock از صفحات production حذف شدند.
+- فرم ایجاد مدیر با قرارداد واقعی `temporaryPassword` (حداقل ۱۲ کاراکتر) هماهنگ شد.
+- فیلترها، pagination و `AbortSignal` درخواست‌های list به API منتقل می‌شوند.
 
-## endpointهای موردنیاز پیش از شروع
+## قرارداد و فایل‌های اصلی
 
-Backend باید handoff نهایی حداقل برای موارد زیر ارائه کند:
+- [Frontend handoff](../api/sprint-03-orders-settings-frontend-handoff.md)
+- `src/entities/order`
+- `src/entities/store-settings`
+- `src/entities/shipping-method`
+- `src/entities/admin-staff`
+- `src/features/orders/models/orderMapper.ts`
+- `src/features/settings/models/settingsMappers.ts`
 
-- order list، stats، detail و fulfillment update.
-- payment status update، invoice/print contract در صورت server-side بودن.
-- get/update store settings.
-- list/create/update/toggle/archive shipping method.
-- list/create/update-role/toggle/archive admin staff.
-- permission matrix، pagination، error reasons و decimal/date serialization.
+## نکات مرزی
 
-## کارهای مجاز تا رفع blocker
+- API سفارش payment method و transaction ID برنمی‌گرداند؛ UI آن را با مقدار `unknown` نگاشت می‌کند و داده ساختگی تولید نمی‌شود.
+- API روش ارسال description و شرط ارسال رایگان per-method ندارد؛ این کنترل‌های قدیمی از فرم production حذف شدند.
+- endpoint فهرست کارکنان aggregate count نقش/وضعیت ندارد؛ شمارنده‌های UI از صفحه جاری مشتق می‌شوند و `totalCount` مقدار سراسری است.
+- `PATCH /shipping-methods/{id}` یک replacement کامل است؛ hook پیش از ارسال payload ویرایش را با مقدار فعلی merge می‌کند.
 
-- mockها پشت `VITE_DATA_SOURCE=mock` باقی بمانند.
-- UI و ViewModelها می‌توانند مستقل refactor شوند، اما network type یا endpoint
-  حدسی ساخته نشود.
-- صفحه production باید واضحاً حالت demo/mock را نشان دهد یا route آن غیرفعال
-  باشد؛ داده mock نباید به‌عنوان داده واقعی نمایش داده شود.
-- resetهای mock با reset واقعی development اشتباه گرفته نشوند.
+## Verification
 
-## معیار ورود به sprint اتصال
-
-- فایل `product/api/sprint-03-...-frontend-handoff.md` اضافه شده باشد.
-- entityهای `order`، `storeSettings`، `shippingMethod` و `adminStaff` بر اساس
-  قرارداد freeze‌شده ایجاد شده باشند.
-- تست contract backend و role permission مشخص شده باشد.
-
-## Definition of Done آینده
-
-- تمام importهای `mockOrderService` و `mockSettingsService` حذف شوند.
-- OrdersPage و هر سه بخش Settings چهار وضعیت داده را پوشش دهند.
-- mutationها invalidation، error mapping و permission guard کامل داشته باشند.
+- `npm.cmd run lint` — موفق (`tsc --noEmit`).
+- `npm.cmd run build` — موفق؛ Vite فقط هشدار CSS قدیمی `var(--color-...)` را گزارش کرد.

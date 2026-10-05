@@ -1,5 +1,5 @@
 import React from "react";
-import type { TicketStatus } from "@/types/feedback";
+import type { TicketStatus } from "../../types";
 import { Clock, RefreshCw, UserCheck, CheckCircle2 } from "lucide-react";
 
 export interface TicketStatusBadgeProps {

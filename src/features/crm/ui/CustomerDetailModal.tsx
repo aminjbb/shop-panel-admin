@@ -1,5 +1,5 @@
 import React from "react";
-import type { Customer, CustomerTier } from "@/types/crm";
+import type { Customer, CustomerTier } from "../types";
 import { BottomSheet } from "@/shared-app/bottomSheet";
 import { EButton } from "@/shared-app/designSystem/button";
 import { ESelect } from "@/shared-app/designSystem/select";
@@ -25,6 +25,7 @@ interface CustomerDetailModalProps {
   onToggleStatus: (customerId: string) => void;
   onUpdateTier: (customerId: string, tier: CustomerTier) => void;
   isLoading?: boolean;
+  canManageCustomer?: boolean;
 }
 
 export const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
@@ -34,6 +35,7 @@ export const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
   onToggleStatus,
   onUpdateTier,
   isLoading = false,
+  canManageCustomer = false,
 }) => {
   if (!customer) return null;
 
@@ -69,7 +71,7 @@ export const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
               <span>برقراری تماس</span>
             </a>
 
-            <EButton
+            {canManageCustomer && <EButton
               variant={isBlocked ? "primary" : "destructive"}
               size="md"
               onClick={() => onToggleStatus(customer.id)}
@@ -78,7 +80,7 @@ export const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
               className="text-xs"
             >
               {isBlocked ? "رفع مسدودی حساب" : "مسدودسازی حساب"}
-            </EButton>
+            </EButton>}
           </div>
 
           <EButton variant="secondary" size="md" onClick={onClose} className="text-xs">
@@ -115,7 +117,7 @@ export const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
           </div>
 
           {/* Tier Change Selector */}
-          <div className="w-full sm:w-64 space-y-1">
+          {canManageCustomer && <div className="w-full sm:w-64 space-y-1">
             <label className="text-[11px] text-slate-400 font-medium">
               تغییر سطح باشگاه وفاداری:
             </label>
@@ -125,7 +127,7 @@ export const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
               options={tierOptions}
               className="w-full text-xs"
             />
-          </div>
+          </div>}
         </div>
 
         {/* 2. Key Metrics Summary Grid */}
@@ -186,7 +188,7 @@ export const CustomerDetailModal: React.FC<CustomerDetailModalProps> = ({
             <div>
               <span className="text-slate-400">آخرین سفارش ثبت‌شده: </span>
               <span className="text-white">
-                {new Date(customer.lastOrderDate).toLocaleDateString("fa-IR")}
+                {customer.lastOrderDate ? new Date(customer.lastOrderDate).toLocaleDateString("fa-IR") : "ثبت نشده"}
               </span>
             </div>
           </div>

@@ -146,25 +146,11 @@ export const authApi = {
     body: ChangeAvatarRequest,
     signal?: AbortSignal,
   ): Promise<AdminUser> {
-    try {
-      return await apiRequest({
-        path: "/auth/me/avatar",
-        method: "PATCH",
-        body: avatarFormData(body),
-        signal,
-      });
-    } catch {
-      const user = getMockAdmin();
-      const updatedUser = {
-        ...user,
-        avatarUrl: URL.createObjectURL(body.file),
-      };
-      try {
-        localStorage.setItem(MOCK_ADMIN_KEY, JSON.stringify(updatedUser));
-      } catch {
-        // ignore
-      }
-      return updatedUser;
-    }
+    return apiRequest({
+      path: "/auth/me/avatar",
+      method: "PATCH",
+      body: avatarFormData(body),
+      signal,
+    });
   },
 };

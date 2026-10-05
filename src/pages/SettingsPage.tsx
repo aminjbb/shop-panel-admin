@@ -1,62 +1,34 @@
 import React, { useState } from "react";
 import HeaderPages from "@/shared-app/headerPages";
 import StatCard from "@/shared-app/statCard";
-import { EButton } from "@/shared-app/designSystem/button";
 import useStoreSettings from "@/features/settings/hooks/useStoreSettings";
 import useShippingMethods from "@/features/settings/hooks/useShippingMethods";
 import useAdminStaff from "@/features/settings/hooks/useAdminStaff";
 import StoreSettingsForm from "@/features/settings/ui/StoreSettingsForm";
 import ShippingMethodsSection from "@/features/settings/ui/ShippingMethodsSection";
 import AdminStaffSection from "@/features/settings/ui/AdminStaffSection";
-import mockSettingsService from "@/features/settings/api/mockSettingsService";
-import useToastStore from "@/shared-app/designSystem/toast/store";
+import DevelopmentResetPanel from "@/features/settings/ui/DevelopmentResetPanel";
+import AllertMassage from "@/shared-app/allertMassage";
 import {
   Store,
   Truck,
   ShieldCheck,
-  RotateCcw,
   Coins,
-  Users,
-  Settings as SettingsIcon,
 } from "lucide-react";
 
 export type SettingsActiveTab = "store" | "shipping" | "staff";
 
 export const SettingsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<SettingsActiveTab>("store");
-  const [isResetting, setIsResetting] = useState(false);
 
   // Hooks
   const storeHook = useStoreSettings();
   const shippingHook = useShippingMethods();
   const staffHook = useAdminStaff();
 
-  const handleResetDefaults = async () => {
-    if (!window.confirm("آیا از بازنشانی کلیه تنظیمات، روش‌های ارسال و پرسنل به مقادیر پیش‌فرض اطمینان دارید؟")) {
-      return;
-    }
-    setIsResetting(true);
-    try {
-      await mockSettingsService.resetSettingsToDefault();
-      await Promise.all([
-        storeHook.refetch(),
-        shippingHook.refetch(),
-        staffHook.refetch(),
-      ]);
-      useToastStore.info("تمام داده‌ها به مقادیر اولیه دیفالت بازگشتند.", {
-        title: "بازنشانی انجام شد",
-      });
-    } catch (err: any) {
-      useToastStore.error(err?.message || "امکان بازنشانی داده‌ها وجود ندارد", {
-        title: "خطا در بازنشانی",
-      });
-    } finally {
-      setIsResetting(false);
-    }
-  };
-
   const activeShippingCount = shippingHook.shippingMethods.filter((m) => m.isActive).length;
   const activeStaffCount = staffHook.counts.active;
+  const activeError = activeTab === "store" ? storeHook.error : activeTab === "shipping" ? shippingHook.error : staffHook.error;
 
   return (
     <div className="flex flex-col gap-6 pb-20 sm:pb-8">
@@ -64,17 +36,7 @@ export const SettingsPage: React.FC = () => {
       <HeaderPages
         title="تنظیمات فروشگاه و مدیریت دسترسی‌ها"
         subtitle="پیکربندی هویت فروشگاه، مالیات، تعرفه‌های ارسال کالا و دسترسی‌های پرسنل ادمین (اسپرینت ۵)"
-      >
-        <EButton
-          variant="outlined"
-          onClick={handleResetDefaults}
-          isLoading={isResetting}
-          icon={<RotateCcw className="w-4 h-4 text-slate-400" />}
-          className="text-xs text-slate-300 hover:text-white"
-        >
-          بازنشانی به پیش‌فرض
-        </EButton>
-      </HeaderPages>
+      />
 
       {/* Top KPI Stat Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
@@ -162,6 +124,8 @@ export const SettingsPage: React.FC = () => {
         </button>
       </div>
 
+      {activeError && <AllertMassage title="خطا در دریافت اطلاعات" message={activeError} variant="danger" />}
+
       {/* Tab Panels */}
       {activeTab === "store" && (
         <StoreSettingsForm
@@ -204,6 +168,8 @@ export const SettingsPage: React.FC = () => {
           onDeleteStaff={staffHook.deleteStaffMember}
         />
       )}
+
+      <DevelopmentResetPanel />
     </div>
   );
 };
